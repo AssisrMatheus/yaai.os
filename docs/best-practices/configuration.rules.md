@@ -29,7 +29,7 @@ Check: review
 
 Real values live in untracked local files (`.env.local`) and the host's settings; committed env files hold nothing you would not publish.
 Why: a committed secret ships with every clone ([[best-practices/security.rules]]).
-Check: lint
+Check: review
 
 ### BP-CONF-005: Declare every variable a task reads
 

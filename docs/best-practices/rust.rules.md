@@ -158,7 +158,7 @@ Check: lint
 
 Generated items carry docs, hide no allocation, `unwrap` or `unsafe`, and any emitted `unsafe` carries its `// SAFETY:`.
 Why: expanded code ships like written code.
-Check: lint
+Check: review
 
 ### BP-RUST-025: Test every macro arm
 

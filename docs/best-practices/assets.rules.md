@@ -94,7 +94,7 @@ Check: review
 
 An icon's props force a choice at each use: hidden as decoration, or given a translated label; the icon's declaration never decides.
 Why: the same icon is decoration beside text and the only name of an icon-only button.
-Check: lint
+Check: review
 
 ### BP-ASSET-015: Optimise vector sources
 
@@ -106,13 +106,13 @@ Check: review
 
 Icons live in one folder per kind (monotone, multicolour), imported by direct path, without a barrel.
 Why: icons are found in one place and tree-shake.
-Check: lint
+Check: review
 
 ### BP-ASSET-017: Import stock icons by name
 
 Import stock icons by name; never import a whole set or look icons up by string; an external icon name maps through an explicit table.
 Why: by-name lookup bundles every icon.
-Check: lint
+Check: review
 
 ### BP-ASSET-018: Render static icons as components
 

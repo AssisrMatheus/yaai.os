@@ -70,7 +70,7 @@ Check: review
 
 Rendering and derivation code reads inputs and returns output; it never writes state or performs I/O.
 Why: the framework may run it in any order and any number of times.
-Check: lint
+Check: review
 
 ### BP-STATE-011: Use effects only where state leaves the UI
 

@@ -40,12 +40,12 @@ Pick the level from this table.
 Why: a consistent level makes the default filter show exactly what needs attention.
 Check: review
 
-| Level | Use for | Fields |
-| --- | --- | --- |
-| `debug` | adapter and cache decisions, query names, hit or miss, retry attempts, state transitions | duration, count where useful |
-| `info` | process ready or stopped, a meaningful operation completed | operation, outcome, elapsed time |
-| `warn` | recovered failure, degraded mode, discarded input, retries exhausted with a fallback | reason, recovery |
-| `error` | unexpected terminal failure at its handling boundary | stable code, operation, safe cause, correlation id, next step |
+| Level   | Use for                                                                                  | Fields                                                        |
+| ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `debug` | adapter and cache decisions, query names, hit or miss, retry attempts, state transitions | duration, count where useful                                  |
+| `info`  | process ready or stopped, a meaningful operation completed                               | operation, outcome, elapsed time                              |
+| `warn`  | recovered failure, degraded mode, discarded input, retries exhausted with a fallback     | reason, recovery                                              |
+| `error` | unexpected terminal failure at its handling boundary                                     | stable code, operation, safe cause, correlation id, next step |
 
 ### BP-LOG-006: Summarise a retried success once
 

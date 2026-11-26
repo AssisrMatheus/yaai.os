@@ -85,7 +85,7 @@ Check: review
 
 Code outside the adapter's module imports only the service and the domain model, never the adapter, its client or its generated types (module privacy or import rules).
 Why: one leak makes the seam decorative.
-Check: lint
+Check: review
 
 ### BP-DATA-013: Let only domain types cross the adapter
 
@@ -157,7 +157,7 @@ Check: review
 
 Generate wire types and query documents only from and into the adapter's module, so nothing else can import them.
 Why: a generated type used outside the adapter couples that code to the vendor.
-Check: lint
+Check: review
 
 ### BP-DATA-025: Select only what the domain holds
 

@@ -26,7 +26,7 @@ Check: review
 
 A module holding secrets, credentials or privileged clients is marked so that importing it from client code fails the build.
 Why: a wrong import then fails loudly instead of leaking a token.
-Check: lint
+Check: review
 
 ### BP-SEC-004: Strip development tools from release builds
 

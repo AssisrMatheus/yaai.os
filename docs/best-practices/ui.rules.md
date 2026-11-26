@@ -27,13 +27,13 @@ Check: review
 
 Composite widgets come from one primitive layer; a second headless library is not added beside it.
 Why: two layers mean two focus and dismissal models on one screen.
-Check: lint
+Check: review
 
 ### BP-UI-004: Wrap primitives once in app components
 
 The app's component is a thin, named, styled layer over the primitive's parts; screens import the app component, never the primitive directly.
 Why: styling and naming exist once.
-Check: lint
+Check: review
 
 ### BP-UI-005: Import behaviours, never copy them
 
@@ -45,7 +45,7 @@ Check: review
 
 A presentational component renders from its inputs and emits typed actions; the container that reads app state and services lives in the app and passes props down. A presentational component never imports app state, services or another app's code.
 Why: the component renders the same in a story, a test and the app.
-Check: lint
+Check: review
 
 ## Composition and props
 

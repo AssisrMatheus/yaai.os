@@ -43,7 +43,7 @@ Check: review
 
 Remove a styling tool's default palette when the app has its own, so off-palette values fail to compile.
 Why: off-palette colours never ship by accident.
-Check: lint
+Check: review
 
 ### BP-TOKEN-007: Create a token for a value with a purpose
 
@@ -111,7 +111,7 @@ Check: review
 
 Variants and class merging come from one module that knows the custom utilities; class strings are never concatenated by hand.
 Why: two mergers resolve conflicts two ways, and hand concatenation leaves conflicts unresolved.
-Check: lint
+Check: review
 
 ## Where styles live
 

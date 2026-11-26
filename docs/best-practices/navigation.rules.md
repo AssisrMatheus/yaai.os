@@ -17,7 +17,7 @@ Check: review
 
 Every internal link renders through one app link component that owns locale, active state (`aria-current`), prefetch and click reporting; lower-level link and navigation helpers are imported only there.
 Why: one place enforces every link rule, and a lint can check it.
-Check: lint
+Check: review
 
 ### BP-NAV-003: Prefetch on intent, not on visibility
 

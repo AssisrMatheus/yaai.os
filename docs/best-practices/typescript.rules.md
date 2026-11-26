@@ -124,7 +124,7 @@ Check: lint
 
 Treat network, file, storage and message data as `unknown` and narrow it with a schema parser; check map keys with `Object.hasOwn`, not `in`.
 Why: a cast turns a hoped-for shape into one the compiler trusts; `in` also matches inherited keys.
-Check: review
+Check: lint
 
 ### BP-TS-064: Use unknown, never any
 
@@ -180,7 +180,7 @@ Check: review
 
 Return the next value instead of changing the one you received; mutate in place only on a measured hot path, with the invariant in the doc comment.
 Why: callers keep references to what they passed.
-Check: review
+Check: lint
 
 ## Functions and modules
 

@@ -44,7 +44,7 @@ Check: test
 
 When a lint's preferred form costs measured time on a hot path, take the faster form with `#[expect(<lint>, reason = "measured: <figure, where recorded>")]` on the smallest item.
 Why: performance outranks idiom, but only with evidence.
-Check: lint
+Check: review
 
 ### BP-PERF-007: Configure the release profile once
 

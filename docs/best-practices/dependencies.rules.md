@@ -58,7 +58,7 @@ Check: lint
 
 Test and build helpers are dev-dependencies and never reach release artifacts.
 Why: release binaries ship only what they run.
-Check: lint
+Check: review
 
 ### BP-DEPS-009: Put optional integrations behind additive features
 

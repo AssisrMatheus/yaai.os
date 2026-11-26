@@ -143,11 +143,11 @@ Check: test
 Choose by who can resolve the outcome. A shell or CI caller checks the exact code; the "non-blocking" meaning of 1
 comes from hook handling ([[repo/hooks]]). A failed tool produced no verdict.
 
-| Exit | Decision | Example stdout | Example stderr |
-| --- | --- | --- | --- |
-| 0 | Operation completed and the contract holds | `ok checked=18` | Empty by default |
-| 2 | Caller must change input or act before proceeding | `blocked invalid=1` for a completed validation report | `E_LINK docs/example.md:8 unknown target. Update the link and rerun the check.` |
-| 1 | The tool or its dependency failed, so the result is unavailable | Empty | `E_INDEX index read failed. Retry with --rebuild-index.` if that option exists |
+| Exit | Decision                                                        | Example stdout                                        | Example stderr                                                                  |
+| ---- | --------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------- |
+| 0    | Operation completed and the contract holds                      | `ok checked=18`                                       | Empty by default                                                                |
+| 2    | Caller must change input or act before proceeding               | `blocked invalid=1` for a completed validation report | `E_LINK docs/example.md:8 unknown target. Update the link and rerun the check.` |
+| 1    | The tool or its dependency failed, so the result is unavailable | Empty                                                 | `E_INDEX index read failed. Retry with --rebuild-index.` if that option exists  |
 
 ### BP-CLI-022: Exit 0 only when the contract holds
 

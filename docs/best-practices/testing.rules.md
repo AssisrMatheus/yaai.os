@@ -190,7 +190,7 @@ Check: lint
 
 A test that needs local data the checkout may lack is ignored with a reason and fails when run without the data; it never returns early.
 Why: an early return reports a pass with nothing checked.
-Check: lint
+Check: review
 
 ### BP-TEST-030: Fix or quarantine flaky tests
 

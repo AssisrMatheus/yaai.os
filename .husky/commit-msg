@@ -1,0 +1,5 @@
+# Conventional Commits, then the links between code and docs. spec: docs/repo/commits.md
+pnpm exec commitlint --edit "$1"
+# Runs once the doc-links tool exists and is built (docs/repo/doc-links.md).
+[ -x bin/doc-links ] && bin/doc-links commit "$1"
+exit 0

@@ -13,7 +13,7 @@ Follow `docs/repo/workflow.md` for full rules. Keep `docs/` as the source of tru
 2. **Check for conflicts**: verify the request against every applicable invariant and governing doc. If the request conflicts with or is ambiguous against an invariant or doc, stop immediately and tell the user which `INV-` / `ADR` / doc path conflicts and why.
 3. **Plan concisely**: write an extremely concise plan (sacrifice grammar for concision) and end with unresolved questions, if any. Wait for user decisions on open questions before changing rules or docs.
 4. **Update docs first** whenever behaviour, a rule, or a screen changes:
-   - New hard-to-reverse trade-off -> ADR via `docs/adr/SKILL.md` (`docs/adr/0000-template.md`).
+   - New hard-to-reverse trade-off -> ADR via `docs/adr/SKILL.md` (`docs/adr/0000-template.adr.md`).
    - Non-negotiable rule -> invariant in `docs/invariants/` (user-approved only).
    - Behaviour or contract -> spec in `docs/specs/` or guide in `docs/repo/`.
    - Screen or subview -> implementation-neutral doc in `docs/screens/`.

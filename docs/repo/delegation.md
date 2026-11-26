@@ -86,5 +86,5 @@ Effort note: <concrete reason if effort > medium, otherwise omit>
 
 ## References
 
-- [T3 Code orchestrator MCP server](https://github.com/pingdotgg/t3code/blob/main/docs/orchestration-v2/orchestrator-mcp-server.md)
+- [T3 Code orchestrator MCP server](https://github.com/pingdotgg/t3code/blob/76de50bc0d3fdd9fc2c5816de4142fbda1ce8364/docs/orchestration-v2/orchestrator-mcp-server.md)
 - [Building agents: When to fold subagents into your main agent loop](https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop)

@@ -2,6 +2,7 @@
 import { existsSync, lstatSync, readlinkSync, realpathSync } from 'node:fs';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 
+/** Resolve a path through existing ancestors and symbolic links. */
 export function physical(path: string, seen = new Set<string>()): string {
   if (existsSync(path)) return realpathSync(path);
   if (lstatSync(path, { throwIfNoEntry: false })?.isSymbolicLink()) {
@@ -13,6 +14,7 @@ export function physical(path: string, seen = new Set<string>()): string {
   return parent === path ? path : join(physical(parent, seen), basename(path));
 }
 
+/** Check whether a resolved destination belongs to the vendor tree. */
 export function vendor(root: string, cwd: string, path: string) {
   const target = resolve(cwd, path);
   return [relative(root, target), relative(root, physical(target))].some(
@@ -27,7 +29,9 @@ const vendorMessage = 'Write to a project-owned path outside vendor/.';
 export { vendorMessage };
 
 // Inspect literal commands and paths. The native sandbox controls arbitrary program execution.
-export function shellPolicy(command: string, root: string, cwd: string): string | undefined {
+/** Return the repair for a literal shell command that violates repository policy. */
+export function shellPolicy(command: string, root: string, initialDirectory: string): string | undefined {
+  let cwd = initialDirectory;
   const tokens = command.match(/(?:\\[\s\S]|"[^"]*"|'[^']*'|[^\s"'\\;&|()<>\x60])+|&&|\|\||>>|[;&|()<>\n\x60]/g) ?? [];
   let words: string[] = [];
   for (const token of [...tokens, ';']) {
@@ -38,7 +42,7 @@ export function shellPolicy(command: string, root: string, cwd: string): string 
     const args = words;
     words = [];
     while (args.length) {
-      const [first, next] = args;
+      const [first = '', next] = args;
       if (
         /^\w+=/.test(first) ||
         ['env', 'command', 'exec', 'sudo', 'then', 'do', 'if', 'bypass', 'corepack'].includes(first) ||
@@ -50,14 +54,15 @@ export function shellPolicy(command: string, root: string, cwd: string): string 
     const exe = basename(args.shift() ?? '');
     if (['sh', 'bash', 'zsh'].includes(exe)) {
       const flag = args.findIndex((arg) => /^-[a-z]*c[a-z]*$/.test(arg));
-      if (flag >= 0 && args[flag + 1]) {
-        const reason = shellPolicy(args[flag + 1], root, cwd);
+      const nested = flag >= 0 ? args[flag + 1] : undefined;
+      if (nested) {
+        const reason = shellPolicy(nested, root, cwd);
         if (reason) return reason;
       }
     }
     if (
       ['npm', 'npx', 'yarn', 'yarnpkg', 'bunx'].includes(exe) ||
-      (exe === 'bun' && ['add', 'install', 'i', 'remove', 'update', 'x'].includes(args[0]))
+      (exe === 'bun' && ['add', 'install', 'i', 'remove', 'update', 'x'].includes(args[0] ?? ''))
     )
       return 'Use pnpm for package management (pnpm exec or pnpm dlx for package executables).';
     const target = args.find((arg) => !arg.startsWith('-')) ?? '';
@@ -82,16 +87,22 @@ export function shellPolicy(command: string, root: string, cwd: string): string 
     }
     if (exe === 'git') {
       const at = args.indexOf('-C');
+      const directory = args[at + 1];
       if (
         at >= 0 &&
-        args[at + 1] &&
-        vendor(root, cwd, args[at + 1]) &&
+        directory &&
+        vendor(root, cwd, directory) &&
         args.some((a) => ['checkout', 'switch', 'restore', 'reset', 'clean', 'apply', 'pull', 'merge'].includes(a))
       )
         return vendorMessage;
     }
     const redirects = [exe, ...args];
-    if (redirects.some((a, i) => (a === '>' || a === '>>') && redirects[i + 1] && vendor(root, cwd, redirects[i + 1])))
+    if (
+      redirects.some((a, i) => {
+        const next = redirects[i + 1];
+        return (a === '>' || a === '>>') && next && vendor(root, cwd, next);
+      })
+    )
       return vendorMessage;
     const paths = args.filter((a) => !a.startsWith('-'));
     const destinations = ['cp', 'install', 'ln'].includes(exe)
@@ -118,4 +129,5 @@ export function shellPolicy(command: string, root: string, cwd: string): string 
     )
       return vendorMessage;
   }
+  return undefined;
 }

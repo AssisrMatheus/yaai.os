@@ -11,8 +11,10 @@ type Extension = {
   sendMessage(message: Message, options?: { triggerTurn: boolean }): void;
 };
 const message = (content: string): Message => ({ customType: 'repository-hooks', content, display: false });
+/** Register repository policy handlers with the selected extension runtime. */
 export function register(pi: Extension, client: 'omp' | 'pi') {
   const script = fileURLToPath(new URL('./runtime.ts', import.meta.url));
+  /** Run the shared command hook and decode its decision. */
   function hook(mode: string, event: Tool, ctx: Context) {
     const raw = {
       session_id: ctx.sessionManager.getSessionId(),
@@ -34,25 +36,28 @@ export function register(pi: Extension, client: 'omp' | 'pi') {
     if (text) pi.sendMessage(message(text));
   });
   pi.on('tool_call', (event, ctx) => {
-    if (!['bash', 'read', 'grep', 'glob', 'find', 'write', 'edit'].includes(event.toolName ?? '')) return;
+    if (!['bash', 'read', 'grep', 'glob', 'find', 'write', 'edit'].includes(event.toolName ?? '')) return undefined;
     const result = hook('pre', event, ctx);
     if (result.reason) return { block: true, reason: result.reason };
     if (client === 'omp') return { input: result.updatedInput, additionalContext: result.additionalContext };
     if (result.updatedInput && event.input) Object.assign(event.input, result.updatedInput);
     if (result.additionalContext) pi.sendMessage(message(result.additionalContext));
+    return undefined;
   });
   pi.on('tool_result', (event, ctx) => {
-    if (event.isError || !['write', 'edit'].includes(event.toolName ?? '')) return;
+    if (event.isError || !['write', 'edit'].includes(event.toolName ?? '')) return undefined;
     const { reason } = hook('post', event, ctx);
     if (reason) {
       if (client === 'omp') return { additionalContext: reason };
       pi.sendMessage(message(reason));
     }
+    return undefined;
   });
   if (client === 'omp') {
     pi.on('session_stop', (event, ctx) => {
       const { reason } = hook('stop', event, ctx);
       if (reason) return { decision: 'block', reason };
+      return undefined;
     });
     pi.on('agent_end', (event, ctx) => {
       if (ctx.agent?.kind !== 'sub') return;
@@ -64,6 +69,7 @@ export function register(pi: Extension, client: 'omp' | 'pi') {
       const { reason } = hook('stop', event, ctx);
       if (reason)
         return { entries: [...(event.entries ?? []), { type: 'custom_message', ...message(reason) }], continue: true };
+      return undefined;
     });
   }
 }

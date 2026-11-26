@@ -9,6 +9,7 @@ import { shellPolicy } from './policy.ts';
 import { evaluate, root } from './runtime.ts';
 
 const dirs: string[] = [];
+/** Create an isolated repository directory for a hook test. */
 function fixture() {
   const dir = mkdtempSync(join(tmpdir(), 'yaai-hooks-'));
   dirs.push(dir);
@@ -90,7 +91,7 @@ test('native hook commands work from a subdirectory and preserve failure protoco
     ['codex', '.codex/hooks.json'],
     ['agy', '.agents/hooks.json'],
     ['claude', '.claude/settings.json']
-  ]) {
+  ] as const) {
     const config = JSON.parse(readFileSync(join(root, path), 'utf8'));
     const event =
       client === 'agy'

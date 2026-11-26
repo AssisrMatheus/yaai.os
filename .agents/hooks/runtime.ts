@@ -14,7 +14,8 @@ type Event = {
   tool_name?: string;
   tool_input?: Input;
   cwd?: string;
-  session_id?: string;
+  session_id?: string | undefined;
+  stop_hook_active?: boolean;
   toolCall?: { name: string; args: Input };
   conversationId?: string;
   error?: string;
@@ -27,6 +28,7 @@ type Output = {
   hookSpecificOutput?: { updatedInput?: Input; additionalContext?: string; [key: string]: unknown };
 };
 
+/** Run an optional integration and decode its hook response. */
 function optional(command: string, args: string[], event: Event): Output {
   const env = { ...process.env, CLAUDE_PROJECT_DIR: root };
   Reflect.deleteProperty(env, 'RTK_REWRITE_HOST');
@@ -65,12 +67,15 @@ const aliases: Record<string, string> = {
 const editors = new Set(['Edit', 'Write', 'MultiEdit', 'NotebookEdit', 'apply_patch']);
 const wholeDiff = /\bgit\s+(?:[^;&|]*\s)?(?:diff|show)\b/;
 
+/** Evaluate a client event against the repository hook policy. */
 export function evaluate(client: string, mode: string, raw: Event, repo = root) {
   const name = raw.toolCall?.name ?? raw.tool_name ?? '';
   const tool = aliases[name] ?? name;
   const input = raw.toolCall?.args ?? raw.tool_input ?? {};
-  const cwd = resolve(repo, String(input.Cwd ?? input.workdir ?? raw.cwd ?? '.'));
-  const command = String(input.CommandLine ?? input.command ?? '');
+  const rawCwd = input.Cwd ?? input.workdir ?? raw.cwd;
+  const cwd = resolve(repo, typeof rawCwd === 'string' ? rawCwd : '.');
+  const rawCommand = input.CommandLine ?? input.command;
+  const command = typeof rawCommand === 'string' ? rawCommand : '';
   const event = {
     ...raw,
     cwd,
@@ -139,6 +144,7 @@ export function evaluate(client: string, mode: string, raw: Event, repo = root) 
   return { reason, context, rewrite, output };
 }
 
+/** Translate the shared decision into the calling client’s response format. */
 export function dispatch(client: string, mode: string, raw: Event) {
   const { reason, context, rewrite, output } = evaluate(client, mode, raw);
   if (client === 'agy') {
@@ -152,9 +158,9 @@ export function dispatch(client: string, mode: string, raw: Event) {
     if (mode === 'stop') return { decision: reason ? 'continue' : 'stop', reason };
   }
   if (reason) {
-    console.error(reason);
+    process.stderr.write(reason + '\n');
     process.exitCode = 2;
-    return;
+    return undefined;
   }
   if (context || rewrite)
     return {
@@ -170,9 +176,9 @@ export function dispatch(client: string, mode: string, raw: Event) {
 
 if (import.meta.main) {
   try {
-    const output = dispatch(process.argv[2], process.argv[3], await Bun.stdin.json());
-    if (output) console.log(JSON.stringify(output));
+    const output = dispatch(process.argv[2] ?? '', process.argv[3] ?? '', await Bun.stdin.json());
+    if (output) process.stdout.write(JSON.stringify(output) + '\n');
   } catch {
-    console.log('{}');
+    process.stdout.write('{}\n');
   }
 }

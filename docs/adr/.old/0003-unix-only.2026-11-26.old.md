@@ -2,7 +2,7 @@
 description: Decide to target Unix environments only (macOS, Linux, WSL) and leave native Windows unsupported.
 tags: [adr, platform, old]
 superseded_by: "[[adr/0003-unix-only.adr]]"
-commit: pending
+commit: 55311a3
 ---
 
 

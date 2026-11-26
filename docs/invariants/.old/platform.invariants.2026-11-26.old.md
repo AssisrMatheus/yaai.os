@@ -2,7 +2,7 @@
 description: Supported operating system and shell environment invariants.
 tags: [invariants, platform, old]
 superseded_by: "[[invariants/platform.invariants]]"
-commit: pending
+commit: 55311a3
 ---
 
 # Platform invariants: INV-PLATFORM-001

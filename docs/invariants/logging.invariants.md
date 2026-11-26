@@ -11,4 +11,4 @@ Active · Decided: 2026-11-26, owner
 
 Every app, package, and tool emits structured, scoped diagnostic events to stderr with UTC millisecond timestamps, stable dot-separated scopes, bounded single-line rendering, and secret redaction before any sink. Stdout remains reserved for command output.
 
-Explained in [[best-practices/logging]].
+Explained in [[best-practices/logging.rules]].

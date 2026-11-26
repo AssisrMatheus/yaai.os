@@ -6,7 +6,7 @@ tags: [best-practices, testing]
 # Testing
 
 Tests pin promises someone relies on. They run fast enough for every commit, give the same result on every machine
-and fail only when such a promise breaks. Hooks and CI are in [[best-practices/ci]].
+and fail only when such a promise breaks. Hooks and CI are in [[best-practices/ci.rules]].
 
 ## What to test
 
@@ -19,7 +19,7 @@ Check: review
 ### BP-TEST-002: Assert through the interface
 
 Assert results, typed failures and observable effects through the module's interface, never its internal state.
-Why: the interface is the test surface ([[best-practices/module-design]]).
+Why: the interface is the test surface ([[best-practices/module-design.rules]]).
 Check: review
 
 ### BP-TEST-003: Write tests that survive refactors
@@ -68,7 +68,7 @@ Check: test
 
 ### BP-TEST-010: Put unit tests beside the code
 
-Rust unit tests sit in `#[cfg(test)] mod tests` in the same file; cross-module tests in the crate's `tests/`. TypeScript tests sit beside the module ([[best-practices/typescript]]). Only cross-cutting suites get their own folder.
+Rust unit tests sit in `#[cfg(test)] mod tests` in the same file; cross-module tests in the crate's `tests/`. TypeScript tests sit beside the module ([[best-practices/typescript.rules]]). Only cross-cutting suites get their own folder.
 Why: a test moves and is reviewed with its code.
 Check: review
 

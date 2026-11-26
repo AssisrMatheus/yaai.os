@@ -82,7 +82,7 @@ A page that governs code lists it ([[repo/documentation#The Covers section]]):
 
 ## Commands
 
-Run through `bin/doc-links`. Output is compact and agent-first; exit codes follow [[best-practices/tooling-cli]]: 0 the
+Run through `bin/doc-links`. Output is compact and agent-first; exit codes follow [[best-practices/tooling-cli.rules]]: 0 the
 links hold, 2 findings the caller must fix, 1 the tool itself failed.
 
 | Command | Does |

@@ -6,9 +6,9 @@ tags: [best-practices, rust]
 # Rust
 
 How Rust is written here. Rust is the default language (ADR 0002); other languages map to these rules in
-[[best-practices/typescript]]. Errors are in [[best-practices/rust-errors]], ownership and hot paths in
-[[best-practices/rust-ownership]], concurrency in [[best-practices/rust-async]], `unsafe` and FFI in
-[[best-practices/rust-unsafe]]. Module shape is in [[best-practices/module-design]].
+[[best-practices/typescript.rules]]. Errors are in [[best-practices/rust-errors.rules]], ownership and hot paths in
+[[best-practices/rust-ownership.rules]], concurrency in [[best-practices/rust-async.rules]], `unsafe` and FFI in
+[[best-practices/rust-unsafe.rules]]. Module shape is in [[best-practices/module-design.rules]].
 
 ## Names and types
 
@@ -138,7 +138,7 @@ Check: review
 
 ### BP-RUST-021: Derive before hand-writing
 
-Use standard derives first; treat a derive or attribute macro crate, or a `proc-macro` crate of our own, as a dependency ([[best-practices/dependencies]]).
+Use standard derives first; treat a derive or attribute macro crate, or a `proc-macro` crate of our own, as a dependency ([[best-practices/dependencies.rules]]).
 Why: procedural macros add build time and a supply-chain edge.
 Check: review
 

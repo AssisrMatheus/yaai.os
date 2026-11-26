@@ -62,7 +62,7 @@ Update documentation before writing code whenever a task adds or alters behaviou
 
 Treat agent output as probabilistic: verify every edit against deterministic pass/fail checks before reporting completion.
 
-- **Tier 1 (deterministic, always first):** agent hooks ([[repo/hooks]]), `bin/doc-links check`, formatter (`oxfmt` / `rustfmt`), linter (`oxlint` / `clippy`), typecheck, and tests. Rules with zero exceptions live in hooks or CLIs that exit `2` with actionable stderr ([[best-practices/tooling-cli]], `INV-TOOLING-001`), never in prose alone.
+- **Tier 1 (deterministic, always first):** agent hooks ([[repo/hooks]]), `bin/doc-links check`, formatter (`oxfmt` / `rustfmt`), linter (`oxlint` / `clippy`), typecheck, and tests. Rules with zero exceptions live in hooks or CLIs that exit `2` with actionable stderr ([[best-practices/tooling-cli.rules]], `INV-TOOLING-001`), never in prose alone.
 - **Tier 2 (human judgement):** product direction, invariant changes, and unresolved plan questions go to the user.
 - **Tier 3 (black-box review):** use a fresh review sub-agent ([[repo/delegation]]) only where deterministic checks cannot reach, judging from the diff, governing docs, and check outputs.
 

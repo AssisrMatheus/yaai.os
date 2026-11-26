@@ -5,9 +5,9 @@ tags: [best-practices, rust, errors]
 
 # Rust errors and untrusted input
 
-Expected failures are values. Ids continue the `BP-RUST` series from [[best-practices/rust]]. Where an error becomes
-an exit code, a status or a log line is set here; the CLI contract is [[best-practices/tooling-cli]] and the event
-levels are [[best-practices/logging]].
+Expected failures are values. Ids continue the `BP-RUST` series from [[best-practices/rust.rules]]. Where an error becomes
+an exit code, a status or a log line is set here; the CLI contract is [[best-practices/tooling-cli.rules]] and the event
+levels are [[best-practices/logging.rules]].
 
 ## Returning errors
 
@@ -101,7 +101,7 @@ Check: review
 
 ### BP-RUST-055: Report an unexpected failure once
 
-Log or report an unexpected failure where its final impact is known, not at every layer it passes through ([[best-practices/logging]]).
+Log or report an unexpected failure where its final impact is known, not at every layer it passes through ([[best-practices/logging.rules]]).
 Why: one failure, one report.
 Check: review
 
@@ -114,7 +114,7 @@ Check: review
 ### BP-RUST-057: Return ExitCode from main
 
 `main` returns `ExitCode` or a `Result` mapped to one; nothing calls `std::process::exit` (`clippy::exit`).
-Why: destructors and buffered writers run, and the exit code follows [[best-practices/tooling-cli]].
+Why: destructors and buffered writers run, and the exit code follows [[best-practices/tooling-cli.rules]].
 Check: lint
 
 ### BP-RUST-058: Give wire errors a stable code

@@ -7,7 +7,7 @@ tags: [best-practices, rust, performance]
 
 A borrow error says two pieces of code want the same data at once; the fix is in the shape of the data, not in a
 copy that makes one line compile. Ids continue the `BP-RUST` series. Measurement rules are in
-[[best-practices/performance]].
+[[best-practices/performance.rules]].
 
 ## Ownership and borrowing
 

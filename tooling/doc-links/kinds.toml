@@ -8,9 +8,8 @@ doc = "docs/repo/doc-kinds.md"
 # Frontmatter keys a plain *.md page may carry.
 generic_keys = ["description", "tags"]
 
-# TEMPORARY ALLOWANCE: these folders skip every kind check until their pages carry their ending.
-# Remove the entry once docs/best-practices/*.md are renamed to *.rules.md.
-pending_migration = ["docs/best-practices"]
+# Folders that skip every kind check while their pages are renamed to their ending. Empty when no migration runs.
+pending_migration = []
 
 # Folders whose every page (SKILL.md aside) must be of one kind. `*` is one path segment, `**` any number.
 [[folder]]

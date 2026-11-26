@@ -110,7 +110,7 @@ Check: review
 
 ### BP-CLI-017: Keep stdout for the result
 
-Logs, progress and warnings go to stderr; stdout carries only the result ([[best-practices/logging]]).
+Logs, progress and warnings go to stderr; stdout carries only the result ([[best-practices/logging.rules]]).
 Why: callers capture the result cleanly.
 Check: test
 

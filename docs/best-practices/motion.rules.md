@@ -5,7 +5,7 @@ tags: [best-practices, ui, motion]
 
 # Motion
 
-Holds for CSS and script animation alike. Screen transitions are in [[best-practices/navigation]].
+Holds for CSS and script animation alike. Screen transitions are in [[best-practices/navigation.rules]].
 
 ### BP-MOTION-001: Decide whether to animate at all
 

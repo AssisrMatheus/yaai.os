@@ -5,8 +5,8 @@ tags: [best-practices, ui, state]
 
 # UI state, effects and async data
 
-Holds for any UI framework. Component rules are in [[best-practices/ui]]; client query caches in
-[[best-practices/cache-invalidation]].
+Holds for any UI framework. Component rules are in [[best-practices/ui.rules]]; client query caches in
+[[best-practices/cache-invalidation.rules]].
 
 ## Where state lives
 

@@ -5,7 +5,7 @@ tags: [best-practices, rust, concurrency]
 
 # Rust async and concurrency
 
-Ids continue the `BP-RUST` series. Speed claims follow [[best-practices/performance]].
+Ids continue the `BP-RUST` series. Speed claims follow [[best-practices/performance.rules]].
 
 ## Async
 
@@ -115,7 +115,7 @@ Check: review
 
 ### BP-RUST-100: Justify a thread-pool crate by measurement
 
-Use `std::thread` for a scoped fan-out; add a pool crate only when work stealing or nested parallelism is measured to pay ([[best-practices/dependencies]]).
+Use `std::thread` for a scoped fan-out; add a pool crate only when work stealing or nested parallelism is measured to pay ([[best-practices/dependencies.rules]]).
 Why: a pool crate is a dependency like any other.
 Check: review
 

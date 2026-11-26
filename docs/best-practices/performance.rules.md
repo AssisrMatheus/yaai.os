@@ -5,8 +5,8 @@ tags: [best-practices, performance]
 
 # Performance
 
-Language-level hot-path rules are in [[best-practices/rust-ownership]]; tool start-up budgets are in
-[[best-practices/tooling-cli]].
+Language-level hot-path rules are in [[best-practices/rust-ownership.rules]]; tool start-up budgets are in
+[[best-practices/tooling-cli.rules]].
 
 ## Priorities and measurement
 

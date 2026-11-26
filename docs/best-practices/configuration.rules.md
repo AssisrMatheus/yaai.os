@@ -5,7 +5,7 @@ tags: [best-practices, configuration]
 
 # Configuration
 
-Environment variables and other start-up configuration. Secrets are also covered by [[best-practices/security]].
+Environment variables and other start-up configuration. Secrets are also covered by [[best-practices/security.rules]].
 
 ### BP-CONF-001: Commit a template of every variable
 
@@ -28,7 +28,7 @@ Check: review
 ### BP-CONF-004: Keep real values out of the repository
 
 Real values live in untracked local files (`.env.local`) and the host's settings; committed env files hold nothing you would not publish.
-Why: a committed secret ships with every clone ([[best-practices/security]]).
+Why: a committed secret ships with every clone ([[best-practices/security.rules]]).
 Check: lint
 
 ### BP-CONF-005: Declare every variable a task reads

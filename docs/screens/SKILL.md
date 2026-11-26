@@ -24,4 +24,4 @@ No screen exists yet.
 | You want to | Read |
 | --- | --- |
 | Write a new screen or subview doc | [[screens/_template.screen]] |
-| Build the UI from a screen doc | [[best-practices/ui]] |
+| Build the UI from a screen doc | [[best-practices/ui.rules]] |

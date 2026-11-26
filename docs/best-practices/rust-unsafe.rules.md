@@ -53,7 +53,7 @@ Check: review
 
 ### BP-RUST-110: Justify unsafe by a safety argument, not a borrow error
 
-Unsafe that only silences a borrow or lifetime error is rejected ([[best-practices/rust-ownership]]).
+Unsafe that only silences a borrow or lifetime error is rejected ([[best-practices/rust-ownership.rules]]).
 Why: a borrow error alone supplies no safety argument.
 Check: review
 

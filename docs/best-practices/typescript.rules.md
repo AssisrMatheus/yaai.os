@@ -11,60 +11,60 @@ with the TypeScript form in parentheses; the rules after the list exist only in 
 
 ## Shared with Rust
 
-- BP-TS-001: Same as [[best-practices/rust#BP-RUST-001: Use glossary terms in code]]
-- BP-TS-002: Same as [[best-practices/rust#BP-RUST-002: Give each identity its own newtype]] (a branded type, `type TitleId = string & { readonly brand: 'TitleId' }`)
-- BP-TS-003: Same as [[best-practices/rust#BP-RUST-003: Model exclusive states as an enum]] (a discriminated union on a literal `kind` field)
-- BP-TS-004: Same as [[best-practices/rust#BP-RUST-004: Model absence with Option]] (an optional property or `undefined`; never `''`, `-1` or a mix of `null` and `undefined`)
-- BP-TS-005: Same as [[best-practices/rust#BP-RUST-005: Match owned enums exhaustively]] (`satisfies Record<Union, ...>` or a `never` check in the `default` branch)
-- BP-TS-006: Same as [[best-practices/rust#BP-RUST-006: Parse external values into an enum before branching]] (narrow with a schema parser or `Object.hasOwn` before indexing; BP-TS-063)
-- BP-TS-007: Same as [[best-practices/rust#BP-RUST-007: Keep content in data]]
-- BP-TS-008: Same as [[best-practices/rust#BP-RUST-008: Name thresholds and limits]]
-- BP-TS-009: Same as [[best-practices/rust#BP-RUST-009: Carry units in types]] (branded number types or a date-time value, never a bare millisecond count without a named type)
-- BP-TS-010: Same as [[best-practices/rust#BP-RUST-011: Prefer expressions and inferred locals]] (infer locals and return types; BP-TS-059)
-- BP-TS-011: Same as [[best-practices/rust#BP-RUST-012: Use the language before hand-rolling]] (`??=`, `?.`, `satisfies`, `using`, iterator helpers)
-- BP-TS-012: Same as [[best-practices/rust#BP-RUST-026: Document every item]] (a one-line intent JSDoc on every function and method)
-- BP-TS-013: Same as [[best-practices/rust#BP-RUST-028: State intent, then contract]] (in JSDoc)
-- BP-TS-014: Same as [[best-practices/rust#BP-RUST-031: Cite the governing doc above the item]]
-- BP-TS-015: Same as [[best-practices/rust#BP-RUST-032: Comment the why]]
-- BP-TS-016: Same as [[best-practices/rust#BP-RUST-033: Give every TODO an owner]]
-- BP-TS-017: Same as [[best-practices/rust#BP-RUST-035: Mark comments with Better Comments prefixes]]
-- BP-TS-018: Same as [[best-practices/rust#BP-RUST-036: Delete dead code]]
-- BP-TS-019: Same as [[best-practices/rust#BP-RUST-039: Fix the code, not the lint]] (`// oxlint-disable-next-line <rule> -- <reason>`; BP-TS-081)
-- BP-TS-020: Same as [[best-practices/rust#BP-RUST-040: Change lint policy only by owner decision]]
-- BP-TS-021: Same as [[best-practices/rust#BP-RUST-043: Run the same gates everywhere]]
-- BP-TS-022: Same as [[best-practices/rust-errors#BP-RUST-044: Return typed errors, never panic]] (return expected failures as values, never `throw` them; BP-TS-074)
-- BP-TS-023: Same as [[best-practices/rust-errors#BP-RUST-045: Define the error beside the operation]] (an `Error` subclass in the file of the operation; BP-TS-076)
-- BP-TS-024: Same as [[best-practices/rust-errors#BP-RUST-046: One variant per caller decision]]
-- BP-TS-025: Same as [[best-practices/rust-errors#BP-RUST-047: Keep the cause chain]] (`new XError(message, { cause })`)
-- BP-TS-026: Same as [[best-practices/rust-errors#BP-RUST-048: Propagate unchanged with ?]]
-- BP-TS-027: Same as [[best-practices/rust-errors#BP-RUST-049: Separate absence from failure]] (`undefined` for a genuine miss, an error value for a failed read)
-- BP-TS-028: Same as [[best-practices/rust-errors#BP-RUST-050: Separate incomplete from unsupported input]]
-- BP-TS-029: Same as [[best-practices/rust-errors#BP-RUST-052: Compare errors by variant or code]]
-- BP-TS-030: Same as [[best-practices/rust-errors#BP-RUST-053: Map errors once, at the outer boundary]]
-- BP-TS-031: Same as [[best-practices/rust-errors#BP-RUST-054: Convert foreign failures in one place]] (catch as `unknown`, narrow, return the domain error)
-- BP-TS-032: Same as [[best-practices/rust-errors#BP-RUST-055: Report an unexpected failure once]]
-- BP-TS-033: Same as [[best-practices/rust-errors#BP-RUST-056: Give the caller a safe remedy]]
-- BP-TS-034: Same as [[best-practices/rust-errors#BP-RUST-058: Give wire errors a stable code]] (branch on `name` or `code`, never `instanceof`, after a value crossed a boundary)
-- BP-TS-035: Same as [[best-practices/rust-errors#BP-RUST-059: Parse into validated types at entry]]
-- BP-TS-036: Same as [[best-practices/rust-errors#BP-RUST-062: Check the whole format]]
-- BP-TS-037: Same as [[best-practices/rust-errors#BP-RUST-063: Drop unknown values and log them]]
-- BP-TS-038: Same as [[best-practices/rust-ownership#BP-RUST-072: Keep one owner of mutable state]]
-- BP-TS-039: Same as [[best-practices/rust-ownership#BP-RUST-074: Let the caller supply storage]]
-- BP-TS-040: Same as [[best-practices/rust-ownership#BP-RUST-075: Pass time, randomness and I/O in]] (no `Date.now()`, `performance.now()` or `Math.random()` inside the computation)
-- BP-TS-041: Same as [[best-practices/rust-ownership#BP-RUST-076: Order iteration deterministically]] (sort before output; object key order is not a contract)
-- BP-TS-042: Same as [[best-practices/rust-ownership#BP-RUST-077: Name the hot paths]]
-- BP-TS-043: Same as [[best-practices/rust-ownership#BP-RUST-078: Allocate nothing in a hot path]] (reuse arrays, typed arrays and objects; no spreads or closures per frame)
-- BP-TS-044: Same as [[best-practices/rust-ownership#BP-RUST-080: Count allocations on each hot path]]
-- BP-TS-045: Same as [[best-practices/rust-async#BP-RUST-084: Await dependent work in order, start independent work together]] (`Promise.all` for independent work)
-- BP-TS-046: Same as [[best-practices/rust-async#BP-RUST-085: Bound concurrency with a documented limit]]
-- BP-TS-047: Same as [[best-practices/rust-async#BP-RUST-088: Give every task an owner]] (an `AbortController` per owner)
-- BP-TS-048: Same as [[best-practices/rust-async#BP-RUST-089: Put a deadline on every external call]] (`AbortSignal.timeout`)
-- BP-TS-049: Same as [[best-practices/rust-async#BP-RUST-090: Retry only transient, idempotent work]]
-- BP-TS-050: Same as [[best-practices/rust-async#BP-RUST-092: Discard stale results]]
-- BP-TS-051: Same as [[best-practices/rust-async#BP-RUST-097: Merge results in input order]]
-- BP-TS-052: Same as [[best-practices/rust-async#BP-RUST-098: Pick failures deterministically]]
-- BP-TS-053: Same as [[best-practices/rust-async#BP-RUST-101: Keep mutable state out of globals]] (no mutable `let` or object at module scope)
-- BP-TS-054: Same as [[best-practices/rust-async#BP-RUST-102: Tie subscriptions to their owner]]
+- BP-TS-001: Same as [[best-practices/rust.rules#BP-RUST-001: Use glossary terms in code]]
+- BP-TS-002: Same as [[best-practices/rust.rules#BP-RUST-002: Give each identity its own newtype]] (a branded type, `type TitleId = string & { readonly brand: 'TitleId' }`)
+- BP-TS-003: Same as [[best-practices/rust.rules#BP-RUST-003: Model exclusive states as an enum]] (a discriminated union on a literal `kind` field)
+- BP-TS-004: Same as [[best-practices/rust.rules#BP-RUST-004: Model absence with Option]] (an optional property or `undefined`; never `''`, `-1` or a mix of `null` and `undefined`)
+- BP-TS-005: Same as [[best-practices/rust.rules#BP-RUST-005: Match owned enums exhaustively]] (`satisfies Record<Union, ...>` or a `never` check in the `default` branch)
+- BP-TS-006: Same as [[best-practices/rust.rules#BP-RUST-006: Parse external values into an enum before branching]] (narrow with a schema parser or `Object.hasOwn` before indexing; BP-TS-063)
+- BP-TS-007: Same as [[best-practices/rust.rules#BP-RUST-007: Keep content in data]]
+- BP-TS-008: Same as [[best-practices/rust.rules#BP-RUST-008: Name thresholds and limits]]
+- BP-TS-009: Same as [[best-practices/rust.rules#BP-RUST-009: Carry units in types]] (branded number types or a date-time value, never a bare millisecond count without a named type)
+- BP-TS-010: Same as [[best-practices/rust.rules#BP-RUST-011: Prefer expressions and inferred locals]] (infer locals and return types; BP-TS-059)
+- BP-TS-011: Same as [[best-practices/rust.rules#BP-RUST-012: Use the language before hand-rolling]] (`??=`, `?.`, `satisfies`, `using`, iterator helpers)
+- BP-TS-012: Same as [[best-practices/rust.rules#BP-RUST-026: Document every item]] (a one-line intent JSDoc on every function and method)
+- BP-TS-013: Same as [[best-practices/rust.rules#BP-RUST-028: State intent, then contract]] (in JSDoc)
+- BP-TS-014: Same as [[best-practices/rust.rules#BP-RUST-031: Cite the governing doc above the item]]
+- BP-TS-015: Same as [[best-practices/rust.rules#BP-RUST-032: Comment the why]]
+- BP-TS-016: Same as [[best-practices/rust.rules#BP-RUST-033: Give every TODO an owner]]
+- BP-TS-017: Same as [[best-practices/rust.rules#BP-RUST-035: Mark comments with Better Comments prefixes]]
+- BP-TS-018: Same as [[best-practices/rust.rules#BP-RUST-036: Delete dead code]]
+- BP-TS-019: Same as [[best-practices/rust.rules#BP-RUST-039: Fix the code, not the lint]] (`// oxlint-disable-next-line <rule> -- <reason>`; BP-TS-081)
+- BP-TS-020: Same as [[best-practices/rust.rules#BP-RUST-040: Change lint policy only by owner decision]]
+- BP-TS-021: Same as [[best-practices/rust.rules#BP-RUST-043: Run the same gates everywhere]]
+- BP-TS-022: Same as [[best-practices/rust-errors.rules#BP-RUST-044: Return typed errors, never panic]] (return expected failures as values, never `throw` them; BP-TS-074)
+- BP-TS-023: Same as [[best-practices/rust-errors.rules#BP-RUST-045: Define the error beside the operation]] (an `Error` subclass in the file of the operation; BP-TS-076)
+- BP-TS-024: Same as [[best-practices/rust-errors.rules#BP-RUST-046: One variant per caller decision]]
+- BP-TS-025: Same as [[best-practices/rust-errors.rules#BP-RUST-047: Keep the cause chain]] (`new XError(message, { cause })`)
+- BP-TS-026: Same as [[best-practices/rust-errors.rules#BP-RUST-048: Propagate unchanged with ?]]
+- BP-TS-027: Same as [[best-practices/rust-errors.rules#BP-RUST-049: Separate absence from failure]] (`undefined` for a genuine miss, an error value for a failed read)
+- BP-TS-028: Same as [[best-practices/rust-errors.rules#BP-RUST-050: Separate incomplete from unsupported input]]
+- BP-TS-029: Same as [[best-practices/rust-errors.rules#BP-RUST-052: Compare errors by variant or code]]
+- BP-TS-030: Same as [[best-practices/rust-errors.rules#BP-RUST-053: Map errors once, at the outer boundary]]
+- BP-TS-031: Same as [[best-practices/rust-errors.rules#BP-RUST-054: Convert foreign failures in one place]] (catch as `unknown`, narrow, return the domain error)
+- BP-TS-032: Same as [[best-practices/rust-errors.rules#BP-RUST-055: Report an unexpected failure once]]
+- BP-TS-033: Same as [[best-practices/rust-errors.rules#BP-RUST-056: Give the caller a safe remedy]]
+- BP-TS-034: Same as [[best-practices/rust-errors.rules#BP-RUST-058: Give wire errors a stable code]] (branch on `name` or `code`, never `instanceof`, after a value crossed a boundary)
+- BP-TS-035: Same as [[best-practices/rust-errors.rules#BP-RUST-059: Parse into validated types at entry]]
+- BP-TS-036: Same as [[best-practices/rust-errors.rules#BP-RUST-062: Check the whole format]]
+- BP-TS-037: Same as [[best-practices/rust-errors.rules#BP-RUST-063: Drop unknown values and log them]]
+- BP-TS-038: Same as [[best-practices/rust-ownership.rules#BP-RUST-072: Keep one owner of mutable state]]
+- BP-TS-039: Same as [[best-practices/rust-ownership.rules#BP-RUST-074: Let the caller supply storage]]
+- BP-TS-040: Same as [[best-practices/rust-ownership.rules#BP-RUST-075: Pass time, randomness and I/O in]] (no `Date.now()`, `performance.now()` or `Math.random()` inside the computation)
+- BP-TS-041: Same as [[best-practices/rust-ownership.rules#BP-RUST-076: Order iteration deterministically]] (sort before output; object key order is not a contract)
+- BP-TS-042: Same as [[best-practices/rust-ownership.rules#BP-RUST-077: Name the hot paths]]
+- BP-TS-043: Same as [[best-practices/rust-ownership.rules#BP-RUST-078: Allocate nothing in a hot path]] (reuse arrays, typed arrays and objects; no spreads or closures per frame)
+- BP-TS-044: Same as [[best-practices/rust-ownership.rules#BP-RUST-080: Count allocations on each hot path]]
+- BP-TS-045: Same as [[best-practices/rust-async.rules#BP-RUST-084: Await dependent work in order, start independent work together]] (`Promise.all` for independent work)
+- BP-TS-046: Same as [[best-practices/rust-async.rules#BP-RUST-085: Bound concurrency with a documented limit]]
+- BP-TS-047: Same as [[best-practices/rust-async.rules#BP-RUST-088: Give every task an owner]] (an `AbortController` per owner)
+- BP-TS-048: Same as [[best-practices/rust-async.rules#BP-RUST-089: Put a deadline on every external call]] (`AbortSignal.timeout`)
+- BP-TS-049: Same as [[best-practices/rust-async.rules#BP-RUST-090: Retry only transient, idempotent work]]
+- BP-TS-050: Same as [[best-practices/rust-async.rules#BP-RUST-092: Discard stale results]]
+- BP-TS-051: Same as [[best-practices/rust-async.rules#BP-RUST-097: Merge results in input order]]
+- BP-TS-052: Same as [[best-practices/rust-async.rules#BP-RUST-098: Pick failures deterministically]]
+- BP-TS-053: Same as [[best-practices/rust-async.rules#BP-RUST-101: Keep mutable state out of globals]] (no mutable `let` or object at module scope)
+- BP-TS-054: Same as [[best-practices/rust-async.rules#BP-RUST-102: Tie subscriptions to their owner]]
 
 ## Tooling
 
@@ -77,7 +77,7 @@ Check: review
 ### BP-TS-056: Install with pnpm, run with bun
 
 Manage packages with `pnpm` only and run scripts and tests with `bun`; no other package manager installs anything.
-Why: one lockfile and one resolver for the workspace ([[best-practices/dependencies]]).
+Why: one lockfile and one resolver for the workspace ([[best-practices/dependencies.rules]]).
 Check: lint
 
 ### BP-TS-057: Format with oxfmt, lint with oxlint at zero warnings

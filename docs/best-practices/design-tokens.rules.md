@@ -5,7 +5,7 @@ tags: [best-practices, ui, design]
 
 # Design tokens and styling
 
-No styling stack is chosen; these rules hold for any. Motion values are in [[best-practices/motion]].
+No styling stack is chosen; these rules hold for any. Motion values are in [[best-practices/motion.rules]].
 
 ## Tokens
 

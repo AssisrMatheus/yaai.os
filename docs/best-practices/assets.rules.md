@@ -6,7 +6,7 @@ tags: [best-practices, ui, assets]
 # Images, icons, fonts and embeds
 
 A media centre is mostly artwork; these rules keep it sharp, light and stable. Untrusted markup and uploads are also
-covered by [[best-practices/security]].
+covered by [[best-practices/security.rules]].
 
 ## Images
 

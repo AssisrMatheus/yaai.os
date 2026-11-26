@@ -5,8 +5,8 @@ tags: [best-practices, ui, forms]
 
 # Forms
 
-Holds for any UI framework. Validation at the trusted boundary is in [[best-practices/data-boundaries]]; labels and
-announcements in [[best-practices/accessibility]].
+Holds for any UI framework. Validation at the trusted boundary is in [[best-practices/data-boundaries.rules]]; labels and
+announcements in [[best-practices/accessibility.rules]].
 
 ## Validation
 
@@ -25,7 +25,7 @@ Check: review
 ### BP-FORM-003: Translate schema messages
 
 Schema error messages are message keys or come from a translation factory, never literal text.
-Why: errors must read in the user's language ([[best-practices/i18n]]).
+Why: errors must read in the user's language ([[best-practices/i18n.rules]]).
 Check: review
 
 ### BP-FORM-004: Re-validate on the trusted side

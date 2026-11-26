@@ -5,7 +5,7 @@ tags: [best-practices, ci, testing]
 
 # Hooks and CI
 
-Where tests and gates run. The tiers themselves are in [[best-practices/testing]]; commit format and hooks wiring are
+Where tests and gates run. The tiers themselves are in [[best-practices/testing.rules]]; commit format and hooks wiring are
 in [[repo/commits]] and [[repo/hooks]].
 
 ## Hooks

@@ -5,7 +5,7 @@ tags: [best-practices, caching]
 
 # Cache invalidation
 
-Ids continue the `BP-CACHE` series from [[best-practices/caching]].
+Ids continue the `BP-CACHE` series from [[best-practices/caching.rules]].
 
 ## Tags
 
@@ -73,7 +73,7 @@ Check: test
 
 ### BP-CACHE-041: Keep the event mapping pure
 
-Map a notification payload to the set of tags to flush in a pure function the adapter owns, parsed leniently ([[best-practices/data-boundaries]]).
+Map a notification payload to the set of tags to flush in a pure function the adapter owns, parsed leniently ([[best-practices/data-boundaries.rules]]).
 Why: the mapping is tested with plain payloads.
 Check: test
 

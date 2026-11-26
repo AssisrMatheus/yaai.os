@@ -118,7 +118,7 @@ Check: review
 
 ### BP-DEPS-018: Use pnpm and bun only as decided
 
-JavaScript packages are installed with pnpm only; bun runs scripts and tests ([[best-practices/typescript]]).
+JavaScript packages are installed with pnpm only; bun runs scripts and tests ([[best-practices/typescript.rules]]).
 Why: one package manager, one lockfile.
 Check: lint
 

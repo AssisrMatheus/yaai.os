@@ -5,8 +5,8 @@ tags: [best-practices, security]
 
 # Security
 
-Input validation and authorisation at boundaries are in [[best-practices/data-boundaries]]; redaction of logs is in
-[[best-practices/logging]].
+Input validation and authorisation at boundaries are in [[best-practices/data-boundaries.rules]]; redaction of logs is in
+[[best-practices/logging.rules]].
 
 ## Secrets and release builds
 

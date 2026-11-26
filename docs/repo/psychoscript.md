@@ -31,7 +31,7 @@ Status: Planned. Another agent is building it. When it exists, flip this section
   authorized upstream MCP method, validates structured results, caps runtime and output, and propagates cancellation.
 - Programs use async host functions and return one JSON value. The VM has no implicit filesystem, network or process
   access, and no broad shell or `eval` global.
-- Exit codes follow [[best-practices/tooling-cli]]: 0 success, 1 host failure, 2 invalid input the caller must fix.
+- Exit codes follow [[best-practices/tooling-cli.rules]]: 0 success, 1 host failure, 2 invalid input the caller must fix.
 - Registration, once built: `.mcp.json` (shared by Antigravity, Pi and OMP) and `.codex/config.toml`. T3 inherits the
   provider's config.
 - A generic external MCP server cannot call the parent client's private tool registry. The host exposes explicit

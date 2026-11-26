@@ -6,8 +6,8 @@ tags: [best-practices, data]
 # Data boundaries
 
 Where data enters, where it is trusted, and how an external system is kept behind one adapter. Caching is in
-[[best-practices/caching]], secrets and escaping in [[best-practices/security]], error mapping in
-[[best-practices/rust-errors]].
+[[best-practices/caching.rules]], secrets and escaping in [[best-practices/security.rules]], error mapping in
+[[best-practices/rust-errors.rules]].
 
 ## Trust boundaries
 

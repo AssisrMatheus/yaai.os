@@ -12,7 +12,7 @@ and TypeScript. Rust uses `tracing`; TypeScript uses one scoped logger with the 
 
 ### BP-LOG-001: Log through a scoped logger, never print
 
-Emit diagnostics through the structured logger; never `println!`, `eprintln!`, `dbg!` or `console.log` for diagnostics (`clippy::print_stdout`, `print_stderr`, `dbg_macro`, oxlint `no-console`). A tool's result output goes through its writer ([[best-practices/tooling-cli]]).
+Emit diagnostics through the structured logger; never `println!`, `eprintln!`, `dbg!` or `console.log` for diagnostics (`clippy::print_stdout`, `print_stderr`, `dbg_macro`, oxlint `no-console`). A tool's result output goes through its writer ([[best-practices/tooling-cli.rules]]).
 Why: unscoped prints cannot be filtered, redacted or routed.
 Check: lint
 

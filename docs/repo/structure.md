@@ -12,7 +12,7 @@ Rust. Each top-level directory has one role (INV-STRUCTURE-001, ADR 0011).
 | --- | --- | --- |
 | `apps/*` | Deployable, shipped apps | An app never imports another app. Shared code moves to `packages/*`. Empty today (`.gitkeep`). |
 | `packages/*` | Reusable code used by apps, tooling or other packages | Empty today (`.gitkeep`). |
-| `tooling/*` | CLIs and automation for the process | Never shipped. Rust first. Each tool runs as a CLI ([[best-practices/tooling-cli]]). |
+| `tooling/*` | CLIs and automation for the process | Never shipped. Rust first. Each tool runs as a CLI ([[best-practices/tooling-cli.rules]]). |
 | `bin/` | Small committed POSIX `sh` entry points that wrap tooling (`bin/agent-pick`) | No logic beyond locating and running the tool. |
 | `vendor/` | External sources kept for reading | Git-ignored (only `vendor/.gitkeep` is tracked), read-only: never edited, linted, formatted or committed. The shell and edit hooks block writes ([[repo/hooks]]). |
 | `docs/` | The encyclopedia ([[repo/documentation]]) | Source of truth. |
@@ -22,9 +22,9 @@ Rust. Each top-level directory has one role (INV-STRUCTURE-001, ADR 0011).
 
 ## Languages
 
-Rust first (INV-STRUCTURE-002, ADR 0002; [[best-practices/rust]]). Use TypeScript only when Rust does not fit:
+Rust first (INV-STRUCTURE-002, ADR 0002; [[best-practices/rust.rules]]). Use TypeScript only when Rust does not fit:
 formatted by `oxfmt`, linted by `oxlint`, run with `bun`, packages installed by `pnpm`. Other languages follow
-[[best-practices/typescript]], which refers to the Rust page. The Rust toolchain is pinned in `rust-toolchain.toml`.
+[[best-practices/typescript.rules]], which refers to the Rust page. The Rust toolchain is pinned in `rust-toolchain.toml`.
 
 ## Package names
 

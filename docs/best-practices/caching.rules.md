@@ -6,7 +6,7 @@ tags: [best-practices, caching]
 # Caching
 
 Rules for any cache: in memory, on disk, shared between processes, or in a UI query client. Invalidation and change
-notifications are in [[best-practices/cache-invalidation]]; tool caches also follow [[best-practices/tooling-cli]].
+notifications are in [[best-practices/cache-invalidation.rules]]; tool caches also follow [[best-practices/tooling-cli.rules]].
 
 ## Placement
 
@@ -138,7 +138,7 @@ Check: test
 
 ### BP-CACHE-021: Invalidate by event when the source can notify
 
-For a source that sends change notifications, cache without a time floor and invalidate on the event ([[best-practices/cache-invalidation]]).
+For a source that sends change notifications, cache without a time floor and invalidate on the event ([[best-practices/cache-invalidation.rules]]).
 Why: a time floor expires everything at once and stampedes the source.
 Check: review
 

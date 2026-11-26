@@ -44,7 +44,7 @@ Check: review
 ### BP-MOD-006: Test through the interface
 
 Callers and tests cross the same seam; a test that needs to reach past the interface means the module has the wrong shape.
-Why: the interface is the test surface ([[best-practices/testing]]).
+Why: the interface is the test surface ([[best-practices/testing.rules]]).
 Check: review
 
 ### BP-MOD-007: Start private, widen for a real caller
@@ -118,7 +118,7 @@ Check: review
 
 ### BP-MOD-017: Split a crate for a dependency or ownership boundary
 
-Create a new crate or package only for a separate dependency set, a separate owner, or code two workspaces use today ([[best-practices/code-organization]]).
+Create a new crate or package only for a separate dependency set, a separate owner, or code two workspaces use today ([[best-practices/code-organization.rules]]).
 Why: each split freezes an interface and adds build wiring.
 Check: review
 

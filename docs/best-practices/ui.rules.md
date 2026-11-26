@@ -5,8 +5,8 @@ tags: [best-practices, ui]
 
 # User interface components
 
-No UI framework is chosen; these rules hold for any. State and effects are in [[best-practices/ui-state]], links and
-transitions in [[best-practices/navigation]], styling in [[best-practices/design-tokens]], screens are specified in
+No UI framework is chosen; these rules hold for any. State and effects are in [[best-practices/ui-state.rules]], links and
+transitions in [[best-practices/navigation.rules]], styling in [[best-practices/design-tokens.rules]], screens are specified in
 `docs/screens/` first (ADR 0006).
 
 ## Where a component comes from
@@ -145,7 +145,7 @@ Check: review
 
 ### BP-UI-022: Name every control
 
-Every control has an accessible name from the translations ([[best-practices/accessibility]]).
+Every control has an accessible name from the translations ([[best-practices/accessibility.rules]]).
 Why: screen readers and agents find a control by its name.
 Check: lint
 

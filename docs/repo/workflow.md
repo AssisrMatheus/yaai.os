@@ -42,13 +42,13 @@ Every task runs through four phases with clear gates between them:
 
 Update documentation before writing code whenever a task adds or alters behaviour, a rule, or a screen:
 
-| Change kind | Where it goes |
-| --- | --- |
-| Hard-to-reverse decision with real trade-offs and non-obvious context | New ADR in [[adr/SKILL]] (only when all three bars hold) |
-| Rule that must never break | Invariant in [[invariants/SKILL]] |
-| Subsystem or repository behaviour | Spec in [[specs/SKILL]] or guide in [[repo/SKILL]] |
-| User-facing screen or subview | Implementation-neutral screen doc in [[screens/SKILL]] (`INV-DOCS-008`) |
-| Superseded text in an existing doc | Move to the scope's `.old/` folder with replacement and commit ([[repo/history]], `INV-DOCS-004`) |
+| Change kind                                                           | Where it goes                                                                                     |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Hard-to-reverse decision with real trade-offs and non-obvious context | New ADR in [[adr/SKILL]] (only when all three bars hold)                                          |
+| Rule that must never break                                            | Invariant in [[invariants/SKILL]]                                                                 |
+| Subsystem or repository behaviour                                     | Spec in [[specs/SKILL]] or guide in [[repo/SKILL]]                                                |
+| User-facing screen or subview                                         | Implementation-neutral screen doc in [[screens/SKILL]] (`INV-DOCS-008`)                           |
+| Superseded text in an existing doc                                    | Move to the scope's `.old/` folder with replacement and commit ([[repo/history]], `INV-DOCS-004`) |
 
 **Authority rule:** a doc changes only because the user driving the agent decided it. If a task conflicts with or is ambiguous against an invariant or governing doc, stop immediately and tell the user which `INV-` / `ADR` / doc path conflicts and why.
 

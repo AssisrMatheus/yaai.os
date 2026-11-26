@@ -12,13 +12,13 @@ citation and `## Covers` edges.
 
 ## Wiring
 
-| Piece | File | Role |
-| --- | --- | --- |
-| Ignore list | `.graphifyignore` | Excludes `vendor/`, build and dependency output, `.agents/skills/graphify/`, `.old/` and `docs/.obsidian/`. |
-| MCP server | `.mcp.json`, `.codex/config.toml` | Runs `graphify-mcp` on the graph found through the Git root, so it works from a subdirectory. |
-| Rebuild | `.husky/post-commit`, `post-merge`, `post-checkout` (branch switches only) -> `.husky/graphify-update.sh` | Starts a detached `GRAPHIFY_BACKEND=none graphify update .` when graphify and a first graph exist. |
-| Search advice | `graphify hook-guard` from [[repo/hooks]] | Reminds agents to query the graph before broad Grep or Read. |
-| Output | `graphify-out/` | Git-ignored. |
+| Piece         | File                                                                                                      | Role                                                                                                        |
+| ------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Ignore list   | `.graphifyignore`                                                                                         | Excludes `vendor/`, build and dependency output, `.agents/skills/graphify/`, `.old/` and `docs/.obsidian/`. |
+| MCP server    | `.mcp.json`, `.codex/config.toml`                                                                         | Runs `graphify-mcp` on the graph found through the Git root, so it works from a subdirectory.               |
+| Rebuild       | `.husky/post-commit`, `post-merge`, `post-checkout` (branch switches only) -> `.husky/graphify-update.sh` | Starts a detached `GRAPHIFY_BACKEND=none graphify update .` when graphify and a first graph exist.          |
+| Search advice | `graphify hook-guard` from [[repo/hooks]]                                                                 | Reminds agents to query the graph before broad Grep or Read.                                                |
+| Output        | `graphify-out/`                                                                                           | Git-ignored.                                                                                                |
 
 Overlapping events leave a `graphify-out/.update-pending` marker, so one worker drains them. Hooks fail open: a missing
 binary, a missing graph or a crash never blocks Git. The tested version is 0.9.111; the MCP extra is
@@ -54,12 +54,12 @@ uncommitted edits. Fall back to Grep for exact strings the graph does not hold.
 
 ## Failure modes
 
-| Symptom | Fix |
-| --- | --- |
-| No `graph.json` | Run the first build. |
-| Graph stale after commits | graphify missing from PATH in the hook environment, or the first build never ran. |
-| `graphify-out/.update.lock` stays after a kill or power loss | Check that no worker runs, remove the empty directory, rerun the first build. |
-| A heavily pruned graph refuses to update | Rerun with graphify's explicit `--force`. |
+| Symptom                                                      | Fix                                                                               |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| No `graph.json`                                              | Run the first build.                                                              |
+| Graph stale after commits                                    | graphify missing from PATH in the hook environment, or the first build never ran. |
+| `graphify-out/.update.lock` stays after a kill or power loss | Check that no worker runs, remove the empty directory, rerun the first build.     |
+| A heavily pruned graph refuses to update                     | Rerun with graphify's explicit `--force`.                                         |
 
 ## Covers
 

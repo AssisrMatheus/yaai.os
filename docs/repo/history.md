@@ -43,7 +43,7 @@ the graphify graph.
 ---
 description: <the old description, unchanged>
 tags: [<old tags>, old]
-superseded_by: "[[repo/hooks#Exit codes]]"
+superseded_by: '[[repo/hooks#Exit codes]]'
 commit: 1a2b3c4
 ---
 ```
@@ -82,7 +82,7 @@ On 2026-12-03 the user decides that tool findings exit 2 instead of 1. The agent
 ---
 description: How hooks and tools choose their exit codes.
 tags: [repo, hooks, old]
-superseded_by: "[[repo/hooks#Exit codes]]"
+superseded_by: '[[repo/hooks#Exit codes]]'
 commit: pending
 ---
 

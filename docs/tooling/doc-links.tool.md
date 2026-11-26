@@ -21,24 +21,24 @@ changed, or prints one notice to stderr and exits 0 when `cargo` is absent.
 
 ## Commands
 
-| Command | Does |
-| --- | --- |
-| `check [paths...]` | Validate vault frontmatter, wikilinks, indexes, citations, `Covers`, doc kinds and tool registration; filter reported findings to repo-relative `paths` when given |
-| `refs <query>` | List outgoing and incoming `cites`, `validates` and `covers` edges for a repo path, doc anchor, invariant ID or quoted `ADR NNNN` |
-| `matrix` | List invariant IDs and governing docs with `Covers` that have no test citation |
-| `graph` | Replace `doc-links` edges in `graphify-out/graph.json` atomically; prints a skip row when the graph is absent |
-| `kinds` | Print every doc kind from `tooling/doc-links/kinds.toml` with its file pattern, folders and requirements |
-| `commit <message-file>` | Check staged files in the Git index and block covered code changes whose governing doc is unstaged unless waived by a non-empty `Spec-unchanged:` trailer |
+| Command                 | Does                                                                                                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `check [paths...]`      | Validate vault frontmatter, wikilinks, indexes, citations, `Covers`, doc kinds and tool registration; filter reported findings to repo-relative `paths` when given |
+| `refs <query>`          | List outgoing and incoming `cites`, `validates` and `covers` edges for a repo path, doc anchor, invariant ID or quoted `ADR NNNN`                                  |
+| `matrix`                | List invariant IDs and governing docs with `Covers` that have no test citation                                                                                     |
+| `graph`                 | Replace `doc-links` edges in `graphify-out/graph.json` atomically; prints a skip row when the graph is absent                                                      |
+| `kinds`                 | Print every doc kind from `tooling/doc-links/kinds.toml` with its file pattern, folders and requirements                                                           |
+| `commit <message-file>` | Check staged files in the Git index and block covered code changes whose governing doc is unstaged unless waived by a non-empty `Spec-unchanged:` trailer          |
 
 ## Options
 
-| Argument / option | Default | Meaning |
-| --- | --- | --- |
-| `--root <dir>` | nearest enclosing Git checkout (or `docs/` parent) | Repository root to inspect |
-| `--json` | off | Emit one JSON result object on stdout (`command`, `status`, `total`, `shown`, `findings`, `rows`); findings also go to stderr |
-| `-v` | off | Emit structured JSON diagnostic logs on stderr (also controlled by `DOC_LINKS_LOG`, e.g. `doc-links.scan:debug`) |
-| `--limit <n>` | `50` | Maximum findings and rows displayed; summary counts still report the full total |
-| `-h`, `--help` | off | Print command help with examples and exit 0 |
+| Argument / option | Default                                            | Meaning                                                                                                                       |
+| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `--root <dir>`    | nearest enclosing Git checkout (or `docs/` parent) | Repository root to inspect                                                                                                    |
+| `--json`          | off                                                | Emit one JSON result object on stdout (`command`, `status`, `total`, `shown`, `findings`, `rows`); findings also go to stderr |
+| `-v`              | off                                                | Emit structured JSON diagnostic logs on stderr (also controlled by `DOC_LINKS_LOG`, e.g. `doc-links.scan:debug`)              |
+| `--limit <n>`     | `50`                                               | Maximum findings and rows displayed; summary counts still report the full total                                               |
+| `-h`, `--help`    | off                                                | Print command help with examples and exit 0                                                                                   |
 
 ## Exit codes
 

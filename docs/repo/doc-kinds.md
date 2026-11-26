@@ -12,17 +12,17 @@ and says what to add, naming the kind and its heading on this page ([[repo/doc-l
 
 ## The kinds
 
-| Kind | File | Folder | Requires |
-| --- | --- | --- | --- |
-| screen | `<name>.screen.md` | `docs/screens/` | Every section of the template as an H2, in order; `Covers` optional, last |
-| adr | `NNNN-<slug>.adr.md` | `docs/adr/` | `status`; one H1; an opening paragraph; only `Considered options`, `Consequences` |
-| invariants | `<domain>.invariants.md` | `docs/invariants/` | Every H2 is `INV-<DOMAIN>-NNN: <rule>`, with a status line and a body |
-| old | `<name>.<YYYY-MM-DD>[-N].old.md` | any `.old/` | `superseded_by` and `commit` |
-| spec | `<name>.spec.md` | `docs/specs/` | H2s `Rules` then `Covers`; `References` optional |
-| tool | `<name>.tool.md` | `docs/tooling/` | H2s `Synopsis`, `Commands`, `Options`, `Exit codes`, `Output`, `Covers` in order |
-| rules | `<topic>.rules.md` | `docs/best-practices/` | Every H3 is `<PREFIX>-NNN: <rule>` with `Why:` and `Check:` lines |
-| index | `SKILL.md` | any scope folder | `name`; a `Which file to read` table, a wikilink in every row |
-| glossary | `glossary.md` | `docs/` | Every paragraph under an H2 is a `**Term**:` entry; terms unique |
+| Kind       | File                             | Folder                 | Requires                                                                          |
+| ---------- | -------------------------------- | ---------------------- | --------------------------------------------------------------------------------- |
+| screen     | `<name>.screen.md`               | `docs/screens/`        | Every section of the template as an H2, in order; `Covers` optional, last         |
+| adr        | `NNNN-<slug>.adr.md`             | `docs/adr/`            | `status`; one H1; an opening paragraph; only `Considered options`, `Consequences` |
+| invariants | `<domain>.invariants.md`         | `docs/invariants/`     | Every H2 is `INV-<DOMAIN>-NNN: <rule>`, with a status line and a body             |
+| old        | `<name>.<YYYY-MM-DD>[-N].old.md` | any `.old/`            | `superseded_by` and `commit`                                                      |
+| spec       | `<name>.spec.md`                 | `docs/specs/`          | H2s `Rules` then `Covers`; `References` optional                                  |
+| tool       | `<name>.tool.md`                 | `docs/tooling/`        | H2s `Synopsis`, `Commands`, `Options`, `Exit codes`, `Output`, `Covers` in order  |
+| rules      | `<topic>.rules.md`               | `docs/best-practices/` | Every H3 is `<PREFIX>-NNN: <rule>` with `Why:` and `Check:` lines                 |
+| index      | `SKILL.md`                       | any scope folder       | `name`; a `Which file to read` table, a wikilink in every row                     |
+| glossary   | `glossary.md`                    | `docs/`                | Every paragraph under an H2 is a `**Term**:` entry; terms unique                  |
 
 `bin/doc-links kinds` prints the same table from the kinds file, with every pattern (`--json` for one JSON result).
 
@@ -99,12 +99,12 @@ entries, `Covers` paths. `matrix` leaves it out.
 
 ## Frontmatter keys
 
-| Kind | Keys |
-| --- | --- |
-| plain page and every kind | `description`, `tags` |
-| index | adds `name` (required) |
-| adr | adds `status` (required) |
-| old | adds `superseded_by` and `commit` (both required) |
+| Kind                      | Keys                                              |
+| ------------------------- | ------------------------------------------------- |
+| plain page and every kind | `description`, `tags`                             |
+| index                     | adds `name` (required)                            |
+| adr                       | adds `status` (required)                          |
+| old                       | adds `superseded_by` and `commit` (both required) |
 
 ## The kinds file
 

@@ -37,8 +37,8 @@ tags: [<scope>, index]
 
 ## Which file to read
 
-| You want to | Read |
-| --- | --- |
+| You want to                                               | Read               |
+| --------------------------------------------------------- | ------------------ |
 | <Concrete task, with the words an agent would search for> | [[<scope>/<page>]] |
 ```
 
@@ -67,12 +67,12 @@ tags: [repo, hooks]
 paths and wikilinks on; workspace files stay ignored. Docs link each other with wikilinks (INV-DOCS-005), always
 written as the path from `docs/` without `.md`:
 
-| Form | Use |
-| --- | --- |
-| `[[repo/hooks]]` | A page |
-| `[[repo/hooks#Exit codes]]` | A heading of a page |
-| `[[repo/hooks#Exit codes\|exit codes]]` | A heading with display text |
-| `[[invariants/SKILL]]` | A scope index: always with the folder, since every scope has a `SKILL.md` |
+| Form                                    | Use                                                                       |
+| --------------------------------------- | ------------------------------------------------------------------------- |
+| `[[repo/hooks]]`                        | A page                                                                    |
+| `[[repo/hooks#Exit codes]]`             | A heading of a page                                                       |
+| `[[repo/hooks#Exit codes\|exit codes]]` | A heading with display text                                               |
+| `[[invariants/SKILL]]`                  | A scope index: always with the folder, since every scope has a `SKILL.md` |
 
 - Inside a markdown table, escape the alias pipe: `[[repo/hooks\|hooks]]`, or write the link without an alias.
 - Files outside `docs/` are repository-relative paths in backticks: `` `tooling/doc-links/src/main.rs` ``.

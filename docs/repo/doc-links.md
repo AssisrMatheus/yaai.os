@@ -14,34 +14,34 @@ commits on them, reports which rules tests pin, and adds them to the graphify gr
 
 ## Nodes
 
-| Node | Lives in | Identified by |
-| --- | --- | --- |
-| Invariant | `docs/invariants/<domain>.invariants.md` | `INV-<DOMAIN>-NNN` (heading `## INV-<DOMAIN>-NNN: <rule>`) |
-| ADR | `docs/adr/NNNN-<slug>.adr.md` | `ADR NNNN` |
-| Spec or doc page | `docs/<scope>/<page>.md` | `docs/<path>.md#<heading-slug>`, `## Covers` |
-| Screen doc | `docs/screens/<name>.screen.md` | `docs/screens/<name>.screen.md` |
-| Code | `apps/`, `packages/`, `tooling/`, `bin/` | path, `path::Symbol` |
-| Test | `*_test.rs`, Rust `#[cfg(test)]` modules, `tests/`, `*.test.ts`, `*.spec.ts`, `e2e/` | path |
+| Node             | Lives in                                                                             | Identified by                                              |
+| ---------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| Invariant        | `docs/invariants/<domain>.invariants.md`                                             | `INV-<DOMAIN>-NNN` (heading `## INV-<DOMAIN>-NNN: <rule>`) |
+| ADR              | `docs/adr/NNNN-<slug>.adr.md`                                                        | `ADR NNNN`                                                 |
+| Spec or doc page | `docs/<scope>/<page>.md`                                                             | `docs/<path>.md#<heading-slug>`, `## Covers`               |
+| Screen doc       | `docs/screens/<name>.screen.md`                                                      | `docs/screens/<name>.screen.md`                            |
+| Code             | `apps/`, `packages/`, `tooling/`, `bin/`                                             | path, `path::Symbol`                                       |
+| Test             | `*_test.rs`, Rust `#[cfg(test)]` modules, `tests/`, `*.test.ts`, `*.spec.ts`, `e2e/` | path                                                       |
 
 ## Edges
 
-| Edge | Written as | Checked by | Graph relation |
-| --- | --- | --- | --- |
-| Code to rule | A citation in the comment above the item | `check`, commit gate | `cites` |
-| Test to rule | The same citation in the test's comment or name | `check`, commit gate | `validates` |
-| Doc to code | A `## Covers` list of code paths | `check`, commit gate | `covers` |
-| Doc mentions code | A code path in backticks; `path::Symbol` for an item | none (history may name old files) | `references` |
+| Edge              | Written as                                           | Checked by                        | Graph relation |
+| ----------------- | ---------------------------------------------------- | --------------------------------- | -------------- |
+| Code to rule      | A citation in the comment above the item             | `check`, commit gate              | `cites`        |
+| Test to rule      | The same citation in the test's comment or name      | `check`, commit gate              | `validates`    |
+| Doc to code       | A `## Covers` list of code paths                     | `check`, commit gate              | `covers`       |
+| Doc mentions code | A code path in backticks; `path::Symbol` for an item | none (history may name old files) | `references`   |
 
 ## Citing docs from code
 
 In the comment right above the item it governs (rustdoc `///` or `//!`, JSDoc, `#` in shell and TOML):
 
-| Form | Cites |
-| --- | --- |
-| `spec: docs/<path>.md#<heading-slug>` | A doc page or one of its headings |
+| Form                                    | Cites                                         |
+| --------------------------------------- | --------------------------------------------- |
+| `spec: docs/<path>.md#<heading-slug>`   | A doc page or one of its headings             |
 | `screen: docs/screens/<name>.screen.md` | The screen or subview doc the code reproduces |
-| `INV-<DOMAIN>-NNN` | An invariant |
-| `ADR NNNN` | A decision |
+| `INV-<DOMAIN>-NNN`                      | An invariant                                  |
+| `ADR NNNN`                              | A decision                                    |
 
 ```rust
 /// spec: docs/repo/history.md#file-name
@@ -86,14 +86,14 @@ Run through `bin/doc-links`. Output is compact and agent-first; exit codes follo
 links hold, 2 findings the caller must fix, 1 the tool itself failed. Full command reference, options and sample
 output live in [[tooling/doc-links.tool]].
 
-| Command | Does |
-| --- | --- |
-| `check [paths]` | Every check below, on the given paths or the whole repository |
-| `refs <path or id>` | For code: what it cites and which docs cover or mention it. For a doc or id: which code and tests cite it and what it covers |
-| `matrix` | Every invariant, spec heading, screen and ADR with its count of citations from code and from tests; names the invariants no test cites |
-| `kinds` | Prints every doc kind: its file pattern, folders and what it requires ([[repo/doc-kinds]]) |
-| `graph` | Replaces its previous edges (`"_origin": "doc-links"`) in `graphify-out/graph.json` with `cites`, `validates`, `covers` and `references` edges, all `EXTRACTED` at confidence 1.0 |
-| `commit <msg-file>` | The commit gate (below) |
+| Command             | Does                                                                                                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `check [paths]`     | Every check below, on the given paths or the whole repository                                                                                                                     |
+| `refs <path or id>` | For code: what it cites and which docs cover or mention it. For a doc or id: which code and tests cite it and what it covers                                                      |
+| `matrix`            | Every invariant, spec heading, screen and ADR with its count of citations from code and from tests; names the invariants no test cites                                            |
+| `kinds`             | Prints every doc kind: its file pattern, folders and what it requires ([[repo/doc-kinds]])                                                                                        |
+| `graph`             | Replaces its previous edges (`"_origin": "doc-links"`) in `graphify-out/graph.json` with `cites`, `validates`, `covers` and `references` edges, all `EXTRACTED` at confidence 1.0 |
+| `commit <msg-file>` | The commit gate (below)                                                                                                                                                           |
 
 `refs` reads the working tree and needs no graph.
 
@@ -143,10 +143,10 @@ Merges are not checked. Fix the link or update the doc; never bypass the gate wi
 
 ## Speed and where it runs
 
-| Where | Runs |
-| --- | --- |
-| `.husky/commit-msg` | `bin/doc-links commit <msg-file>` |
-| Lint task | `bin/doc-links check` |
+| Where                       | Runs                                                               |
+| --------------------------- | ------------------------------------------------------------------ |
+| `.husky/commit-msg`         | `bin/doc-links commit <msg-file>`                                  |
+| Lint task                   | `bin/doc-links check`                                              |
 | `.husky/graphify-update.sh` | `bin/doc-links graph` in the background, after `graphify update .` |
 
 The commit gate scans only staged files and their citers; `check` caches per-file results by content hash, so both

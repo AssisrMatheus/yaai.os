@@ -53,15 +53,17 @@ Follow T3 Code's orchestration rules ([[repo/agent-runtimes]]). For cross-provid
    ```
 
    `bin/agent-pick` deduplicates families so each eligible family gets one uniform entry regardless of instance count, draws from `/dev/urandom`, prints the winning family to stdout, prints the effort reminder to stderr, and exits `2` on invalid arguments.
+
 3. **Select model and effort**: pick the matching model in the drawn family:
 
-   | Kind of work | `codex` | `antigravity` | `claude` |
-   | --- | --- | --- | --- |
-   | Bounded lookups, routine edits, coding from a clear example | Sol | Neon | Sonnet |
-   | Implementation without an example, architecture, black-box review | Astra | Opus (if advertised) | Opus |
-   | Large orchestration or open-ended research | Astra | — | Fable |
+   | Kind of work                                                      | `codex` | `antigravity`        | `claude` |
+   | ----------------------------------------------------------------- | ------- | -------------------- | -------- |
+   | Bounded lookups, routine edits, coding from a clear example       | Sol     | Neon                 | Sonnet   |
+   | Implementation without an example, architecture, black-box review | Astra   | Opus (if advertised) | Opus     |
+   | Large orchestration or open-ended research                        | Astra   | —                    | Fable    |
 
    Assess the actual scope before choosing effort: default to **low** for bounded lookups and routine edits, and **medium** for implementation, research, and black-box review. A role or model family never implies high effort. Use **high** (or higher) only for genuinely complex work with a concrete complexity reason stated in the brief. Never round an unavailable low/medium setting up to high; choose a suitable advertised model/setting or report the limitation.
+
 4. **Launch and handle quota errors**: state the selected provider, model, and effort, then call `delegate_task` with `target.providerInstanceId`, `target.model`, and the advertised effort in `target.options`. Follow the returned `next` instruction without polling. On a quota error during automatic routing, exclude the affected instance and redraw from the remaining eligible families; if none remain, report the blocker.
 
 ## Brief template

@@ -8,15 +8,15 @@ tags: [repo, structure]
 The repository is a pnpm workspace orchestrated by Turborepo ([[repo/turborepo/tasks]]) with a Cargo workspace for
 Rust. Each top-level directory has one role (INV-STRUCTURE-001, ADR 0011).
 
-| Path | Owns | Rules |
-| --- | --- | --- |
-| `apps/*` | Deployable, shipped apps | An app never imports another app. Shared code moves to `packages/*`. Empty today (`.gitkeep`). |
-| `packages/*` | Reusable code used by apps, tooling or other packages | Empty today (`.gitkeep`). |
-| `tooling/*` | CLIs and automation for the process | Never shipped. Rust first. Each tool runs as a CLI ([[best-practices/tooling-cli.rules]]). |
-| `bin/` | Small committed POSIX `sh` entry points that wrap tooling (`bin/agent-pick`) | No logic beyond locating and running the tool. |
-| `vendor/` | External sources kept for reading | Git-ignored (only `vendor/.gitkeep` is tracked), read-only: never edited, linted, formatted or committed. The shell and edit hooks block writes ([[repo/hooks]]). |
-| `docs/` | The encyclopedia ([[repo/documentation]]) | Source of truth. |
-| `.agents/` | Skills, hooks and agent roles for every runtime ([[repo/agent-runtimes]]) | INV-AGENTS-001. |
+| Path         | Owns                                                                         | Rules                                                                                                                                                             |
+| ------------ | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/*`     | Deployable, shipped apps                                                     | An app never imports another app. Shared code moves to `packages/*`. Empty today (`.gitkeep`).                                                                    |
+| `packages/*` | Reusable code used by apps, tooling or other packages                        | Shared lint configuration and Rust checks are documented in [[repo/lint-rules]].                                                                                  |
+| `tooling/*`  | CLIs and automation for the process                                          | Never shipped. Rust first. Each tool runs as a CLI ([[best-practices/tooling-cli.rules]]).                                                                        |
+| `bin/`       | Small committed POSIX `sh` entry points that wrap tooling (`bin/agent-pick`) | No logic beyond locating and running the tool.                                                                                                                    |
+| `vendor/`    | External sources kept for reading                                            | Git-ignored (only `vendor/.gitkeep` is tracked), read-only: never edited, linted, formatted or committed. The shell and edit hooks block writes ([[repo/hooks]]). |
+| `docs/`      | The encyclopedia ([[repo/documentation]])                                    | Source of truth.                                                                                                                                                  |
+| `.agents/`   | Skills, hooks and agent roles for every runtime ([[repo/agent-runtimes]])    | INV-AGENTS-001.                                                                                                                                                   |
 
 `pnpm-workspace.yaml` registers `apps/*`, `packages/*` and `tooling/*`. `Cargo.toml` lists the Rust members.
 

@@ -18,14 +18,14 @@ symlinks or thin adapters that point at it; they never hold a second copy.
 
 ## Runtime map
 
-| Runtime | Instructions | Skills | Hooks config | MCP config | Roles |
-| --- | --- | --- | --- | --- | --- |
-| Claude Code | `CLAUDE.md` -> `AGENTS.md` | `.claude/skills` -> `.agents/skills` | `.claude/settings.json` | `.mcp.json`, enabled in `.claude/settings.json` | `.claude/agents` -> `.agents/agents` |
-| Codex (standalone or T3) | `AGENTS.md` chain from root to working directory | `.agents/skills` | `.codex/hooks.json` | `.codex/config.toml` | `.codex/agents` -> `.agents/agents` |
-| Antigravity | `AGENTS.md` | `.agents/skills` | `.agents/hooks.json` (bundle `yaai-os`) | `.agents/mcp_config.json` -> `.mcp.json` | `.agents/agents` |
-| Oh My Pi | `AGENTS.md` | `.agents/skills` | `.omp/extensions/repository.ts` | root `.mcp.json` | `.omp/agents` -> `.agents/agents` |
-| Pi | `AGENTS.md` | `.agents/skills` | `.pi/extensions/repository.ts` | `.pi/mcp.json` -> `.mcp.json` | none configured |
-| T3 Code | the selected provider reads its own files | same as provider | none: `t3.json` only adds a manual "Test agent hooks" action | provider's | provider's |
+| Runtime                  | Instructions                                     | Skills                               | Hooks config                                                 | MCP config                                      | Roles                                |
+| ------------------------ | ------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------- | ------------------------------------ |
+| Claude Code              | `CLAUDE.md` -> `AGENTS.md`                       | `.claude/skills` -> `.agents/skills` | `.claude/settings.json`                                      | `.mcp.json`, enabled in `.claude/settings.json` | `.claude/agents` -> `.agents/agents` |
+| Codex (standalone or T3) | `AGENTS.md` chain from root to working directory | `.agents/skills`                     | `.codex/hooks.json`                                          | `.codex/config.toml`                            | `.codex/agents` -> `.agents/agents`  |
+| Antigravity              | `AGENTS.md`                                      | `.agents/skills`                     | `.agents/hooks.json` (bundle `yaai-os`)                      | `.agents/mcp_config.json` -> `.mcp.json`        | `.agents/agents`                     |
+| Oh My Pi                 | `AGENTS.md`                                      | `.agents/skills`                     | `.omp/extensions/repository.ts`                              | root `.mcp.json`                                | `.omp/agents` -> `.agents/agents`    |
+| Pi                       | `AGENTS.md`                                      | `.agents/skills`                     | `.pi/extensions/repository.ts`                               | `.pi/mcp.json` -> `.mcp.json`                   | none configured                      |
+| T3 Code                  | the selected provider reads its own files        | same as provider                     | none: `t3.json` only adds a manual "Test agent hooks" action | provider's                                      | provider's                           |
 
 Every hook entry runs `.agents/hooks/runtime.ts` through bun, so the policy is written once ([[repo/hooks]]).
 `.codex/config.toml` also enables Codex native code mode, `.omp/config.yml` enables OMP `eval.js`, and
@@ -35,24 +35,24 @@ Every hook entry runs `.agents/hooks/runtime.ts` through bun, so the policy is w
 
 Each runtime requires one manual step after cloning. Project files do nothing until it is done.
 
-| Runtime | Step |
-| --- | --- |
-| Claude Code | Accept the project's hooks and the `graphify` MCP server when prompted. |
-| Codex | Trust the project; review the command-hook fingerprints in `/hooks`; restart after any change. |
-| Antigravity | Open the project; `/hooks` in its CLI lists the registrations. |
-| Oh My Pi | Open the project; it loads `.omp/extensions/repository.ts`. |
-| Pi | Run `/trust` for the project resources. |
-| T3 Code | Nothing of its own; trust applies in the provider that runs the thread. |
+| Runtime     | Step                                                                                           |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| Claude Code | Accept the project's hooks and the `graphify` MCP server when prompted.                        |
+| Codex       | Trust the project; review the command-hook fingerprints in `/hooks`; restart after any change. |
+| Antigravity | Open the project; `/hooks` in its CLI lists the registrations.                                 |
+| Oh My Pi    | Open the project; it loads `.omp/extensions/repository.ts`.                                    |
+| Pi          | Run `/trust` for the project resources.                                                        |
+| T3 Code     | Nothing of its own; trust applies in the provider that runs the thread.                        |
 
 ## Add something once, every runtime gets it
 
-| Add | Do | Done when |
-| --- | --- | --- |
-| A skill | Create `.agents/skills/<name>/SKILL.md` (`name`, `description` = what it is and when to use it). Procedure only; facts live in docs it links ([[repo/writing]]). | Every runtime lists it; no file is added outside `.agents/skills/`. |
-| A hook rule | Edit `.agents/hooks/policy.ts` or `checks.ts` and add a case to `hooks.test.ts`. No runtime file changes. | `bun test .agents/hooks` passes. |
-| A hook event | Add it to `runtime.ts` first, then register it in each hook config above that supports it. | The test passes and each config names the event. |
-| A role | Put the file in `.agents/agents/`. Claude uses Markdown roles, Codex uses TOML roles, so each loader's own format must be satisfied. | Each runtime's role listing shows it. |
-| An MCP server | Add it to `.mcp.json` and `.codex/config.toml`. T3 inherits the provider's config. | `graphify` shows how both are kept in step ([[repo/graphify]]). |
+| Add           | Do                                                                                                                                                               | Done when                                                           |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| A skill       | Create `.agents/skills/<name>/SKILL.md` (`name`, `description` = what it is and when to use it). Procedure only; facts live in docs it links ([[repo/writing]]). | Every runtime lists it; no file is added outside `.agents/skills/`. |
+| A hook rule   | Edit `.agents/hooks/policy.ts` or `checks.ts` and add a case to `hooks.test.ts`. No runtime file changes.                                                        | `bun test .agents/hooks` passes.                                    |
+| A hook event  | Add it to `runtime.ts` first, then register it in each hook config above that supports it.                                                                       | The test passes and each config names the event.                    |
+| A role        | Put the file in `.agents/agents/`. Claude uses Markdown roles, Codex uses TOML roles, so each loader's own format must be satisfied.                             | Each runtime's role listing shows it.                               |
+| An MCP server | Add it to `.mcp.json` and `.codex/config.toml`. T3 inherits the provider's config.                                                                               | `graphify` shows how both are kept in step ([[repo/graphify]]).     |
 
 Do not copy a definition into a runtime folder (INV-AGENTS-001). The only third-party skill here is
 `.agents/skills/graphify/`; other skills are project skills.

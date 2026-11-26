@@ -43,13 +43,13 @@ Status: Planned, paused by the owner on 2026-11-26. Until it resumes, agents use
 
 These are separate runtimes from psychoscript. Use them for batching today.
 
-| Runtime | Setting | Where |
-| --- | --- | --- |
-| Codex | `[features.code_mode] enabled = true` and `code_mode_only = true` | `.codex/config.toml` |
-| Pi | `+codemode` tool with `codemode.mode = "only"` (QuickJS) | `.pi/settings.json` |
-| Oh My Pi | `eval.js: true` | `.omp/config.yml` |
-| Claude Code | Opt in with `CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1` in your terminal or user scope; no project setting exists, and none for its SDK inside T3 | user scope |
-| Antigravity | No verified project setting | none |
+| Runtime     | Setting                                                                                                                                      | Where                |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| Codex       | `[features.code_mode] enabled = true` and `code_mode_only = true`                                                                            | `.codex/config.toml` |
+| Pi          | `+codemode` tool with `codemode.mode = "only"` (QuickJS)                                                                                     | `.pi/settings.json`  |
+| Oh My Pi    | `eval.js: true`                                                                                                                              | `.omp/config.yml`    |
+| Claude Code | Opt in with `CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1` in your terminal or user scope; no project setting exists, and none for its SDK inside T3 | user scope           |
+| Antigravity | No verified project setting                                                                                                                  | none                 |
 
 ## Covers
 

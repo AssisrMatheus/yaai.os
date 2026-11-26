@@ -16,15 +16,15 @@ bin/agent-pick <codex|antigravity|claude> ...
 
 ## Commands
 
-| Command | Does |
-| --- | --- |
+| Command                      | Does                                                                                                                                          |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `bin/agent-pick <family>...` | Deduplicate the given eligible families, pick one uniformly at random, print it on stdout, and print the effort-assessment reminder on stderr |
 
 ## Options
 
-| Argument / option | Default | Meaning |
-| --- | --- | --- |
-| `<family>...` | required | One or more eligible agent families: `codex`, `antigravity`, or `claude`. Duplicate arguments are ignored. |
+| Argument / option | Default  | Meaning                                                                                                    |
+| ----------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| `<family>...`     | required | One or more eligible agent families: `codex`, `antigravity`, or `claude`. Duplicate arguments are ignored. |
 
 ## Exit codes
 

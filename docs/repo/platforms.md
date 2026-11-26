@@ -8,11 +8,11 @@ tags: [repo, platforms]
 INV-PLATFORM-001, ADR 0003: the development environment is Unix only. This page is about working on the repository. The app itself
 is meant to support native Windows one day, so shipped code does not assume Unix.
 
-| Develop on | Not supported for development |
-| --- | --- |
-| macOS | Native Windows |
-| Linux (Debian, Arch, others) | |
-| WSL under Windows | |
+| Develop on                   | Not supported for development |
+| ---------------------------- | ----------------------------- |
+| macOS                        | Native Windows                |
+| Linux (Debian, Arch, others) |                               |
+| WSL under Windows            |                               |
 
 Scripts, hooks and tooling may rely on POSIX `/bin/sh`, symlinks (`.claude/skills` and `.agents/mcp_config.json` are
 symlinks) and Unix paths. No native Windows code path is written or tested for them. Only Linux was exercised during set-up;
@@ -20,14 +20,14 @@ macOS and WSL are unverified.
 
 ## Prerequisites
 
-| Tool | Needed for | Version |
-| --- | --- | --- |
-| node | pnpm, husky, lint-staged, commitlint, turbo | `>= 24` (`engines` in `package.json`, `.nvmrc`) |
-| pnpm | every package operation | `packageManager` in `package.json` |
-| bun | agent hooks (`.agents/hooks/*.ts`) and TypeScript tooling | hooks do not run without it |
-| Rust toolchain | tooling in `tooling/*` | pinned by `rust-toolchain.toml` (rustup installs it) |
-| rtk | condensed command output, optional ([[repo/rtk]]) | 1.2.0 tested |
-| graphify | code and doc graph, optional ([[repo/graphify]]) | 0.9.111 tested |
+| Tool           | Needed for                                                | Version                                              |
+| -------------- | --------------------------------------------------------- | ---------------------------------------------------- |
+| node           | pnpm, husky, lint-staged, commitlint, turbo               | `>= 24` (`engines` in `package.json`, `.nvmrc`)      |
+| pnpm           | every package operation                                   | `packageManager` in `package.json`                   |
+| bun            | agent hooks (`.agents/hooks/*.ts`) and TypeScript tooling | hooks do not run without it                          |
+| Rust toolchain | tooling in `tooling/*`                                    | pinned by `rust-toolchain.toml` (rustup installs it) |
+| rtk            | condensed command output, optional ([[repo/rtk]])         | 1.2.0 tested                                         |
+| graphify       | code and doc graph, optional ([[repo/graphify]])          | 0.9.111 tested                                       |
 
 The hooks skip optional tools silently when they are absent.
 

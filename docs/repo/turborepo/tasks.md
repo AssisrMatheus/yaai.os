@@ -10,15 +10,15 @@ INV-TOOLING-002). General Turborepo guidance is in [[repo/turborepo/SKILL]].
 
 ## Tasks in `turbo.json`
 
-| Task | Depends on | Cache | Notes |
-| --- | --- | --- | --- |
-| `build` | `^build` | yes, outputs `dist/**` | Dependencies build first. |
-| `dev` | none | no, persistent | Long-running. |
-| `lint` | `transit` | yes, no outputs | |
-| `lint:fix` | `transit` | no | Writes files. |
-| `test` | `transit` | yes, no outputs | |
-| `typecheck` | `transit` | yes, no outputs | |
-| `transit` | `^transit` | n/a | Declares the dependency graph for checks; has no script. |
+| Task        | Depends on | Cache                  | Notes                                                    |
+| ----------- | ---------- | ---------------------- | -------------------------------------------------------- |
+| `build`     | `^build`   | yes, outputs `dist/**` | Dependencies build first.                                |
+| `dev`       | none       | no, persistent         | Long-running.                                            |
+| `lint`      | `transit`  | yes, no outputs        |                                                          |
+| `lint:fix`  | `transit`  | no                     | Writes files.                                            |
+| `test`      | `transit`  | yes, no outputs        |                                                          |
+| `typecheck` | `transit`  | yes, no outputs        |                                                          |
+| `transit`   | `^transit` | n/a                    | Declares the dependency graph for checks; has no script. |
 
 `globalPassThroughEnv` hands `CARGO_HOME`, `RUSTUP_HOME` and `RUSTUP_TOOLCHAIN` to tasks without hashing them.
 
@@ -34,12 +34,12 @@ it) while all checks still run in parallel.
 Root `package.json` scripts only delegate: `build`, `dev`, `lint:fix`, `test`, `typecheck` run `turbo run <task>`.
 Checks that belong to no workspace are appended, never reimplemented:
 
-| Script | Runs |
-| --- | --- |
-| `lint` | `turbo run lint`, `oxlint --deny-warnings` on root files, `bin/doc-links check` |
-| `lint:fix` | `turbo run lint:fix`, `oxlint --fix` on root files |
-| `test` | `turbo run test`, `bun test .agents/hooks` |
-| `format`, `format:check` | `oxfmt` over the repository |
+| Script                   | Runs                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `lint`                   | `turbo run lint --filter=@yaai/lint` for annotated workspace diagnostics, `bin/doc-links check` |
+| `lint:fix`               | `turbo run lint:fix`, `oxlint --fix` on root files                                              |
+| `test`                   | `turbo run test`, `bun test .agents/hooks`                                                      |
+| `format`, `format:check` | `oxfmt` over the repository                                                                     |
 
 ## A Rust tool joins Turborepo
 
@@ -47,13 +47,18 @@ Turborepo sees only `package.json`. A tool under `tooling/<name>` has one that w
 `tooling/doc-links/package.json` does:
 
 ```json
-{ "scripts": {
+{
+  "scripts": {
     "build": "cargo build --release --locked -p <crate>",
     "test": "cargo test --locked -p <crate>",
-    "lint": "cargo fmt --check -p <crate> && cargo clippy --locked -p <crate> --all-targets -- -D warnings" } }
+    "lint": "cargo fmt --check -p <crate> && cargo clippy --locked -p <crate> --all-targets -- -D warnings"
+  }
+}
 ```
 
 Add the crate to `members` in `Cargo.toml` ([[repo/structure#Add a workspace]]).
+
+The lint workspace runs the repository check once, including the live Cargo advisory database. Its task bypasses the Turbo cache so advisory updates and Git-index changes are visible. Other workspace lint scripts accept their own scope.
 
 ## Caching
 

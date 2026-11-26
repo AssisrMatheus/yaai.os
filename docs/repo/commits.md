@@ -24,21 +24,21 @@ use `!` or a `BREAKING CHANGE:` footer. The spec is the
 
 ## What runs
 
-| Hook | Runs | On |
-| --- | --- | --- |
-| `.husky/pre-commit` | `lint-staged` | staged files only |
-| `.husky/commit-msg` | `commitlint --edit`, then `bin/doc-links commit <msg-file>` when the binary exists | the message and staged docs/code |
-| `.husky/post-commit` | graphify rebuild in the background ([[repo/graphify]]) | the repository |
+| Hook                 | Runs                                                                               | On                               |
+| -------------------- | ---------------------------------------------------------------------------------- | -------------------------------- |
+| `.husky/pre-commit`  | `lint-staged`                                                                      | staged files only                |
+| `.husky/commit-msg`  | `commitlint --edit`, then `bin/doc-links commit <msg-file>` when the binary exists | the message and staged docs/code |
+| `.husky/post-commit` | graphify rebuild in the background ([[repo/graphify]])                             | the repository                   |
 
 `lint-staged.config.mjs` maps files to commands:
 
-| Staged files | Commands |
-| --- | --- |
+| Staged files                        | Commands                                     |
+| ----------------------------------- | -------------------------------------------- |
 | `*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}` | `oxlint --deny-warnings --fix`, then `oxfmt` |
-| `*.{json,jsonc,yaml,yml,toml}` | `oxfmt` |
-| `*.rs` | `rustfmt --edition 2024` |
+| `*.{json,jsonc,yaml,yml,toml,md}`   | `oxfmt`                                      |
+| `*.rs`                              | `rustfmt --edition 2024`                     |
 
-Markdown is outside `oxfmt` (`.oxfmtrc.json` ignores it); its checks are the doc-links gate.
+oxfmt formats Markdown too; the structure and links of docs are checked by the doc-links gate.
 
 ## The doc-links gate
 

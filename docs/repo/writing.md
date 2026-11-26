@@ -7,9 +7,9 @@ tags: [repo, docs, writing]
 
 Two readers, two styles (INV-AGENTS-002):
 
-| File | Reader | Style |
-| --- | --- | --- |
-| `README.md` (root and every workspace) | A human | Simple and short: what it is, how to start |
+| File                                        | Reader   | Style                                                     |
+| ------------------------------------------- | -------- | --------------------------------------------------------- |
+| `README.md` (root and every workspace)      | A human  | Simple and short: what it is, how to start                |
 | `AGENTS.md`, `.agents/skills/**`, `docs/**` | An agent | Routed by pointers, one subject per page, checkable rules |
 
 A README links to the docs for detail; it never restates them. An agent document never relies on a README.
@@ -59,12 +59,12 @@ Rules, distilled from writing-for-agents:
 
 ## Size
 
-| File | Limit |
-| --- | --- |
-| `AGENTS.md` | As short as possible; well under 200 lines |
-| Scope `SKILL.md` index | 2-4 lines of scope, then the routing table |
-| Doc page | One subject, about 200 lines at most; split by subject beyond that |
-| Runtime skill `SKILL.md` | The procedure only; facts live in linked docs |
+| File                     | Limit                                                              |
+| ------------------------ | ------------------------------------------------------------------ |
+| `AGENTS.md`              | As short as possible; well under 200 lines                         |
+| Scope `SKILL.md` index   | 2-4 lines of scope, then the routing table                         |
+| Doc page                 | One subject, about 200 lines at most; split by subject beyond that |
+| Runtime skill `SKILL.md` | The procedure only; facts live in linked docs                      |
 
 The page format (frontmatter, wikilinks, References, Covers) is in [[repo/documentation]].
 

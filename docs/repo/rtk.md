@@ -50,11 +50,11 @@ status`.
 
 ## Failure modes
 
-| Symptom | Cause and fix |
-| --- | --- |
-| Output is never condensed | rtk missing or pipeline untrusted: install it, then `rtk trust --yes`. |
-| A command's output is cut and you need it | `rtk recall <hash>` or `rtk bypass <command>`. |
-| Pipeline validate fails after an edit | Fix the TOML, then trust again. |
+| Symptom                                   | Cause and fix                                                          |
+| ----------------------------------------- | ---------------------------------------------------------------------- |
+| Output is never condensed                 | rtk missing or pipeline untrusted: install it, then `rtk trust --yes`. |
+| A command's output is cut and you need it | `rtk recall <hash>` or `rtk bypass <command>`.                         |
+| Pipeline validate fails after an edit     | Fix the TOML, then trust again.                                        |
 
 ## Covers
 

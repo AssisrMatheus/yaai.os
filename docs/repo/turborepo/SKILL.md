@@ -28,10 +28,10 @@ Then read `docs/README.md` relative to the resolved package directory.
 
 ## Which file to read
 
-| You want to | Read |
-| --- | --- |
+| You want to                                              | Read                     |
+| -------------------------------------------------------- | ------------------------ |
 | Know which tasks exist and how they depend on each other | [[repo/turborepo/tasks]] |
-| Know where workspaces live and what each kind may import | [[repo/structure]] |
+| Know where workspaces live and what each kind may import | [[repo/structure]]       |
 
 ## Upstream
 

@@ -109,7 +109,7 @@ When the owner gave references for a topic, its page ends with `## References` l
 - One bullet per reference: `- [Short title](url)`.
 - `## References` is the last section of the page.
 
-## Covers
+## The Covers section
 
 A page that governs code lists that code in a `## Covers` section, one repository-relative path per bullet, in
 backticks; a directory ends with `/`. The code cites the page back (INV-DOCS-007). The forms and checks are in

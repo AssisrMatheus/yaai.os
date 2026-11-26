@@ -14,7 +14,7 @@ A spec page contains, after the frontmatter and H1:
 1. Two or three lines on what the code is for.
 2. Its rules as checkable statements, one per bullet or heading ("`<command>` exits 2 when ..."), each one a test can
    pin. Code cites a rule by its heading: `spec: docs/specs/<name>.md#<heading-slug>`.
-3. `## Covers`: the code paths it governs ([[repo/doc-links#Covers]]).
+3. `## Covers`: the code paths it governs ([[repo/doc-links#Listing covered code]]).
 4. `## References` when the owner gave references ([[repo/documentation#References footer]]).
 
 No spec exists yet.

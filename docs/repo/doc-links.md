@@ -63,9 +63,9 @@ A test that checks a rule cites it the same way: in the comment above it or in i
 becomes a `validates` edge. A rule that only code cites is implemented but not pinned; a change that adds or changes
 such a rule adds the test that pins it.
 
-## Covers
+## Listing covered code
 
-A page that governs code lists it ([[repo/documentation#Covers]]):
+A page that governs code lists it ([[repo/documentation#The Covers section]]):
 
 ```markdown
 ## Covers
@@ -124,6 +124,10 @@ refactor(doc-links): split the slug parser out of the scanner
 
 Spec-unchanged: docs/repo/doc-links.md describes the same forms; only the file layout changed.
 ```
+
+The gate reads staged files at their staged content and every other file as it is on disk. Docs and code cite each
+other, so a scoped commit may stage one side while the other is still unstaged; a citation blocks only when its target
+exists nowhere. `bin/doc-links check` stays strict on the whole working tree.
 
 Merges are not checked. Fix the link or update the doc; never bypass the gate with `--no-verify`.
 

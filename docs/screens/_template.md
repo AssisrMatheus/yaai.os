@@ -121,7 +121,8 @@ _Link each named view by its wikilink once its doc exists._
 _Where focus starts, how it moves and wraps, what Back does at the edge, and what is read aloud for each focused
 element. Every action reachable by touch is reachable by remote, and the reverse._
 
-## Covers
+## When code exists
 
-_Filled in when code exists: the repository paths that reproduce this view. Each of those files cites this doc with
-`screen: docs/screens/<name>.md`._
+_Add a `Covers` section (an H2 named exactly that) as the last section, listing the repository paths that reproduce
+this view, one per bullet, in backticks. Each of those files cites this doc with `screen: docs/screens/<name>.md`.
+Leave the section out until there is code: an empty one fails the check._

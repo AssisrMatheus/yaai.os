@@ -39,7 +39,6 @@ stop; a hook that exits 2 tells you what to do next.
 
 - **rtk** condenses command output. Treat it as complete; `rtk recall <hash>` restores a truncated result.
 - **graphify** answers "where is X" and "what calls Y". Ask it before grepping: `graphify query "<question>"`.
-- **psychoscript** is the code mode: batch independent tool calls in one program.
 - **Repository tools** live in [`docs/tooling/SKILL.md`](docs/tooling/SKILL.md): check it before writing a one-off command.
 
 Details for each: [`docs/repo/SKILL.md`](docs/repo/SKILL.md).

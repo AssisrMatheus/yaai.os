@@ -511,6 +511,7 @@ mod tests {
                 "invariants",
                 "old",
                 "spec",
+                "tool",
                 "rules",
                 "index",
                 "glossary"
@@ -605,5 +606,147 @@ mod tests {
             "E_PENDING",
             "replace commit: pending with the hash from git log --diff-filter=A",
         );
+    }
+
+    /// Write an executable script under `root/bin/<name>`.
+    fn write_bin(root: &Path, name: &str) {
+        let path = root.join("bin").join(name);
+        fs::write(&path, "#!/bin/sh\necho ok\n").unwrap();
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            fs::set_permissions(&path, fs::Permissions::from_mode(0o755)).unwrap();
+        }
+    }
+
+    /// Populate a clean `docs/tooling/` scope with one workspace tool and one `bin/` tool.
+    fn setup_tool_fixture(root: &Path) -> (String, String) {
+        fs::create_dir_all(root.join("tooling/scratch")).unwrap();
+        fs::create_dir_all(root.join("bin")).unwrap();
+        fs::write(root.join("bin/.gitkeep"), "").unwrap();
+        fs::create_dir_all(root.join("tooling/demo")).unwrap();
+        fs::write(
+            root.join("tooling/demo/Cargo.toml"),
+            "[package]\nname = \"demo\"\n",
+        )
+        .unwrap();
+        fs::write(
+            root.join("tooling/demo/README.md"),
+            "# demo\n\nRuns demo.\n",
+        )
+        .unwrap();
+        write_bin(root, "demo");
+        write_bin(root, "helper");
+        fs::create_dir_all(root.join("docs/tooling")).unwrap();
+        fs::write(
+            root.join("docs/SKILL.md"),
+            format!(
+                "{}\n| Tools | [[tooling/SKILL]] |\n",
+                fs::read_to_string(root.join("docs/SKILL.md")).unwrap()
+            ),
+        )
+        .unwrap();
+        fs::write(
+            root.join("docs/tooling/SKILL.md"),
+            "---\nname: tooling\ndescription: Tools.\ntags: [tooling, index]\n---\n\n# Tooling\n\n## Which file to read\n\n| Tool | Package | Language | Does | Read |\n| --- | --- | --- | --- | --- |\n| demo | `@yaai/demo` | Rust | Demo | [[tooling/demo.tool]] |\n| helper | none | POSIX sh | Helper | [[tooling/helper.tool]] |\n",
+        )
+        .unwrap();
+        let demo_doc = "---\ndescription: Demo tool.\ntags: [tooling]\n---\n\n# demo\n\n## Synopsis\n\n`bin/demo`\n\n## Commands\n\n| Command | Does |\n| --- | --- |\n| `run` | Runs |\n\n## Options\n\n| Option | Default | Meaning |\n| --- | --- | --- |\n| `-h` | off | Help |\n\n## Exit codes\n\n- `0`: ok\n\n## Output\n\n```text\nok\n```\n\n## Covers\n\n- `tooling/demo/`\n- `bin/demo`\n".to_owned();
+        let helper_doc = demo_doc
+            .replace("demo", "helper")
+            .replace("- `tooling/helper/`\n", "");
+        fs::write(root.join("docs/tooling/demo.tool.md"), &demo_doc).unwrap();
+        fs::write(root.join("docs/tooling/helper.tool.md"), &helper_doc).unwrap();
+        (demo_doc, helper_doc)
+    }
+
+    /// Tool workspaces and `bin/` executables require `.tool.md` docs with `Covers`, non-empty READMEs, and no orphans.
+    /// INV-TOOLING-006
+    /// INV-TOOLING-007
+    #[test]
+    fn inv_tooling_006_and_007_tool_registration() {
+        let temp = fixture();
+        let root = temp.path();
+        let (demo_doc, helper_doc) = setup_tool_fixture(root);
+
+        assert_eq!(report(&cli(root, &["check", "--json"]), 0)["total"], 0);
+
+        fs::remove_file(root.join("tooling/demo/README.md")).unwrap();
+        expect(
+            &findings(root, "tooling/demo"),
+            "E_TOOL_README",
+            "Create a non-empty tooling/demo/README.md",
+        );
+        fs::write(root.join("tooling/demo/README.md"), "   \n").unwrap();
+        expect(
+            &findings(root, "tooling/demo"),
+            "E_TOOL_README",
+            "Create a non-empty tooling/demo/README.md",
+        );
+        fs::write(
+            root.join("tooling/demo/README.md"),
+            "# demo\n\nRuns demo.\n",
+        )
+        .unwrap();
+
+        fs::write(
+            root.join("docs/tooling/demo.tool.md"),
+            demo_doc.replace("- `bin/demo`\n", ""),
+        )
+        .unwrap();
+        expect(
+            &findings(root, "docs/tooling/demo.tool.md"),
+            "E_TOOL_COVERS",
+            "Add `bin/demo` under ## Covers",
+        );
+        fs::write(
+            root.join("docs/tooling/demo.tool.md"),
+            demo_doc.replace("## Exit codes\n\n- `0`: ok\n\n", ""),
+        )
+        .unwrap();
+        expect(
+            &findings(root, "docs/tooling/demo.tool.md"),
+            "E_KIND",
+            "add the H2 \"Exit codes\" after \"Options\" (kind tool, docs/repo/doc-kinds.md#tool)",
+        );
+        fs::write(root.join("docs/tooling/demo.tool.md"), &demo_doc).unwrap();
+
+        fs::create_dir_all(root.join("tooling/extra")).unwrap();
+        fs::write(
+            root.join("tooling/extra/package.json"),
+            "{\"name\":\"@yaai/extra\"}\n",
+        )
+        .unwrap();
+        fs::write(root.join("tooling/extra/README.md"), "# extra\n\nExtra.\n").unwrap();
+        expect(
+            &findings(root, "tooling/extra"),
+            "E_TOOL_DOC",
+            "Create docs/tooling/extra.tool.md",
+        );
+        fs::remove_dir_all(root.join("tooling/extra")).unwrap();
+
+        write_bin(root, "extra");
+        expect(
+            &findings(root, "bin/extra"),
+            "E_TOOL_DOC",
+            "Create docs/tooling/extra.tool.md",
+        );
+        fs::remove_file(root.join("bin/extra")).unwrap();
+
+        fs::write(
+            root.join("docs/tooling/ghost.tool.md"),
+            helper_doc
+                .replace("helper", "ghost")
+                .replace("`bin/ghost`", "`bin/demo`"),
+        )
+        .unwrap();
+        expect(
+            &findings(root, "docs/tooling/ghost.tool.md"),
+            "E_TOOL_ORPHAN",
+            "Remove orphan docs/tooling/ghost.tool.md",
+        );
+        fs::remove_file(root.join("docs/tooling/ghost.tool.md")).unwrap();
+
+        assert_eq!(report(&cli(root, &["check", "--json"]), 0)["total"], 0);
     }
 }

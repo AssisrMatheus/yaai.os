@@ -29,6 +29,10 @@ path = "docs/specs"
 kind = "spec"
 
 [[folder]]
+path = "docs/tooling"
+kind = "tool"
+
+[[folder]]
 path = "docs/best-practices"
 kind = "rules"
 
@@ -116,6 +120,17 @@ stem_hint = "kebab-case"
 keys = ["description", "tags"]
 h2 = ["Rules", "Covers", "References?"]
 ordered = true
+
+[[kind]]
+name = "tool"
+ending = ".tool.md"
+folders = ["docs/tooling"]
+stem = '^[a-z0-9]+(-[a-z0-9]+)*$'
+stem_hint = "kebab-case matching tooling/<name>/ or bin/<name>, like doc-links"
+keys = ["description", "tags"]
+h2 = ["Synopsis", "Commands", "Options", "Exit codes", "Output", "Covers"]
+ordered = true
+closed = true
 
 [[kind]]
 name = "rules"

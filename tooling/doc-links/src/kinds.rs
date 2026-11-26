@@ -1018,6 +1018,7 @@ fn content(
             .lines
             .iter()
             .any(|(n, t)| *n > h.line && *n < end && !t.trim().is_empty())
+            || page.code_lines.iter().any(|n| *n > h.line && *n < end)
             || page
                 .outline
                 .iter()

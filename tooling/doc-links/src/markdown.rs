@@ -23,6 +23,8 @@ pub(crate) struct Page {
     pub(crate) outline: Vec<Heading>,
     /// Body lines with their line number; lines inside fenced or indented code are left out.
     pub(crate) lines: Vec<Located>,
+    /// Line numbers of non-empty lines inside fenced or indented code blocks.
+    pub(crate) code_lines: Vec<usize>,
     /// First line of each top-level paragraph, and whether an H2 precedes it.
     pub(crate) paragraphs: Vec<(usize, String, bool)>,
     /// Whether the first block after the H1 is a paragraph, once an H1 was seen.
@@ -391,6 +393,8 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
     for (i, text) in body.lines().enumerate() {
         if !blocks.code.get(i).copied().unwrap_or_default() {
             page.lines.push((base + i, text.to_owned()));
+        } else if !text.trim().is_empty() {
+            page.code_lines.push(base + i);
         }
     }
     for (i, line) in String::from_utf8_lossy(&mask).lines().enumerate() {

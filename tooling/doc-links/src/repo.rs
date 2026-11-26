@@ -61,6 +61,46 @@ pub(crate) fn matches_path(entry: &str, path: &str) -> bool {
     entry == path || (entry.ends_with('/') && path.starts_with(entry))
 }
 
+/// Return whether metadata describes an executable regular file.
+#[cfg(unix)]
+fn is_executable(meta: &fs::Metadata) -> bool {
+    use std::os::unix::fs::PermissionsExt;
+    meta.is_file() && (meta.permissions().mode() & 0o111 != 0)
+}
+
+/// Return whether metadata describes a regular file on non-Unix targets.
+#[cfg(not(unix))]
+fn is_executable(meta: &fs::Metadata) -> bool {
+    meta.is_file()
+}
+
+/// Collect workspace directories under `tooling/` and executable files under `bin/`.
+fn discover_tools(root: &Path) -> (BTreeSet<String>, BTreeSet<String>) {
+    let mut workspaces = BTreeSet::new();
+    if let Ok(entries) = fs::read_dir(root.join("tooling")) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir()
+                && (path.join("Cargo.toml").is_file() || path.join("package.json").is_file())
+                && let Some(name) = entry.file_name().to_str()
+            {
+                let _ = workspaces.insert(name.to_owned());
+            }
+        }
+    }
+    let mut bins = BTreeSet::new();
+    if let Ok(entries) = fs::read_dir(root.join("bin")) {
+        for entry in entries.flatten() {
+            if entry.metadata().is_ok_and(|m| is_executable(&m))
+                && let Some(name) = entry.file_name().to_str()
+            {
+                let _ = bins.insert(name.to_owned());
+            }
+        }
+    }
+    (workspaces, bins)
+}
+
 /// Decide which generated or private directories to prune before reading files.
 fn included(entry: &walkdir::DirEntry) -> bool {
     entry.depth() == 0
@@ -270,6 +310,88 @@ impl Repo {
         }
         self.validate_indexes(&nav);
         self.validate_citations();
+        self.validate_tools(root);
+    }
+
+    /// Check that a tool's `.tool.md` exists and lists `expected` under `## Covers`.
+    fn check_tool_doc(&mut self, owner: &str, name: &str, expected: &str, exact: bool) {
+        let doc = format!("docs/tooling/{name}.tool.md");
+        let Some(page) = self.pages.get(&doc) else {
+            self.findings.push(Finding::new(
+                owner,
+                1,
+                "E_TOOL_DOC",
+                format!("Create {doc} and add a row to docs/tooling/SKILL.md (INV-TOOLING-006)."),
+            ));
+            return;
+        };
+        let covered = page.covers.iter().flatten().any(|(_, p)| {
+            if exact {
+                p == expected
+            } else {
+                matches_path(p, expected)
+            }
+        });
+        if !covered {
+            self.findings.push(Finding::new(
+                &doc,
+                1,
+                "E_TOOL_COVERS",
+                format!("Add `{expected}` under ## Covers in {doc} (INV-TOOLING-006)."),
+            ));
+        }
+    }
+
+    /// Verify every tooling workspace and executable `bin/` entry point is registered, covered and documented.
+    /// spec: docs/repo/doc-links.md#what-check-verifies
+    /// INV-TOOLING-006
+    /// INV-TOOLING-007
+    fn validate_tools(&mut self, root: &Path) {
+        let (workspaces, bins) = discover_tools(root);
+        for name in &workspaces {
+            let readme_rel = format!("tooling/{name}/README.md");
+            if !fs::read_to_string(root.join(&readme_rel)).is_ok_and(|s| !s.trim().is_empty()) {
+                self.findings.push(Finding::new(
+                    &readme_rel,
+                    1,
+                    "E_TOOL_README",
+                    format!(
+                        "Create a non-empty {readme_rel} for humans (INV-TOOLING-007, docs/repo/writing.md#readme-files)."
+                    ),
+                ));
+            }
+            self.check_tool_doc(
+                &format!("tooling/{name}"),
+                name,
+                &format!("tooling/{name}/"),
+                true,
+            );
+        }
+        for name in &bins {
+            let expected = format!("bin/{name}");
+            self.check_tool_doc(&expected, name, &expected, false);
+        }
+        for file in self.pages.keys() {
+            if archived(file) || template(file) {
+                continue;
+            }
+            if let Some(name) = file
+                .strip_prefix("docs/tooling/")
+                .and_then(|s| s.strip_suffix(".tool.md"))
+                && !name.contains('/')
+                && !workspaces.contains(name)
+                && !bins.contains(name)
+            {
+                self.findings.push(Finding::new(
+                    file,
+                    1,
+                    "E_TOOL_ORPHAN",
+                    format!(
+                        "Remove orphan {file} or create tooling/{name}/ or bin/{name} (INV-TOOLING-006)."
+                    ),
+                ));
+            }
+        }
     }
 
     /// Check every page against its kind, ids across pages, the kinds page, and stale placeholders.

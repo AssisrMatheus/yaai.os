@@ -27,6 +27,7 @@ fn code(file: &str) -> bool {
                 "bin/",
                 ".agents/hooks/",
                 ".husky/",
+                ".github/",
             ]
             .iter()
             .any(|r| file.starts_with(r)))

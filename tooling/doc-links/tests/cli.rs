@@ -71,6 +71,18 @@ mod tests {
         serde_json::from_slice(&out.stdout).unwrap()
     }
 
+    /// Workflow citations must resolve just like citations in repository tools.
+    #[test]
+    fn workflow_citations_are_checked() {
+        let temp = fixture();
+        let workflows = temp.path().join(".github/workflows");
+        fs::create_dir_all(&workflows).unwrap();
+        fs::write(workflows.join("check.yml"), "# spec: docs/missing.md\n").unwrap();
+        let result = cli(temp.path(), &["check", "--json"]);
+        let findings = report(&result, 2);
+        assert!(findings.to_string().contains(".github/workflows/check.yml"));
+    }
+
     /// Exercise Markdown examples, both alias syntaxes, archives, anchors, rule and test resolution.
     #[test]
     fn clean_vault() {

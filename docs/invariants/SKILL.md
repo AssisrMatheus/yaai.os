@@ -12,12 +12,12 @@ Each invariant carries an immutable ID of the form `INV-<DOMAIN>-NNN` cited by c
 
 ## Which file to read
 
-| You want to | Read |
-| --- | --- |
-| Check product boundaries (no ads, no unrelated suggestions) | [[invariants/product.invariants]] |
-| Check docs-first, frontmatter, indexes, history, wikilinks, screens, and glossary rules | [[invariants/docs.invariants]] |
-| Check supported operating systems and shell assumptions | [[invariants/platform.invariants]] |
-| Check workspace kinds, import boundaries, and Rust-first language rules | [[invariants/structure.invariants]] |
-| Check CLI output, exit codes, and tooling performance rules | [[invariants/tooling.invariants]] |
-| Check structured logging rules across apps, packages, and tooling | [[invariants/logging.invariants]] |
-| Check `.agents/` single source, audience split, index routing, and code mode rules | [[invariants/agents.invariants]] |
+| You want to                                                                             | Read                                |
+| --------------------------------------------------------------------------------------- | ----------------------------------- |
+| Check product boundaries (no ads, no unrelated suggestions)                             | [[invariants/product.invariants]]   |
+| Check docs-first, frontmatter, indexes, history, wikilinks, screens, and glossary rules | [[invariants/docs.invariants]]      |
+| Check supported operating systems and shell assumptions                                 | [[invariants/platform.invariants]]  |
+| Check workspace kinds, import boundaries, and Rust-first language rules                 | [[invariants/structure.invariants]] |
+| Check CLI output, exit codes, and tooling performance rules                             | [[invariants/tooling.invariants]]   |
+| Check structured logging rules across apps, packages, and tooling                       | [[invariants/logging.invariants]]   |
+| Check `.agents/` single source, audience split, index routing, and code mode rules      | [[invariants/agents.invariants]]    |

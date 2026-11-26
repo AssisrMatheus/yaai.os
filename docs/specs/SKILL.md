@@ -21,7 +21,7 @@ No spec exists yet.
 
 ## Which file to read
 
-| You want to | Read |
-| --- | --- |
-| Write or change a spec page | [[repo/documentation#Add a page]] |
+| You want to                     | Read                                     |
+| ------------------------------- | ---------------------------------------- |
+| Write or change a spec page     | [[repo/documentation#Add a page]]        |
 | Cite a spec from code or a test | [[repo/doc-links#Citing docs from code]] |

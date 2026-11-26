@@ -55,12 +55,12 @@ fresh it must be._
 
 ## States
 
-| State | When | What the user sees |
-| --- | --- | --- |
-| Loading | `<condition>` | `<what is shown>` |
-| Empty | `<condition>` | `<what is shown and the action offered>` |
-| Error | `<condition>` | `<message and the recovery action>` |
-| Ready | `<condition>` | `<the view above>` |
+| State   | When          | What the user sees                       |
+| ------- | ------------- | ---------------------------------------- |
+| Loading | `<condition>` | `<what is shown>`                        |
+| Empty   | `<condition>` | `<what is shown and the action offered>` |
+| Error   | `<condition>` | `<message and the recovery action>`      |
+| Ready   | `<condition>` | `<the view above>`                       |
 
 ## Lifecycle
 
@@ -69,17 +69,17 @@ it keeps, what it releases._
 
 ## Props
 
-| Direction | Name | Meaning |
-| --- | --- | --- |
-| Receives | `<name>` | `<what the parent or the navigation passes in>` |
-| Returns | `<name>` | `<what the view hands back when it closes, if anything>` |
+| Direction | Name     | Meaning                                                  |
+| --------- | -------- | -------------------------------------------------------- |
+| Receives  | `<name>` | `<what the parent or the navigation passes in>`          |
+| Returns   | `<name>` | `<what the view hands back when it closes, if anything>` |
 
 ## Events
 
-| Direction | Event | Payload | When |
-| --- | --- | --- | --- |
-| Listens to | `<event>` | `<data>` | `<what the view does in response>` |
-| Fires | `<event>` | `<data>` | `<which interaction or state change fires it>` |
+| Direction  | Event     | Payload  | When                                           |
+| ---------- | --------- | -------- | ---------------------------------------------- |
+| Listens to | `<event>` | `<data>` | `<what the view does in response>`             |
+| Fires      | `<event>` | `<data>` | `<which interaction or state change fires it>` |
 
 ## Hooks and callbacks
 
@@ -111,12 +111,12 @@ _Link each named view by its wikilink once its doc exists._
 
 ## Input and accessibility
 
-| Input | Mapping |
-| --- | --- |
-| Remote | `<directions, OK, Back, Menu>` |
-| Keyboard | `<keys>` |
-| Gamepad | `<buttons>` |
-| Touch and pointer | `<gestures>` |
+| Input             | Mapping                        |
+| ----------------- | ------------------------------ |
+| Remote            | `<directions, OK, Back, Menu>` |
+| Keyboard          | `<keys>`                       |
+| Gamepad           | `<buttons>`                    |
+| Touch and pointer | `<gestures>`                   |
 
 _Where focus starts, how it moves and wraps, what Back does at the edge, and what is read aloud for each focused
 element. Every action reachable by touch is reachable by remote, and the reverse._

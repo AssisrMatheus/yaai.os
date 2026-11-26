@@ -11,7 +11,7 @@ yet; this scope grows as the user decides them.
 
 ## Which file to read
 
-| You want to | Read |
-| --- | --- |
+| You want to                                                     | Read               |
+| --------------------------------------------------------------- | ------------------ |
 | Know what yaai.os is, who it serves and what it refuses to show | [[product/vision]] |
-| Use a product term (home OS, media center, screen, subview) | [[glossary]] |
+| Use a product term (home OS, media center, screen, subview)     | [[glossary]]       |

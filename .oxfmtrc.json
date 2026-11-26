@@ -3,5 +3,11 @@
   "printWidth": 120,
   "singleQuote": true,
   "trailingComma": "none",
-  "ignorePatterns": ["docs/**/*.md", "*.md", "pnpm-lock.yaml", "vendor/**", "graphify-out/**"]
+  "ignorePatterns": [
+    "pnpm-lock.yaml",
+    "vendor/**",
+    "graphify-out/**",
+    ".agents/skills/graphify/**",
+    "**/tests/fixtures/**"
+  ]
 }

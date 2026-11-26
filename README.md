@@ -32,15 +32,15 @@ GRAPHIFY_BACKEND=none graphify update .
 
 ## Layout
 
-| Folder | What is in it |
-| --- | --- |
-| `apps/` | Things that ship |
-| `packages/` | Shared code |
-| `tooling/` | Command-line tools for working on the repo |
-| `bin/` | Short scripts that run those tools |
-| `vendor/` | Outside code, read-only, not committed |
-| `docs/` | The rules, decisions and specs. Open it in Obsidian. |
-| `.agents/` | Skills and hooks for AI agents |
+| Folder      | What is in it                                        |
+| ----------- | ---------------------------------------------------- |
+| `apps/`     | Things that ship                                     |
+| `packages/` | Shared code                                          |
+| `tooling/`  | Command-line tools for working on the repo           |
+| `bin/`      | Short scripts that run those tools                   |
+| `vendor/`   | Outside code, read-only, not committed               |
+| `docs/`     | The rules, decisions and specs. Open it in Obsidian. |
+| `.agents/`  | Skills and hooks for AI agents                       |
 
 ## How we work
 

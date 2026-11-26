@@ -16,11 +16,11 @@ you report is **blocking**: fix it or justify it before you report the work done
 
 First match wins:
 
-| Invocation | Mode | Scope |
-| --- | --- | --- |
-| Your own change (the default before reporting done) | `changes` | `git status`, `git diff`, `git diff --staged` |
-| A PR number | `pr` | `gh pr diff <n>` and `gh pr view <n> --json title,body,baseRefName` |
-| A path | `path` | `git ls-files <path>` |
+| Invocation                                          | Mode      | Scope                                                               |
+| --------------------------------------------------- | --------- | ------------------------------------------------------------------- |
+| Your own change (the default before reporting done) | `changes` | `git status`, `git diff`, `git diff --staged`                       |
+| A PR number                                         | `pr`      | `gh pr diff <n>` and `gh pr view <n> --json title,body,baseRefName` |
+| A path                                              | `path`    | `git ls-files <path>`                                               |
 
 Done when you hold the list of changed code files and, for each, what the change does.
 

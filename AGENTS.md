@@ -46,17 +46,17 @@ Details for each: [`docs/repo/SKILL.md`](docs/repo/SKILL.md).
 
 ## Skills
 
-| Skill | When |
-| --- | --- |
+| Skill              | When                                                                                |
+| ------------------ | ----------------------------------------------------------------------------------- |
 | `yaai-code-review` | **Mandatory** before reporting done any change to code, shell, hooks or tool config |
-| `yaai-data-review` | Schema, migration, seed, query or transaction work, once a data store exists |
-| `yaai-workflow` | Any task that changes behaviour, rules, screens or code |
-| `yaai-doc-change` | Creating or changing anything under `docs/` |
-| `yaai-screen` | Adding, changing or implementing a screen or subview |
-| `yaai-tooling` | Before a one-off script, or adding or changing a tool or `bin/` entry point |
-| `yaai-delegate` | Splitting work across sub-agents or asking for black-box verification |
-| `graphify` | Questions about the codebase, its structure or relationships |
-| `turborepo` | `turbo.json`, task pipelines, caching, filtering |
+| `yaai-data-review` | Schema, migration, seed, query or transaction work, once a data store exists        |
+| `yaai-workflow`    | Any task that changes behaviour, rules, screens or code                             |
+| `yaai-doc-change`  | Creating or changing anything under `docs/`                                         |
+| `yaai-screen`      | Adding, changing or implementing a screen or subview                                |
+| `yaai-tooling`     | Before a one-off script, or adding or changing a tool or `bin/` entry point         |
+| `yaai-delegate`    | Splitting work across sub-agents or asking for black-box verification               |
+| `graphify`         | Questions about the codebase, its structure or relationships                        |
+| `turborepo`        | `turbo.json`, task pipelines, caching, filtering                                    |
 
 ## Git
 

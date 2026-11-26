@@ -3,6 +3,13 @@
 yaai.os ("yet another ai os") is a home OS: the homepage of a media center, with no ads and no unrelated suggested
 content. Rust first; TypeScript with oxfmt and oxlint otherwise. Unix only (macOS, Linux, WSL).
 
+**Mandatory for every line of code:**
+
+1. Follow the best practices from the first line: open [`docs/best-practices/SKILL.md`](docs/best-practices/SKILL.md)
+   and the rule page for what you are writing before you write it.
+2. Before reporting a code change done, run the `yaai-code-review` skill on your own diff. Its findings are blocking:
+   fix or justify each one.
+
 ## Docs come first
 
 `docs/` is the source of truth and code is its reproduction. When code and a doc disagree, the code is wrong. A doc
@@ -33,8 +40,23 @@ stop; a hook that exits 2 tells you what to do next.
 - **rtk** condenses command output. Treat it as complete; `rtk recall <hash>` restores a truncated result.
 - **graphify** answers "where is X" and "what calls Y". Ask it before grepping: `graphify query "<question>"`.
 - **psychoscript** is the code mode: batch independent tool calls in one program.
+- **Repository tools** live in [`docs/tooling/SKILL.md`](docs/tooling/SKILL.md): check it before writing a one-off command.
 
 Details for each: [`docs/repo/SKILL.md`](docs/repo/SKILL.md).
+
+## Skills
+
+| Skill | When |
+| --- | --- |
+| `yaai-code-review` | **Mandatory** before reporting done any change to code, shell, hooks or tool config |
+| `yaai-data-review` | Schema, migration, seed, query or transaction work, once a data store exists |
+| `yaai-workflow` | Any task that changes behaviour, rules, screens or code |
+| `yaai-doc-change` | Creating or changing anything under `docs/` |
+| `yaai-screen` | Adding, changing or implementing a screen or subview |
+| `yaai-tooling` | Before a one-off script, or adding or changing a tool or `bin/` entry point |
+| `yaai-delegate` | Splitting work across sub-agents or asking for black-box verification |
+| `graphify` | Questions about the codebase, its structure or relationships |
+| `turborepo` | `turbo.json`, task pipelines, caching, filtering |
 
 ## Git
 

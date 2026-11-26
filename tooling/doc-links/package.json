@@ -1,0 +1,11 @@
+{
+  "name": "@yaai/doc-links",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "cargo build --release --locked -p doc-links",
+    "test": "cargo test --locked -p doc-links",
+    "lint": "cargo fmt --check -p doc-links && cargo clippy --locked -p doc-links --all-targets -- -D warnings",
+    "start": "cargo run --locked --quiet -p doc-links --"
+  }
+}

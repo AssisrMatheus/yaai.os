@@ -1,0 +1,16 @@
+#!/bin/sh
+# spec: docs/repo/doc-links.md#commands
+set -eu
+if ! command -v cargo >/dev/null 2>&1; then
+    echo 'doc-links skipped: install cargo to build the checker.' >&2
+    exit 0
+fi
+root=$(CDPATH='' cd -P -- "$(dirname -- "$0")/.." && pwd)
+for mode in release debug; do
+    binary=$root/target/$mode/doc-links
+    if [ -x "$binary" ] && [ -z "$(find "$root/tooling/doc-links/src" "$root/tooling/doc-links/Cargo.toml" "$root/Cargo.toml" "$root/Cargo.lock" "$root/rust-toolchain.toml" -newer "$binary" -print)" ]; then
+        exec "$binary" "$@"
+    fi
+done
+(cd "$root" && cargo build --locked --quiet --release -p doc-links --target-dir "$root/target") || exit 1
+exec "$root/target/release/doc-links" "$@"

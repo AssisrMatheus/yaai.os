@@ -1,0 +1,72 @@
+{
+  "nodes": [
+    {
+      "file_type": "document",
+      "id": "docs_adr_0013_links",
+      "label": "0013-links.md",
+      "node_kind": "page",
+      "source_file": "docs/adr/0013-links.md",
+      "source_location": "L1"
+    },
+    {
+      "file_type": "document",
+      "id": "docs_invariants_docs_inv_docs_007_links",
+      "label": "INV-DOCS-007: Links",
+      "node_kind": "heading",
+      "source_file": "docs/invariants/docs.md",
+      "source_location": "L6"
+    },
+    {
+      "file_type": "document",
+      "id": "docs_screens_home",
+      "label": "home.md",
+      "node_kind": "page",
+      "source_file": "docs/screens/home.md",
+      "source_location": "L1"
+    },
+    {
+      "file_type": "code",
+      "id": "apps_main",
+      "label": "main.rs",
+      "source_file": "apps/main.rs",
+      "source_location": "L1"
+    },
+    {
+      "file_type": "code",
+      "id": "apps_main_links_resolve",
+      "label": "links_resolve()",
+      "source_file": "apps/main.rs",
+      "source_location": "L12"
+    },
+    {
+      "file_type": "code",
+      "id": "apps_main_main",
+      "label": "main()",
+      "source_file": "apps/main.rs",
+      "source_location": "L6"
+    },
+    {
+      "file_type": "document",
+      "id": "docs_repo_doc_links_commands",
+      "label": "Commands",
+      "node_kind": "heading",
+      "source_file": "docs/repo/doc-links.md",
+      "source_location": "L6"
+    },
+    {
+      "file_type": "document",
+      "id": "docs_repo_doc_links_covers",
+      "label": "Covers",
+      "node_kind": "heading",
+      "source_file": "docs/repo/doc-links.md",
+      "source_location": "L18"
+    }
+  ],
+  "links": [
+    {
+      "source": "apps_main",
+      "target": "apps_main_main",
+      "relation": "contains"
+    }
+  ]
+}

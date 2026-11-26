@@ -1,0 +1,109 @@
+{
+  "plugins": ["typescript", "unicorn", "oxc", "jsx-a11y", "promise", "import"],
+  "jsPlugins": ["./plugin.ts"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "warn"
+  },
+  "rules": {
+    "typescript/no-explicit-any": "error",
+    "typescript/consistent-type-definitions": ["error", "type"],
+    "yaai/no-enum": "error",
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "inline-type-imports"
+      }
+    ],
+    "typescript/prefer-nullish-coalescing": "error",
+    "typescript/require-await": "error",
+    "promise/prefer-await-to-then": "error",
+    "typescript/no-floating-promises": "error",
+    "unicorn/no-process-exit": "error",
+    "typescript/no-non-null-assertion": "error",
+    "jsx-a11y/no-static-element-interactions": "error",
+    "jsx-a11y/click-events-have-key-events": "error",
+    "jsx-a11y/control-has-associated-label": "error",
+    "jsx-a11y/label-has-associated-control": "error",
+    "jsx-a11y/alt-text": "error",
+    "jsx-a11y/iframe-has-title": "error",
+    "jsx-a11y/no-aria-hidden-on-focusable": "error",
+    "jsx-a11y/tabindex-no-positive": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "eslint/no-console": "error",
+    "oxc/no-barrel-file": "error",
+    "yaai/suppression-reason": "error",
+    "yaai/transition-properties": "error",
+    "yaai/translated-copy": "error",
+    "yaai/visual-token": "error",
+    "yaai/verify-tls": "error",
+    "yaai/button-type": "error",
+    "typescript/no-unsafe-type-assertion": "error",
+    "yaai/workspace-imports": "error",
+    "typescript/use-unknown-in-catch-callback-variable": "error",
+    "typescript/consistent-type-assertions": [
+      "error",
+      {
+        "objectLiteralTypeAssertions": "never"
+      }
+    ],
+    "eslint/no-param-reassign": [
+      "error",
+      {
+        "props": true
+      }
+    ],
+    "yaai/env-template": "error",
+    "yaai/task-env": "error",
+    "yaai/require-jsdoc": [
+      "error",
+      {
+        "require": {
+          "FunctionDeclaration": true,
+          "MethodDefinition": true
+        }
+      }
+    ],
+    "yaai/require-description": "error",
+    "typescript/no-inferrable-types": "error",
+    "typescript/prefer-optional-chain": "error",
+    "eslint/no-unused-vars": "error",
+    "typescript/only-throw-error": "error",
+    "unicorn/no-useless-promise-resolve-reject": "error",
+    "eslint/no-restricted-properties": [
+      "error",
+      {
+        "object": "Date",
+        "property": "now",
+        "message": "Inject a clock or seeded generator at the computation boundary."
+      },
+      {
+        "object": "performance",
+        "property": "now",
+        "message": "Inject a clock or seeded generator at the computation boundary."
+      },
+      {
+        "object": "Math",
+        "property": "random",
+        "message": "Inject a clock or seeded generator at the computation boundary."
+      }
+    ],
+    "yaai/boolean-state": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "apps/**/*.ts",
+        "apps/**/*.tsx",
+        "packages/**/*.ts",
+        "packages/**/*.tsx",
+        "tooling/**/*.ts",
+        ".agents/hooks/**/*.ts"
+      ],
+      "rules": {
+        "import/no-default-export": "error"
+      }
+    }
+  ]
+}

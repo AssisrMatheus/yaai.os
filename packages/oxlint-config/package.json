@@ -1,0 +1,21 @@
+{
+  "name": "@yaai/oxlint-config",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./config.json": "./config.json",
+    "./plugin": "./plugin.ts"
+  },
+  "scripts": {
+    "test": "bun test",
+    "lint": "../../bin/lint packages/oxlint-config"
+  },
+  "dependencies": {
+    "@yaai/lints": "workspace:*",
+    "eslint-plugin-jsdoc": "^65.5.5",
+    "oxc-parser": "^0.160.0"
+  },
+  "devDependencies": {
+    "oxlint": "^1.95.0"
+  }
+}

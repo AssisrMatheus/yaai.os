@@ -4,7 +4,7 @@ Short version: write the doc first, then the code. Small commits. Let the checks
 
 ## Set up
 
-You need macOS, Linux or WSL, with Node 24+, pnpm, bun and Rust.
+You need macOS, Linux or WSL to work on the repo, with Node 24+, pnpm, bun and Rust.
 
 ```sh
 pnpm install

@@ -1,20 +1,21 @@
 ---
-description: Which operating systems the repository supports and the tools needed to work in it.
+description: Which operating systems you can develop this repository on, and the tools needed to work in it.
 tags: [repo, platforms]
 ---
 
 # Platforms and prerequisites
 
-INV-PLATFORM-001, ADR 0003: Unix only.
+INV-PLATFORM-001, ADR 0003: the development environment is Unix only. This page is about working on the repository. Where the
+product runs is undecided: the app may support native Windows, so shipped code does not assume Unix.
 
-| Supported | Not supported |
+| Develop on | Not supported for development |
 | --- | --- |
 | macOS | Native Windows |
 | Linux (Debian, Arch, others) | |
 | WSL under Windows | |
 
 Scripts, hooks and tooling may rely on POSIX `/bin/sh`, symlinks (`.claude/skills` and `.agents/mcp_config.json` are
-symlinks) and Unix paths. No native Windows code path is written or tested. Only Linux was exercised during set-up;
+symlinks) and Unix paths. No native Windows code path is written or tested for them. Only Linux was exercised during set-up;
 macOS and WSL are unverified.
 
 ## Prerequisites

@@ -1,7 +1,8 @@
 # AGENTS.md
 
 yaai.os ("yet another ai os") is a home OS: the homepage of a media center, with no ads and no unrelated suggested
-content. Rust first; TypeScript with oxfmt and oxlint otherwise. Unix only (macOS, Linux, WSL).
+content. Rust first; TypeScript with oxfmt and oxlint otherwise. Development is Unix only (macOS, Linux, WSL);
+the app's own platforms are undecided and may include native Windows.
 
 **Mandatory for every line of code:**
 

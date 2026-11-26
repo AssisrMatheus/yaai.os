@@ -1,17 +1,18 @@
 ---
-description: Decide to target Unix environments only (macOS, Linux, WSL) and leave native Windows unsupported.
+description: Decide that developing in this repository is Unix only (macOS, Linux, WSL), without deciding where the product runs.
 tags: [adr, platform]
 status: accepted
 ---
 
-# Unix only
+# Unix-only development environment
 
-On 2026-11-26 the owner decided to support Unix environments only — macOS, Linux (Debian, Arch, and other distributions), and WSL under Windows — and leave native Windows unsupported (`INV-PLATFORM-001`, [[repo/platforms]]). Relying on POSIX `/bin/sh`, symlinks, and standard Unix tools removes cross-shell compatibility work from every hook, wrapper, and CLI.
+On 2026-11-26 the owner decided that this repository is developed on Unix environments only — macOS, Linux (Debian, Arch, and other distributions), and WSL under Windows — and that native Windows is unsupported for development (`INV-PLATFORM-001`, [[repo/platforms]]). Relying on POSIX `/bin/sh`, symlinks, and standard Unix tools removes cross-shell compatibility work from every hook, wrapper, and CLI. The decision is about development only: the app that this repository builds may still support native Windows, and its target platforms are a separate decision that has not been made.
 
 ## Considered options
 
-- **Native Windows support alongside Unix**: rejected because maintaining PowerShell/batch equivalents, non-symlink fallbacks, and Windows path handling slows every tooling and hook change for an unsupported target.
+- **Native Windows as a development environment alongside Unix**: rejected because maintaining PowerShell/batch equivalents, non-symlink fallbacks, and Windows path handling slows every tooling and hook change.
 
 ## Consequences
 
-- Wrappers under `bin/` and hooks may assume POSIX shell and standard Unix semantics.
+- Wrappers under `bin/`, hooks and tools under `tooling/` may assume POSIX shell and standard Unix semantics.
+- Code that ships in an app or in a package an app uses must not assume Unix on the strength of this decision.

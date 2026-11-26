@@ -5,8 +5,8 @@ tags: [repo, platforms]
 
 # Platforms and prerequisites
 
-INV-PLATFORM-001, ADR 0003: the development environment is Unix only. This page is about working on the repository. Where the
-product runs is undecided: the app may support native Windows, so shipped code does not assume Unix.
+INV-PLATFORM-001, ADR 0003: the development environment is Unix only. This page is about working on the repository. The app itself
+is meant to support native Windows one day, so shipped code does not assume Unix.
 
 | Develop on | Not supported for development |
 | --- | --- |

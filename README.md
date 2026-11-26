@@ -11,7 +11,7 @@ Early. The repository, its docs and its agent set-up exist. The app does not yet
 ## Requirements
 
 - To work on this repo: macOS, Linux, or WSL. Native Windows is not supported for development.
-  (The app itself may run on Windows later. That is not decided yet.)
+  (The app itself will support Windows one day.)
 - Node 24+, pnpm, bun, Rust.
 - Optional, for AI agents: [rtk](https://github.com/rtk-ai/rtk) and [graphify](https://github.com/Graphify-Labs/graphify).
 

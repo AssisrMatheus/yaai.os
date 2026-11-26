@@ -38,8 +38,8 @@ pub(crate) fn scan(file: &str, content: &str) -> Vec<Citation> {
             && let (Some(domain), Some(number)) = (caps.get(1), caps.get(2))
         {
             out.push(Citation {
-                line: i + 1,
-                item: Some(i + 1),
+                line: i.saturating_add(1),
+                item: Some(i.saturating_add(1)),
                 test,
                 target: format!(
                     "INV-{}-{}",
@@ -63,7 +63,7 @@ pub(crate) fn scan(file: &str, content: &str) -> Vec<Citation> {
         for captures in pattern.captures_iter(line) {
             if let Some(target) = captures.iter().skip(1).flatten().next() {
                 out.push(Citation {
-                    line: i + 1,
+                    line: i.saturating_add(1),
                     item: item_after(&lines, i),
                     test,
                     target: target
@@ -98,7 +98,7 @@ impl TestBlock {
             }
             let module = lines
                 .iter()
-                .skip(index + 1)
+                .skip(index.saturating_add(1))
                 .map(|l| l.trim())
                 .find(|l| !l.starts_with("#["))
                 .is_some_and(|l| l.contains("mod ") && l.ends_with('{'));
@@ -114,7 +114,7 @@ impl TestBlock {
         for c in line.chars() {
             match c {
                 '{' => {
-                    self.depth += 1;
+                    self.depth = self.depth.saturating_add(1);
                     self.opened = true;
                 }
                 '}' => self.depth = self.depth.saturating_sub(1),
@@ -142,7 +142,12 @@ fn item_after(lines: &[&str], index: usize) -> Option<usize> {
     if !is_comment(here) || here.starts_with("//!") || here.starts_with("/*!") {
         return None;
     }
-    for (offset, line) in lines.iter().enumerate().skip(index + 1).take(40) {
+    for (offset, line) in lines
+        .iter()
+        .enumerate()
+        .skip(index.saturating_add(1))
+        .take(40)
+    {
         let trimmed = line.trim_start();
         if trimmed.is_empty() {
             return None;
@@ -150,7 +155,7 @@ fn item_after(lines: &[&str], index: usize) -> Option<usize> {
         if is_comment(trimmed) || trimmed.starts_with("#[") || trimmed.starts_with('@') {
             continue;
         }
-        return Some(offset + 1);
+        return Some(offset.saturating_add(1));
     }
     None
 }

@@ -1,6 +1,7 @@
 //! Check code and documentation relationships from an agent-friendly CLI.
 //! spec: docs/repo/doc-links.md#commands
 use clap::{Parser, Subcommand, error::ErrorKind};
+use jiff::Timestamp;
 use serde::Serialize;
 use serde_json::{Value, json};
 use std::{
@@ -8,7 +9,7 @@ use std::{
     io::{self, Write},
     path::{Path, PathBuf},
     process::ExitCode,
-    time::{Instant, SystemTime},
+    time::Instant,
 };
 
 /// Cache each static pattern at its call site.
@@ -169,10 +170,15 @@ fn log(args: &Args, scope: &str, level: &str, event: &str, start: Instant, count
             )
         })
     {
+        #[expect(
+            clippy::disallowed_methods,
+            reason = "Logger timestamps external events at the output boundary."
+        )]
+        let timestamp = Timestamp::now();
         let _ = writeln!(
             io::stderr(),
             "{}",
-            json!({"timestamp":humantime::format_rfc3339_millis(SystemTime::now()).to_string(),"level":level,"scope":scope,"event":event,"operation":args.command.name(),"correlation_id":std::process::id(),"elapsed_ms":start.elapsed().as_millis(),"count":count})
+            json!({"timestamp":format!("{timestamp:.3}"),"level":level,"scope":scope,"event":event,"operation":args.command.name(),"correlation_id":std::process::id(),"elapsed_ms":start.elapsed().as_millis(),"count":count})
         );
     }
 }
@@ -206,7 +212,7 @@ fn render(args: &Args, report: &Report) -> io::Result<ExitCode> {
     let mut stderr = io::stderr().lock();
     let failures = report.findings.len();
     let name = args.command.name();
-    let total = failures + report.rows.len();
+    let total = failures.saturating_add(report.rows.len());
     let shown = total.min(args.limit);
     let status = if failures == 0 { "ok" } else { "blocked" };
     let summary = format!(
@@ -392,6 +398,10 @@ fn main() -> ExitCode {
             };
         }
     };
+    #[expect(
+        clippy::disallowed_methods,
+        reason = "The CLI entry supplies the start time to the command."
+    )]
     let start = Instant::now();
     run(&args, start).unwrap_or_else(|e| {
         log(&args, "doc-links.cli", "error", "command failed", start, 1);

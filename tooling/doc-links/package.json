@@ -5,7 +5,7 @@
   "scripts": {
     "build": "cargo build --release --locked -p doc-links",
     "test": "cargo test --locked -p doc-links",
-    "lint": "cargo fmt --check -p doc-links && cargo clippy --locked -p doc-links --all-targets -- -D warnings",
+    "lint": "../../bin/lint tooling/doc-links",
     "start": "cargo run --locked --quiet -p doc-links --"
   }
 }

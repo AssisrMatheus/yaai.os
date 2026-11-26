@@ -162,7 +162,7 @@ pub(crate) fn inject(graph: &mut Value, links: &[Link]) -> InjectStats {
     let mut new_edges = Vec::new();
     for link in links {
         let (Some(from), Some(to)) = (index.id_of(&link.from), index.id_of(&link.to)) else {
-            stats.unplaced += 1;
+            stats.unplaced = stats.unplaced.saturating_add(1);
             continue;
         };
         if from == to || !seen.insert((from.to_owned(), to.to_owned(), link.relation)) {
@@ -189,7 +189,7 @@ pub(crate) fn inject(graph: &mut Value, links: &[Link]) -> InjectStats {
     if let Some(edges) = graph.get_mut(key).and_then(Value::as_array_mut) {
         let before = edges.len();
         edges.retain(|edge| edge.get("_origin").and_then(Value::as_str) != Some(ORIGIN));
-        stats.removed = before - edges.len();
+        stats.removed = before.saturating_sub(edges.len());
         stats.added = new_edges.len();
         edges.extend(new_edges);
     }

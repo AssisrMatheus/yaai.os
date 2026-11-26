@@ -3,7 +3,7 @@
 
 use crate::{Finding, archived, regex};
 use pulldown_cmark::{Event, HeadingLevel, Parser, Tag, TagEnd};
-use serde_yaml_ng::Value;
+use serde_json::Value;
 use std::collections::BTreeSet;
 
 /// A reference with its original location.
@@ -93,7 +93,7 @@ fn frontmatter(file: &str, text: &str, page: &mut Page, out: &mut Vec<Finding>) 
     for (i, line) in lines.enumerate() {
         if line.trim_end() == "---" {
             let yaml = text.get(start.len()..end).unwrap_or_default();
-            if i + 2 > 12 {
+            if i > 10 {
                 out.push(Finding::new(
                     file,
                     1,
@@ -101,21 +101,21 @@ fn frontmatter(file: &str, text: &str, page: &mut Page, out: &mut Vec<Finding>) 
                     "Shorten the frontmatter to 12 lines including delimiters.",
                 ));
             }
-            match serde_yaml_ng::from_str::<Value>(yaml) {
+            match noyalib::from_str::<Value>(yaml) {
                 Ok(value) => {
                     record_meta(&value, yaml, page);
                     validate_meta(file, &value, yaml, page, out);
                 }
                 Err(e) => out.push(Finding::new(
                     file,
-                    e.location().map_or(1, |l| l.line() + 1),
+                    e.location().map_or(1, |l| l.line().saturating_add(1)),
                     "E_YAML",
                     "Correct the YAML syntax in the frontmatter.",
                 )),
             }
-            return end + line.len();
+            return end.saturating_add(line.len());
         }
-        end += line.len();
+        end = end.saturating_add(line.len());
     }
     out.push(Finding::new(
         file,
@@ -128,17 +128,17 @@ fn frontmatter(file: &str, text: &str, page: &mut Page, out: &mut Vec<Finding>) 
 
 /// Keep each top-level key with its line for the kind checks.
 fn record_meta(v: &Value, yaml: &str, page: &mut Page) {
-    let Some(map) = v.as_mapping() else { return };
+    let Some(map) = v.as_object() else { return };
     for (key, value) in map {
-        let Some(key) = key.as_str() else { continue };
+        let key = key.as_str();
         let line = yaml
             .lines()
             .position(|l| l.strip_prefix(key).is_some_and(|r| r.starts_with(':')))
-            .map_or(1, |i| i + 2);
+            .map_or(1, |i| i.saturating_add(2));
         let text = match value {
             Value::String(s) => Some(s.trim().to_owned()),
             Value::Number(n) => Some(n.to_string()),
-            _ => None,
+            Value::Null | Value::Bool(_) | Value::Array(_) | Value::Object(_) => None,
         };
         page.meta.push((line, key.to_owned(), text));
     }
@@ -168,7 +168,7 @@ fn validate_meta(file: &str, v: &Value, yaml: &str, page: &mut Page, out: &mut V
             && !raw.contains("]]")
             && destination(file, raw).0 != file
         {
-            page.wiki.push((line + 2, raw.to_owned()));
+            page.wiki.push((line.saturating_add(2), raw.to_owned()));
         } else {
             issue("Set superseded_by to one quoted wikilink to the replacement page.");
         }
@@ -183,7 +183,7 @@ fn validate_meta(file: &str, v: &Value, yaml: &str, page: &mut Page, out: &mut V
     if length == 0 || length > limit {
         issue(&format!("Write a description of 1 to {limit} characters."));
     }
-    if !v.get("tags").is_some_and(Value::is_sequence) {
+    if !v.get("tags").is_some_and(Value::is_array) {
         issue("Set tags to a YAML list.");
     }
 }
@@ -192,9 +192,9 @@ fn validate_meta(file: &str, v: &Value, yaml: &str, page: &mut Page, out: &mut V
 fn unique_slug(title: &str, seen: &mut BTreeSet<String>) -> String {
     let stem = github_slug(title);
     let mut slug = stem.clone();
-    let mut suffix = 0;
+    let mut suffix = 0_usize;
     while !seen.insert(slug.clone()) {
-        suffix += 1;
+        suffix = suffix.saturating_add(1);
         slug = format!("{stem}-{suffix}");
     }
     slug
@@ -272,7 +272,7 @@ impl Blocks {
             Event::Start(
                 Tag::List(_) | Tag::BlockQuote(_) | Tag::Table(_) | Tag::FootnoteDefinition(_),
             ) => {
-                self.depth += 1;
+                self.depth = self.depth.saturating_add(1);
             }
             Event::End(
                 TagEnd::List(_)
@@ -285,7 +285,12 @@ impl Blocks {
             Event::Start(Tag::CodeBlock(_)) => {
                 let first = newlines.partition_point(|p| *p < range.start);
                 let last = newlines.partition_point(|p| *p < range.end.saturating_sub(1));
-                for flag in self.code.iter_mut().take(last + 1).skip(first) {
+                for flag in self
+                    .code
+                    .iter_mut()
+                    .take(last.saturating_add(1))
+                    .skip(first)
+                {
                     *flag = true;
                 }
             }
@@ -297,7 +302,19 @@ impl Blocks {
                 let under_h2 = page.outline.iter().any(|h| h.level == 2);
                 page.paragraphs.push((line, first.to_owned(), under_h2));
             }
-            _ => {}
+            Event::Start(_)
+            | Event::End(_)
+            | Event::Text(_)
+            | Event::Code(_)
+            | Event::InlineMath(_)
+            | Event::DisplayMath(_)
+            | Event::Html(_)
+            | Event::InlineHtml(_)
+            | Event::FootnoteReference(_)
+            | Event::SoftBreak
+            | Event::HardBreak
+            | Event::Rule
+            | Event::TaskListMarker(_) => {}
         }
     }
 }
@@ -311,7 +328,12 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
         0
     };
     let body = text.get(offset..).unwrap_or_default();
-    let base = text.get(..offset).unwrap_or_default().lines().count() + 1;
+    let base = text
+        .get(..offset)
+        .unwrap_or_default()
+        .lines()
+        .count()
+        .saturating_add(1);
     let newlines: Vec<_> = body.match_indices('\n').map(|(i, _)| i).collect();
     let mut mask = body.as_bytes().to_vec();
     let mut heading = None;
@@ -320,11 +342,11 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
     let mut compact = false;
     let mut seen = BTreeSet::new();
     let mut blocks = Blocks {
-        code: vec![false; newlines.len() + 1],
+        code: vec![false; newlines.len().saturating_add(1)],
         ..Blocks::default()
     };
     for (ev, range) in Parser::new(body).into_offset_iter() {
-        let line = base + newlines.partition_point(|p| *p < range.start);
+        let line = base.saturating_add(newlines.partition_point(|p| *p < range.start));
         blocks.observe(&ev, &range, line, body, &newlines, &mut page);
         match &ev {
             Event::Start(Tag::Paragraph) => {
@@ -378,31 +400,54 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
                     "Link to the current replacement page.",
                 ));
             }
-            _ => {}
+            Event::Start(_)
+            | Event::End(_)
+            | Event::Text(_)
+            | Event::Code(_)
+            | Event::InlineMath(_)
+            | Event::DisplayMath(_)
+            | Event::Html(_)
+            | Event::InlineHtml(_)
+            | Event::FootnoteReference(_)
+            | Event::SoftBreak
+            | Event::HardBreak
+            | Event::Rule
+            | Event::TaskListMarker(_) => {}
         }
-        if matches!(ev, Event::Code(_) | Event::Start(Tag::CodeBlock(_)))
-            && let Some(bytes) = mask.get_mut(range)
-        {
-            for b in bytes {
-                if *b != b'\n' {
-                    *b = b' ';
-                }
-            }
-        }
+        mask_code(&ev, &mut mask, range);
     }
+    record_body_lines(&mut page, body, base, &blocks.code, &mask);
+    page
+}
+
+/// Record physical lines and links outside fenced code.
+fn record_body_lines(page: &mut Page, body: &str, base: usize, code: &[bool], mask: &[u8]) {
     for (i, text) in body.lines().enumerate() {
-        if !blocks.code.get(i).copied().unwrap_or_default() {
-            page.lines.push((base + i, text.to_owned()));
+        if !code.get(i).copied().unwrap_or_default() {
+            page.lines.push((base.saturating_add(i), text.to_owned()));
         } else if !text.trim().is_empty() {
-            page.code_lines.push(base + i);
+            page.code_lines.push(base.saturating_add(i));
         }
     }
-    for (i, line) in String::from_utf8_lossy(&mask).lines().enumerate() {
+    for (i, line) in String::from_utf8_lossy(mask).lines().enumerate() {
         for caps in regex!(r"\[\[([^\[\]\n]+)\]\]").captures_iter(line) {
             if let Some(raw) = caps.get(1) {
-                page.wiki.push((base + i, raw.as_str().to_owned()));
+                page.wiki
+                    .push((base.saturating_add(i), raw.as_str().to_owned()));
             }
         }
     }
-    page
+}
+
+/// Blank inline and block code while retaining byte and line offsets.
+fn mask_code(ev: &Event<'_>, mask: &mut [u8], range: std::ops::Range<usize>) {
+    if matches!(ev, Event::Code(_) | Event::Start(Tag::CodeBlock(_)))
+        && let Some(bytes) = mask.get_mut(range)
+    {
+        for b in bytes {
+            if *b != b'\n' {
+                *b = b' ';
+            }
+        }
+    }
 }

@@ -764,7 +764,7 @@ impl Config {
             }
             let end = page
                 .outline
-                .get(i + 1..)
+                .get(i.saturating_add(1)..)
                 .and_then(|rest| rest.iter().find(|n| n.level <= items.level))
                 .map_or(usize::MAX, |n| n.line);
             let body: Vec<&str> = page
@@ -983,7 +983,7 @@ fn missing(
             kind.h2
                 .iter()
                 .enumerate()
-                .skip(at + 1)
+                .skip(at.saturating_add(1))
                 .find_map(|(i, s)| Some((near(&i)?, s)))
                 .map_or_else(
                     || (line, "after the H1".to_owned()),
@@ -1013,7 +1013,7 @@ fn content(
         if h.text == "Covers" || index(&h.text).is_none() {
             continue;
         }
-        let end = h2.get(i + 1).map_or(usize::MAX, |n| n.line);
+        let end = h2.get(i.saturating_add(1)).map_or(usize::MAX, |n| n.line);
         let filled = page
             .lines
             .iter()
@@ -1064,7 +1064,7 @@ fn rows(file: &str, page: &Page, table: &Table, cite: &str, out: &mut Vec<Findin
     let start = page.outline.get(at).map_or(0, |h| h.line);
     let end = page
         .outline
-        .get(at + 1..)
+        .get(at.saturating_add(1)..)
         .and_then(|r| r.iter().find(|h| h.level <= 2))
         .map_or(usize::MAX, |h| h.line);
     let table_rows: Vec<_> = page

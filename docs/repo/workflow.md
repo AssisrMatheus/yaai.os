@@ -5,7 +5,7 @@ tags: [repo, workflow]
 
 # Agent workflow
 
-This repository is spec-driven and ADR-driven ([[adr/0001-docs-first]], `INV-DOCS-001`): `docs/` is the source of truth, and code exists as its reproduction. When code and a governing doc disagree, the code is wrong.
+This repository is spec-driven and ADR-driven ([[adr/0001-docs-first.adr]], `INV-DOCS-001`): `docs/` is the source of truth, and code exists as its reproduction. When code and a governing doc disagree, the code is wrong.
 
 ```mermaid
 flowchart TD

@@ -16,10 +16,10 @@ commits on them, reports which rules tests pin, and adds them to the graphify gr
 
 | Node | Lives in | Identified by |
 | --- | --- | --- |
-| Invariant | `docs/invariants/<domain>.md` | `INV-<DOMAIN>-NNN` (heading `## INV-<DOMAIN>-NNN: <rule>`) |
-| ADR | `docs/adr/NNNN-<slug>.md` | `ADR NNNN` |
+| Invariant | `docs/invariants/<domain>.invariants.md` | `INV-<DOMAIN>-NNN` (heading `## INV-<DOMAIN>-NNN: <rule>`) |
+| ADR | `docs/adr/NNNN-<slug>.adr.md` | `ADR NNNN` |
 | Spec or doc page | `docs/<scope>/<page>.md` | `docs/<path>.md#<heading-slug>`, `## Covers` |
-| Screen doc | `docs/screens/<name>.md` | `docs/screens/<name>.md` |
+| Screen doc | `docs/screens/<name>.screen.md` | `docs/screens/<name>.screen.md` |
 | Code | `apps/`, `packages/`, `tooling/`, `bin/` | path, `path::Symbol` |
 | Test | `*_test.rs`, Rust `#[cfg(test)]` modules, `tests/`, `*.test.ts`, `*.spec.ts`, `e2e/` | path |
 
@@ -39,7 +39,7 @@ In the comment right above the item it governs (rustdoc `///` or `//!`, JSDoc, `
 | Form | Cites |
 | --- | --- |
 | `spec: docs/<path>.md#<heading-slug>` | A doc page or one of its headings |
-| `screen: docs/screens/<name>.md` | The screen or subview doc the code reproduces |
+| `screen: docs/screens/<name>.screen.md` | The screen or subview doc the code reproduces |
 | `INV-<DOMAIN>-NNN` | An invariant |
 | `ADR NNNN` | A decision |
 
@@ -90,6 +90,7 @@ links hold, 2 findings the caller must fix, 1 the tool itself failed.
 | `check [paths]` | Every check below, on the given paths or the whole repository |
 | `refs <path or id>` | For code: what it cites and which docs cover or mention it. For a doc or id: which code and tests cite it and what it covers |
 | `matrix` | Every invariant, spec heading, screen and ADR with its count of citations from code and from tests; names the invariants no test cites |
+| `kinds` | Prints every doc kind: its file pattern, folders and what it requires ([[repo/doc-kinds]]) |
 | `graph` | Replaces its previous edges (`"_origin": "doc-links"`) in `graphify-out/graph.json` with `cites`, `validates`, `covers` and `references` edges, all `EXTRACTED` at confidence 1.0 |
 | `commit <msg-file>` | The commit gate (below) |
 
@@ -99,13 +100,17 @@ links hold, 2 findings the caller must fix, 1 the tool itself failed.
 
 1. Every citation in code and tests resolves: the doc exists, the heading slug exists, the id exists.
 2. Every `## Covers` path exists.
-3. Every file under `docs/` has the frontmatter with `description` and `tags` (a list), and nothing else beyond `name`
-   in a `SKILL.md`, `status` in an ADR, and `superseded_by` and `commit` in a `.old/` entry (INV-DOCS-002).
+3. Every file under `docs/` has the frontmatter with `description` and `tags` (a list), and only the keys its kind
+   allows: `name` in a `SKILL.md`, `status` in an ADR, `superseded_by` and `commit` in a `.old/` entry (INV-DOCS-002).
 4. Every wikilink target page exists, and every `#heading` in a wikilink exists on that page. Wikilinks inside code
    spans and fenced blocks are examples and are skipped.
 5. Every doc is listed in its scope `SKILL.md`, and every scope `SKILL.md` in `docs/SKILL.md` (INV-DOCS-003).
-6. Every `.old/` entry has `superseded_by` pointing at an existing page or heading and `commit` naming a commit in the
-   history; `pending` is accepted only in a file that is uncommitted or added by `HEAD` ([[repo/history]]).
+6. Every `.old/` entry has `superseded_by` pointing at an existing page or heading and `commit` holding a short hash;
+   `pending` is accepted only in a file that is uncommitted or added by `HEAD` ([[repo/history]]). This is the only
+   check that runs git, and only when an entry says `pending`.
+7. Every doc has the structure of its kind, named by its file ending: required headings in order, item headings and
+   lines, file name, folder ([[repo/doc-kinds]]). Findings `E_PLACE`, `E_NAME`, `E_META`, `E_KIND`, `E_ITEM`,
+   `E_PENDING` name the kind and its heading on that page.
 
 ## The commit gate
 
@@ -113,7 +118,7 @@ links hold, 2 findings the caller must fix, 1 the tool itself failed.
 
 1. a staged file has a citation that does not resolve, or a citation anywhere points at a staged doc and no longer
    resolves (a heading renamed, a doc moved or deleted);
-2. a staged doc fails checks 3 to 6 above; or
+2. a staged doc fails checks 3 to 7 above; or
 3. a staged path is covered by a page that is not staged.
 
 Check 3 is waived by a trailer in the commit message, for a change that leaves the contract as it is (formatting, a

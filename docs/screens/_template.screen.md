@@ -1,12 +1,12 @@
 ---
-description: Fill-in template for a screen or subview doc; copy it to docs/screens/<name>.md.
+description: Fill-in template for a screen or subview doc; copy it to docs/screens/<name>.screen.md.
 tags: [screens, template]
 ---
 
 # Screen template
 
-Copy this file to `docs/screens/<name>.md`, replace every `<...>`, delete the guidance lines in italics, and add a row
-to [[screens/SKILL]]. Write behaviour only: the doc must be implementable as written in Rust, a web page, a Swift app
+Copy this file to `docs/screens/<name>.screen.md`, replace every `<...>`, delete the guidance lines in italics, and
+add a row to [[screens/SKILL]]. Write behaviour only: the doc must be implementable as written in Rust, a web page, a Swift app
 or a TUI. Light pseudocode may explain a rule; it never picks a framework, a type or a file layout. Use the terms of
 [[glossary]].
 
@@ -121,8 +121,9 @@ _Link each named view by its wikilink once its doc exists._
 _Where focus starts, how it moves and wraps, what Back does at the edge, and what is read aloud for each focused
 element. Every action reachable by touch is reachable by remote, and the reverse._
 
-## When code exists
+## Covers
 
-_Add a `Covers` section (an H2 named exactly that) as the last section, listing the repository paths that reproduce
-this view, one per bullet, in backticks. Each of those files cites this doc with `screen: docs/screens/<name>.md`.
-Leave the section out until there is code: an empty one fails the check._
+_Only once code exists: keep this last section and list the repository paths that reproduce this view, one per
+bullet, in backticks. Each of those files cites this doc with `screen: docs/screens/<name>.screen.md`. Until there is
+code, delete this section: an empty one fails the check. Every other section above is required, in this order
+([[repo/doc-kinds#screen]])._

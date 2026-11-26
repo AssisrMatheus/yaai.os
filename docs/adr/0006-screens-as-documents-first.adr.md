@@ -14,4 +14,4 @@ On 2026-11-26 the owner decided that every user-facing screen and subview must h
 
 ## Consequences
 
-- UI code implementing a screen cites `screen: docs/screens/<name>.md` and stays checked by `bin/doc-links`.
+- UI code implementing a screen cites `screen: docs/screens/<name>.screen.md` and stays checked by `bin/doc-links`.

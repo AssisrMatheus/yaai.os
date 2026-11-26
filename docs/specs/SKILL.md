@@ -9,11 +9,11 @@ tags: [specs, index]
 A spec states what a piece of code must do. It lives here only when no other scope owns the code: screens go to
 [[screens/SKILL]], repository tooling to [[repo/SKILL]], always-true rules to [[invariants/SKILL]].
 
-A spec page contains, after the frontmatter and H1:
+A spec page is `docs/specs/<name>.spec.md` ([[repo/doc-kinds#spec]]) and contains, after the frontmatter and H1:
 
 1. Two or three lines on what the code is for.
-2. Its rules as checkable statements, one per bullet or heading ("`<command>` exits 2 when ..."), each one a test can
-   pin. Code cites a rule by its heading: `spec: docs/specs/<name>.md#<heading-slug>`.
+2. `## Rules`: its rules as checkable statements, one per bullet or H3 ("`<command>` exits 2 when ..."), each one a
+   test can pin. Code cites a rule by its heading: `spec: docs/specs/<name>.spec.md#<heading-slug>`.
 3. `## Covers`: the code paths it governs ([[repo/doc-links#Listing covered code]]).
 4. `## References` when the owner gave references ([[repo/documentation#References footer]]).
 

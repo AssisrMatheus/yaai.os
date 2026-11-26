@@ -11,7 +11,7 @@ Active · Decided: 2026-11-26, owner
 
 All project skills, hooks, and agent role definitions live under `.agents/`. Runtime-specific directories (`.claude/`, `.codex/`, `.omp/`, `.pi/`, and similar) contain only symlinks or minimal adapter configs pointing to `.agents/`, never duplicated definitions.
 
-Explained in [[repo/agent-runtimes]], [[repo/hooks]], and [[adr/0007-single-agents-source]].
+Explained in [[repo/agent-runtimes]], [[repo/hooks]], and [[adr/0007-single-agents-source.adr]].
 
 ## INV-AGENTS-002: README files are for humans; AGENTS.md, skills and docs are for agents
 
@@ -35,4 +35,4 @@ Active · Decided: 2026-11-26, owner
 
 When batching multi-step tool calls or programmatic queries inside an agent turn, use `psychoscript`, the repository's shared code mode, rather than ad-hoc runtime-specific code modes or long sequential tool-call chains.
 
-Explained in [[repo/psychoscript]] and [[adr/0010-psychoscript-code-mode]].
+Explained in [[repo/psychoscript]] and [[adr/0010-psychoscript-code-mode.adr]].

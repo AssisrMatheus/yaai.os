@@ -29,12 +29,13 @@ the graphify graph.
 
 ## File name
 
-`docs/<scope>/.old/<name>.<YYYY-MM-DD>.md`
+`docs/<scope>/.old/<name>.<YYYY-MM-DD>.old.md`
 
-- `<name>` is the replaced file's name without `.md` (`hooks`, `0004-obsidian-vault`, `SKILL`).
+- `<name>` is the replaced file's name without `.md` (`hooks`, `0004-obsidian-vault-and-skill-indexes.adr`, `SKILL`).
 - `<YYYY-MM-DD>` is the day of the replacing commit.
-- A second replacement of the same file on the same day adds `-2`, `-3`: `hooks.2026-11-26-2.md`.
-- A page in a nested folder keeps its scope: `docs/repo/turborepo/.old/SKILL.2026-11-26.md`.
+- A second replacement of the same file on the same day adds `-2`, `-3`: `hooks.2026-11-26-2.old.md`.
+- A page in a nested folder keeps its scope: `docs/repo/turborepo/.old/SKILL.2026-11-26.old.md`.
+- The `.old.md` ending makes it an old entry, whatever kind the replaced page had ([[repo/doc-kinds#old]]).
 
 ## Frontmatter
 
@@ -67,7 +68,7 @@ so a forgotten hash blocks the commit after next ([[repo/doc-links]]).
 
 ## When one section is replaced
 
-Move only the replaced section, with its heading, into `<name>.<YYYY-MM-DD>.md`. Set the H1 to
+Move only the replaced section, with its heading, into `<name>.<YYYY-MM-DD>.old.md`. Set the H1 to
 `# <Page title>: <Section heading>` and point `superseded_by` at the new heading (`"[[repo/hooks#Exit codes]]"`). When a
 change replaces several sections of one page, move each one under its own H2 in the same file and point
 `superseded_by` at the page.
@@ -75,7 +76,7 @@ change replaces several sections of one page, move each one under its own H2 in 
 ## Worked example
 
 On 2026-12-03 the user decides that tool findings exit 2 instead of 1. The agent rewrites the `Exit codes` section of
-`docs/repo/hooks.md` and creates `docs/repo/.old/hooks.2026-12-03.md`:
+`docs/repo/hooks.md` and creates `docs/repo/.old/hooks.2026-12-03.old.md`:
 
 ```markdown
 ---
@@ -91,9 +92,11 @@ commit: pending
 ```
 
 The commit `docs(repo): findings exit 2` contains both files. `git log --diff-filter=A -1 --format=%h --
-docs/repo/.old/hooks.2026-12-03.md` prints `9f8e7d6`; the next commit sets `commit: 9f8e7d6`.
+docs/repo/.old/hooks.2026-12-03.old.md` prints `9f8e7d6`; the next commit sets `commit: 9f8e7d6`.
 
 ## Checks
 
-`bin/doc-links check` fails when a `.old/` file lacks `superseded_by` or `commit`, when `superseded_by` points at a
-page or heading that does not exist, or when `commit` is not a commit in the history ([[repo/doc-links]]).
+`bin/doc-links check` fails when a `.old/` file lacks the `.old.md` ending or the date in its name, lacks
+`superseded_by` or `commit`, when `superseded_by` points at a page or heading that does not exist, when `commit` is
+neither a short hash nor `pending`, or when `pending` outlived the commit after the one that added the file
+([[repo/doc-links]], [[repo/doc-kinds#old]]).

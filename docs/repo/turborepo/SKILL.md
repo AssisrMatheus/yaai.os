@@ -26,12 +26,12 @@ node -p "require.resolve('turbo/package.json')"
 
 Then read `docs/README.md` relative to the resolved package directory.
 
-## In this repository
+## Which file to read
 
-| Question | Read |
+| You want to | Read |
 | --- | --- |
-| Which tasks exist and how they depend on each other | [[repo/turborepo/tasks]] |
-| Where workspaces live and what each kind may import | [[repo/structure]] |
+| Know which tasks exist and how they depend on each other | [[repo/turborepo/tasks]] |
+| Know where workspaces live and what each kind may import | [[repo/structure]] |
 
 ## Upstream
 

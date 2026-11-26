@@ -9,6 +9,13 @@ tags: [repo, docs]
 practices. Code reproduces the docs. When code and a doc disagree, the code is wrong (INV-DOCS-001, ADR 0001). A doc
 changes only when the user driving the agent decides it; the superseded text moves to `.old/` ([[repo/history]]).
 
+## Doc kinds
+
+A file ending names the kind of a doc: `*.screen.md`, `*.adr.md`, `*.invariants.md`, `*.spec.md`, `*.rules.md`,
+`*.old.md`, plus `SKILL.md` indexes and `glossary.md`. Each kind has a required structure that `bin/doc-links check`
+verifies; a page with no kind ending is a plain page. The table, the endings and what each kind requires are in
+[[repo/doc-kinds]].
+
 ## Scopes and their index
 
 A scope is a folder under `docs/` that owns one area (`repo/`, `adr/`, `invariants/`, `screens/`, ...). Every scope
@@ -52,6 +59,7 @@ tags: [repo, hooks]
 - A `SKILL.md` adds `name: <kebab-case>` first, and its `description` says when to open the scope ("Use when ...").
 - A wikilink inside frontmatter is quoted: `superseded_by: "[[repo/hooks]]"`.
 - Add another key only when a tool needs it (ADRs carry `status`; `.old/` entries carry `superseded_by` and `commit`).
+  The keys each kind allows are in [[repo/doc-kinds#Frontmatter keys]].
 
 ## Links
 
@@ -124,9 +132,11 @@ skips mermaid blocks, so a link that matters is also written as a wikilink or a 
 
 1. Find the scope through `docs/SKILL.md`. Use [[specs/SKILL]] when no scope fits.
 2. Check that no existing page answers the same question; extend that page instead when one does.
-3. Write the frontmatter, an H1, the content, then `## Covers` and `## References` when they apply.
-4. Add one row to the scope `SKILL.md` table.
-5. Run `bin/doc-links check`; it exits 0.
+3. Name the file with its kind's ending when the scope has one ([[repo/doc-kinds]]), and copy the kind's template
+   when one exists.
+4. Write the frontmatter, an H1, the content, then `## Covers` and `## References` when they apply.
+5. Add one row to the scope `SKILL.md` table.
+6. Run `bin/doc-links check`; it exits 0.
 
 ## Add a scope
 

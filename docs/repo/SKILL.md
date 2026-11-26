@@ -16,6 +16,7 @@ tooling is wired. Product behaviour lives in the other scopes.
 | Start a task: the docs-first loop, plans, what "done" means | [[repo/workflow]] |
 | Split work across sub-agents, pick a provider and model, write a brief | [[repo/delegation]] |
 | Add or edit a page or a scope; frontmatter, wikilinks, indexes, references | [[repo/documentation]] |
+| Know which file ending marks a doc kind and what each kind must contain | [[repo/doc-kinds]] |
 | Replace a rule or page and keep the old text (`.old/`) | [[repo/history]] |
 | Write a README (humans) or an AGENTS.md, skill or doc (agents) | [[repo/writing]] |
 | Cite a doc from code, list covered code, run `doc-links` | [[repo/doc-links]] |

@@ -19,4 +19,4 @@ Active · Decided: 2026-11-26, owner
 
 New apps, packages, and tooling default to Rust. Where Rust is not the right fit, use TypeScript formatted with `oxfmt`, linted with `oxlint`, executed with `bun`, and managed with `pnpm`; never introduce alternative JS package managers or TypeScript runners.
 
-Explained in [[best-practices/rust]], [[best-practices/typescript]], and [[adr/0002-rust-first]].
+Explained in [[best-practices/rust]], [[best-practices/typescript]], and [[adr/0002-rust-first.adr]].

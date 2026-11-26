@@ -34,6 +34,10 @@ screens, which code reproduces.
 **Index**: The `SKILL.md` of a scope, which routes a task to one page. `docs/SKILL.md` is the root index.
 _Avoid_: table of contents, README
 
+**Doc kind**: The type of a doc, named by its file ending (`.screen.md`, `.adr.md`, `.invariants.md`, ...), which
+fixes the structure the doc must have. A page with no kind ending is a plain page.
+_Avoid_: doc type, template type
+
 **Invariant**: A rule that always holds, identified as `INV-<DOMAIN>-NNN`.
 
 **ADR**: An architecture decision record: one decision that is hard to reverse, surprising without context or a real

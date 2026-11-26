@@ -1,0 +1,24 @@
+node_modules/
+.turbo/
+**/dist/
+**/.env
+**/.env.*
+!**/.env.example
+.DS_Store
+
+# External sources: read-only references, never committed (docs/repo/structure.md).
+/vendor/*
+!/vendor/.gitkeep
+
+# Cargo build output.
+/target/
+
+# Code knowledge graph, rebuilt locally by the git hooks (docs/repo/graphify.md).
+/graphify-out/
+
+# Machine-local agent settings.
+.claude/settings.local.json
+
+# Obsidian: the vault settings are committed, each person's window layout is not.
+docs/.obsidian/workspace*.json
+docs/.obsidian/cache

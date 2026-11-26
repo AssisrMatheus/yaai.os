@@ -1,0 +1,5 @@
+# Workspaces: docs/repo/structure.md
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'tooling/*'

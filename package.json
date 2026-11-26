@@ -1,0 +1,31 @@
+{
+  "name": "yaai-os",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "turbo run lint && pnpm lint:root && pnpm lint:docs",
+    "lint:docs": "bin/doc-links check",
+    "lint:fix": "turbo run lint:fix && pnpm lint:root --fix",
+    "lint:root": "oxlint --deny-warnings",
+    "prepare": "husky",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.2",
+    "oxfmt": "^0.80.0",
+    "oxlint": "^1.95.0",
+    "turbo": "^2.11.13"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "packageManager": "pnpm@12.22.0"
+}

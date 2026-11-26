@@ -1,0 +1,42 @@
+{
+  "yaai-os": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "# spec: docs/repo/hooks.md\nbun -e 'try { const e=await Bun.stdin.json(); for(const dir of [...(e.workspacePaths??[]),process.cwd()]) {const g=Bun.spawnSync([\"git\",\"-C\",dir,\"rev-parse\",\"--show-toplevel\"]); if(g.exitCode) continue; const file=require(\"node:path\").join(g.stdout.toString().trim(),\".agents/hooks/runtime.ts\"); if(!await Bun.file(file).exists()) continue; const m=await import(require(\"node:url\").pathToFileURL(file).href); const out=m.dispatch(\"agy\",process.argv[1],e); if(out) console.log(JSON.stringify(out)); break} } catch {console.log(\"{}\")}' start",
+        "timeout": 60
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^(run_command|view_file|list_dir|find_by_name|grep_search|write_to_file|replace_file_content|multi_replace_file_content)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "# spec: docs/repo/hooks.md\nbun -e 'try { const e=await Bun.stdin.json(); for(const dir of [...(e.workspacePaths??[]),process.cwd()]) {const g=Bun.spawnSync([\"git\",\"-C\",dir,\"rev-parse\",\"--show-toplevel\"]); if(g.exitCode) continue; const file=require(\"node:path\").join(g.stdout.toString().trim(),\".agents/hooks/runtime.ts\"); if(!await Bun.file(file).exists()) continue; const m=await import(require(\"node:url\").pathToFileURL(file).href); const out=m.dispatch(\"agy\",process.argv[1],e); if(out) console.log(JSON.stringify(out)); break} } catch {console.log(\"{}\")}' pre",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(write_to_file|replace_file_content|multi_replace_file_content)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "# spec: docs/repo/hooks.md\nbun -e 'try { const e=await Bun.stdin.json(); for(const dir of [...(e.workspacePaths??[]),process.cwd()]) {const g=Bun.spawnSync([\"git\",\"-C\",dir,\"rev-parse\",\"--show-toplevel\"]); if(g.exitCode) continue; const file=require(\"node:path\").join(g.stdout.toString().trim(),\".agents/hooks/runtime.ts\"); if(!await Bun.file(file).exists()) continue; const m=await import(require(\"node:url\").pathToFileURL(file).href); const out=m.dispatch(\"agy\",process.argv[1],e); if(out) console.log(JSON.stringify(out)); break} } catch {console.log(\"{}\")}' post",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "# spec: docs/repo/hooks.md\nbun -e 'try { const e=await Bun.stdin.json(); for(const dir of [...(e.workspacePaths??[]),process.cwd()]) {const g=Bun.spawnSync([\"git\",\"-C\",dir,\"rev-parse\",\"--show-toplevel\"]); if(g.exitCode) continue; const file=require(\"node:path\").join(g.stdout.toString().trim(),\".agents/hooks/runtime.ts\"); if(!await Bun.file(file).exists()) continue; const m=await import(require(\"node:url\").pathToFileURL(file).href); const out=m.dispatch(\"agy\",process.argv[1],e); if(out) console.log(JSON.stringify(out)); break} } catch {console.log(\"{}\")}' stop",
+        "timeout": 60
+      }
+    ]
+  }
+}

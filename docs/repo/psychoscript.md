@@ -21,7 +21,7 @@ none is faked. Until the host exists, use the [[repo/psychoscript#Native fallbac
 
 ## Planned host: `tooling/psychoscript-host`
 
-Status: Planned. Another agent is building it. When it exists, flip this section to built and add it to `## Covers`.
+Status: Planned, paused by the owner on 2026-11-26. Until it resumes, agents use the native fallbacks below. When the host exists, flip this section to built and add it to `## Covers`.
 
 - One small Rust CLI with a stdio MCP transport, plus a one-shot stdin JSON mode that calls the same evaluator for
   shell-only clients.

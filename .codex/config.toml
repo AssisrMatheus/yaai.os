@@ -1,0 +1,13 @@
+# spec: docs/repo/agent-runtimes.md
+# spec: docs/repo/psychoscript.md
+[features]
+code_mode_only = true
+
+[features.code_mode]
+enabled = true
+
+# spec: docs/repo/graphify.md
+[mcp_servers.graphify]
+command = "sh"
+args = ["-c", 'exec graphify-mcp "$(git rev-parse --show-toplevel)/graphify-out/graph.json"']
+startup_timeout_sec = 30

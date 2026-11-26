@@ -1,0 +1,6 @@
+{
+  "codemode": {
+    "mode": "only"
+  },
+  "defaultTools": ["+codemode"]
+}

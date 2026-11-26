@@ -1,0 +1,6 @@
+{
+  "$schema": "https://t3.codes/schema/t3.json",
+  "scripts": [
+    { "name": "Test agent hooks", "command": "# spec: docs/repo/hooks.md\nbun test .agents/hooks", "icon": "test" }
+  ]
+}

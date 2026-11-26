@@ -9,7 +9,17 @@
     ".oxlintrc.json",
     "tsconfig.json",
     "packages/lints/bindings.json",
-    "packages/oxlint-config/config.json"
+    "packages/oxlint-config/config.json",
+    "*.json",
+    "*.toml",
+    "*.yaml",
+    "*.mjs",
+    ".nvmrc",
+    ".github/**",
+    "bin/test-shard",
+    ".oxfmtrc.json",
+    ".gitignore",
+    ".editorconfig"
   ],
   "globalPassThroughEnv": ["CARGO_HOME", "RUSTUP_HOME", "RUSTUP_TOOLCHAIN", "DOC_LINKS_LOG"],
   "tasks": {

@@ -31,5 +31,14 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@12.22.0"
+  "packageManager": "pnpm@12.22.0",
+  "knip": {
+    "workspaces": {
+      "tooling/lint": {
+        "ignoreDependencies": [
+          "@yaai/lints"
+        ]
+      }
+    }
+  }
 }

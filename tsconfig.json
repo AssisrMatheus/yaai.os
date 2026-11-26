@@ -11,5 +11,5 @@
     "types": ["bun"],
     "skipLibCheck": true
   },
-  "include": [".agents/hooks", ".omp/extensions", ".pi/extensions", "packages", "apps", "tooling"]
+  "include": [".agents/hooks", ".omp/extensions", ".pi/extensions", "packages", "apps", "tooling", ".github/ci"]
 }

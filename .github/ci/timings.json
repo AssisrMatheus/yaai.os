@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "files": {
+    "packages/oxlint-config/plugin.test.ts.test.ts": 5086,
+    "tooling/doc-links/test/cli.test.ts": 675,
+    "tooling/test-shard/test/cli.test.ts": 138,
+    "root-hooks.test.ts": 92,
+    "packages/lints/doc/yaai_lints.test.ts": 55,
+    "tooling/lint/test/cli.test.ts": 52,
+    "tooling/lint/bin/yaai-lint.test.ts": 47,
+    "tooling/doc-links/bin/doc-links.test.ts": 45,
+    "packages/lints/lib/yaai_lints.test.ts": 41,
+    "tooling/test-shard/bin/test-shard.test.ts": 36,
+    "packages/oxlint-config/directives.test.ts.test.ts": 19
+  }
+}

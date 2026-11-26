@@ -229,7 +229,13 @@ importers:
 
   tooling/doc-links: {}
 
-  tooling/lint: {}
+  tooling/lint:
+    dependencies:
+      '@yaai/lints':
+        specifier: workspace:*
+        version: link:../../packages/lints
+
+  tooling/test-shard: {}
 
 packages:
 

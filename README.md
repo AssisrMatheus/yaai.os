@@ -45,4 +45,6 @@ GRAPHIFY_BACKEND=none graphify update .
 
 Docs first. A change starts as a page in `docs/`, then becomes code.
 
+Want to contribute? Read [CONTRIBUTING.md](CONTRIBUTING.md).
+
 Working with an AI agent? It reads `AGENTS.md`.

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalPassThroughEnv": ["CARGO_HOME", "RUSTUP_HOME", "RUSTUP_TOOLCHAIN"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["transit"],
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false,
+      "dependsOn": ["transit"]
+    },
+    "test": {
+      "dependsOn": ["transit"],
+      "outputs": []
+    },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "typecheck": {
+      "dependsOn": ["transit"],
+      "outputs": []
+    }
+  },
+  "ui": "stream"
+}

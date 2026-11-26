@@ -128,7 +128,13 @@ export function evaluate(client: string, mode: string, raw: Event, repo = root) 
     if (editors.has(tool)) reason = postEdit(repo, cwd, editPaths(input, tool === 'apply_patch'));
     else if (client === 'claude' && !wholeDiff.test(command)) output = optional('rtk', ['hook', 'claude'], raw);
   }
-  if (mode === 'stop' && (client !== 'agy' || (raw.fullyIdle && raw.terminationReason === 'model_stop')))
+  // WHY: the gate asks once. `stop_hook_active` means this stop already follows a blocked one; blocking again
+  // would loop an agent on findings it cannot fix (files another agent is writing).
+  if (
+    mode === 'stop' &&
+    !raw.stop_hook_active &&
+    (client !== 'agy' || (raw.fullyIdle && raw.terminationReason === 'model_stop'))
+  )
     reason = stop(repo, event.session_id);
   return { reason, context, rewrite, output };
 }

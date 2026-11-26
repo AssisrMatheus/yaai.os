@@ -31,7 +31,7 @@ envelope (`deny` or `continue` with a reason, `block` with a reason) instead of 
 | PreToolUse (edit) | Edit, Write, MultiEdit, NotebookEdit; Codex apply_patch; Antigravity write_to_file, replace_file_content, multi_replace_file_content | Blocks any path that resolves into `vendor/`, including through symlinks and patch moves or deletes. |
 | PostToolUse (edit) | the edit tools above | Formats the file (rustfmt for `.rs`, oxfmt for JS, TS and JSON; a missing formatter is silent), then runs `bin/doc-links check <file>` for files under `docs/`. |
 | PostToolUse (output) | Claude: Bash, Monitor, Grep, Glob, Read, WebFetch, WebSearch | Passes the result to `rtk hook claude` and returns its condensed output when it has one ([[repo/rtk]]). |
-| Stop, SubagentStop | all | Runs `bin/doc-links check` when the checkout is dirty or HEAD moved since the session started; skips a clean unchanged one. A failing check keeps the agent working. |
+| Stop, SubagentStop | all | Runs `bin/doc-links check` when the checkout is dirty or HEAD moved since the session started; skips a clean unchanged one. A failing check keeps the agent working, once: a stop that already follows a blocked stop (`stop_hook_active`) passes, so findings in files another agent is writing cannot loop the session. |
 
 Hooks do not execute agent commands themselves. They forward events and apply rules.
 

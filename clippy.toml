@@ -2,3 +2,13 @@ allow-expect-in-tests = true
 allow-indexing-slicing-in-tests = true
 allow-panic-in-tests = true
 allow-unwrap-in-tests = true
+
+disallowed-methods = [
+  { path = "rand::rng", allow-invalid = true, reason = "Ambient randomness makes computations nondeterministic. Pass a seeded generator. Rule: docs/best-practices/rust-ownership.rules.md#BP-RUST-075" },
+  { path = "rand::random", allow-invalid = true, reason = "Ambient randomness makes computations nondeterministic. Pass a seeded generator. Rule: docs/best-practices/rust-ownership.rules.md#BP-RUST-075" },
+  { path = "rand::thread_rng", allow-invalid = true, reason = "Ambient randomness makes computations nondeterministic. Pass a seeded generator. Rule: docs/best-practices/rust-ownership.rules.md#BP-RUST-075" },
+
+  { path = "jiff::Timestamp::now", reason = "An ambient clock makes computations nondeterministic. Inject the timestamp. Rule: docs/best-practices/rust-ownership.rules.md#BP-RUST-075" },
+  { path = "std::time::SystemTime::now", reason = "Global wall time makes computations nondeterministic. Inject a clock. Rule: docs/best-practices/rust-ownership.rules.md#BP-RUST-075" },
+  { path = "std::time::Instant::now", reason = "Global monotonic time makes computations nondeterministic. Pass a start time. Rule: docs/best-practices/rust-ownership.rules.md#BP-RUST-075" }
+]

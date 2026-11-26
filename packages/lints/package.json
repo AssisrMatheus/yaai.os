@@ -1,0 +1,13 @@
+{
+  "name": "@yaai/lints",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./bindings": "./bindings.json"
+  },
+  "scripts": {
+    "build": "cargo build --release --locked -p yaai-lints",
+    "test": "cargo test --locked -p yaai-lints",
+    "lint": "../../bin/lint packages/lints"
+  }
+}

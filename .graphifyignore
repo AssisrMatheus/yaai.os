@@ -1,0 +1,10 @@
+# spec: docs/repo/graphify.md
+vendor/
+graphify-out/
+node_modules/
+target/
+**/dist/
+.turbo/
+.agents/skills/graphify/
+.old/
+docs/.obsidian/

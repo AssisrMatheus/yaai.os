@@ -1,0 +1,3 @@
+#!/bin/sh
+# spec: docs/repo/graphify.md
+sh .husky/graphify-update.sh

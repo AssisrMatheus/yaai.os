@@ -8,17 +8,19 @@ use crate::{
     regex,
     source::{self, Citation},
 };
+use ignore::WalkBuilder;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs, io,
     path::{Component, Path},
 };
-use walkdir::WalkDir;
 
 /// Return whether this file belongs to the source/config citation scan.
 fn code(file: &str) -> bool {
     !crate::extension(file, "md")
         && !crate::extension(file, "lock")
+        // WHY: a placeholder keeps an empty directory in git; it holds no code a doc can govern.
+        && !file.ends_with(".gitkeep")
         && (!file.contains('/')
             || [
                 "apps/",
@@ -103,7 +105,7 @@ fn discover_tools(root: &Path) -> (BTreeSet<String>, BTreeSet<String>) {
 }
 
 /// Decide which generated or private directories to prune before reading files.
-fn included(entry: &walkdir::DirEntry) -> bool {
+fn included(entry: &ignore::DirEntry) -> bool {
     entry.depth() == 0
         || !matches!(
             entry.file_name().to_str(),
@@ -133,9 +135,20 @@ impl Repo {
             kinds: Config::load(root)?,
             ..Self::default()
         };
-        for entry in WalkDir::new(root).into_iter().filter_entry(included) {
-            let entry = entry?;
-            if !entry.file_type().is_file() {
+        // WHY: what git ignores is generated or machine-local (husky's `_` directory, build output), never a
+        // file a doc governs. The walker reads `.gitignore` files itself, so no git process runs.
+        let walker = WalkBuilder::new(root)
+            .hidden(false)
+            .parents(false)
+            .git_global(false)
+            .git_exclude(false)
+            .require_git(false)
+            .sort_by_file_name(Ord::cmp)
+            .filter_entry(included)
+            .build();
+        for entry in walker {
+            let entry = entry.map_err(io::Error::other)?;
+            if !entry.file_type().is_some_and(|kind| kind.is_file()) {
                 continue;
             }
             let file = entry

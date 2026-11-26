@@ -362,8 +362,8 @@ fn run(args: &Args, start: Instant) -> io::Result<ExitCode> {
                 serde_json::to_writer(tmp.as_file_mut(), &graph)?;
                 let _ = tmp.persist(&path)?;
                 report.rows.push(format!(
-                    "added={} removed={} unplaced={}",
-                    stats.added, stats.removed, stats.unplaced
+                    "added={} removed={} nodes={} unplaced={}",
+                    stats.added, stats.removed, stats.nodes, stats.unplaced
                 ));
             }
             Operation::Commit { .. } | Operation::Kinds => {}

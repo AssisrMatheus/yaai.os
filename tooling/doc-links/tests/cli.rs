@@ -214,7 +214,7 @@ mod tests {
             let result = report(&cli(temp.path(), &["graph", "--json"]), 0);
             assert_eq!(
                 result["rows"][0],
-                format!("added=6 removed={removed} unplaced=0")
+                format!("added=6 removed={removed} nodes=0 unplaced=0")
             );
             let graph: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
             let links = graph["links"].as_array().unwrap();
@@ -225,6 +225,53 @@ mod tests {
                 && l["confidence"] == "EXTRACTED"));
         }
     }
+    /// A linked file graphify made no node for gets one file node, replaced on each run; git-ignored files and
+    /// placeholders are never scanned.
+    #[test]
+    fn graph_file_nodes_and_ignored_files() {
+        let temp = fixture();
+        let root = temp.path();
+        let extra = root.join("apps/extra");
+        fs::create_dir_all(extra.join("gen")).unwrap();
+        fs::write(
+            extra.join("config.toml"),
+            "# spec: docs/specs/sample.spec.md\n",
+        )
+        .unwrap();
+        fs::write(extra.join(".gitignore"), "gen/\n").unwrap();
+        fs::write(extra.join(".gitkeep"), "// spec: docs/missing.md\n").unwrap();
+        fs::write(extra.join("gen/out.rs"), "// spec: docs/missing.md\n").unwrap();
+        assert_eq!(report(&cli(root, &["check", "--json"]), 0)["total"], 0);
+        let dir = root.join("graphify-out");
+        fs::create_dir(&dir).unwrap();
+        let path = dir.join("graph.json");
+        fs::write(&path, include_bytes!("fixtures/graph.json")).unwrap();
+        let before: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        let native = before["nodes"].as_array().unwrap().len();
+        for removed in [0, 7] {
+            let result = report(&cli(root, &["graph", "--json"]), 0);
+            let graph: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+            let nodes = graph["nodes"].as_array().unwrap();
+            assert_eq!(
+                result["rows"][0],
+                format!("added=7 removed={removed} nodes=1 unplaced=0")
+            );
+            assert_eq!(nodes.len(), native + 1);
+            let made: Vec<_> = nodes
+                .iter()
+                .filter(|n| n["_origin"] == "doc-links")
+                .collect();
+            assert_eq!(made.len(), 1);
+            assert_eq!(made[0]["source_file"], "apps/extra/config.toml");
+            assert_eq!(made[0]["id"], "apps_extra_config_toml");
+            assert!(
+                graph["links"].as_array().unwrap().iter().any(|l| {
+                    l["relation"] == "cites" && l["source"] == "apps_extra_config_toml"
+                })
+            );
+        }
+    }
+
     /// Keep operational failures separate from validation reports and logs parseable.
     #[test]
     fn diagnostics_and_ignored_directories() {

@@ -61,6 +61,12 @@ Pass content as children or named slots, not as nested configuration props.
 Why: callers compose markup freely and the component stays small.
 Check: review
 
+### BP-UI-028: Accept rich content for displayed copy
+
+A prop rendered as visible copy (a label, title, description or formatted value) accepts the framework's renderable content type; a plain string is only for intrinsically textual values (accessible names, ids, URLs, serialised data).
+Why: callers keep localisation markup and composition in the copy ([[best-practices/i18n.rules#BP-I18N-008: Put markup in messages through tag callbacks]]).
+Check: review
+
 ### BP-UI-009: Use explicit variants, not boolean props
 
 Express visual choices as named variant axes (`variant="primary"`, `size="lg"`), never as stacks of booleans.

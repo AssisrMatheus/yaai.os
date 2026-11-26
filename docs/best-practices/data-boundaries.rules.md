@@ -237,7 +237,7 @@ Check: review
 
 ### BP-DATA-037: Chunk bulk writes
 
-Write large imports in chunks (on the order of 500 rows) instead of one write per item in parallel.
+Write many rows as one batched statement per chunk, never one write per row and never one unbounded statement; size the chunk from the row's width (on the order of 500 narrow rows) and name it as a constant.
 Why: per-item writes overload hooks and connection pools.
 Check: review
 

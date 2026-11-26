@@ -13,6 +13,7 @@ Each rule is one checkable statement under a stable id, `BP-<AREA>-NNN`, in its 
 a `Check:` line. `Check: lint` means a compiler or linter rule can enforce it, `Check: test` means a test enforces
 it, `Check: review` means it needs judgement. Cite a rule by its id in code comments, lint messages and reviews.
 Ids are never renumbered or reused; a new rule takes the next free number of its prefix, wherever it is placed.
+Before reporting a code change done, review your diff against these pages with the `yaai-code-review` skill.
 
 ## Which file to read
 
@@ -26,6 +27,7 @@ Ids are never renumbered or reused; a new rule takes the next free number of its
 | Write TypeScript | [[best-practices/typescript.rules]] |
 | Design a module's interface, a seam or an adapter | [[best-practices/module-design.rules]] |
 | Read or write an external system, validate input, shape a service | [[best-practices/data-boundaries.rules]] |
+| Add or change a data store: schema, migrations, seeds, queries, transactions | [[best-practices/data-store.rules]] |
 | Cache a read: keys, layer, lifetimes, failures | [[best-practices/caching.rules]] |
 | Invalidate a cache: tags, flushes, change notifications, client query caches | [[best-practices/cache-invalidation.rules]] |
 | Read an environment variable or configuration | [[best-practices/configuration.rules]] |

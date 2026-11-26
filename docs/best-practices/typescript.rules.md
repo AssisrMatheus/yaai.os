@@ -7,7 +7,8 @@ tags: [best-practices, typescript]
 
 TypeScript is used only where Rust does not fit (ADR 0002, INV-STRUCTURE-002). Every Rust rule listed below applies,
 with the TypeScript form in parentheses; the rules after the list exist only in TypeScript. Cross-cutting pages
-(logging, testing, security, UI) apply to TypeScript as written.
+(logging, testing, security, UI) apply to TypeScript as written; package entry points and barrel files are
+[[best-practices/code-organization.rules]] (BP-ORG-006 to BP-ORG-008).
 
 ## Shared with Rust
 
@@ -65,6 +66,7 @@ with the TypeScript form in parentheses; the rules after the list exist only in 
 - BP-TS-052: Same as [[best-practices/rust-async.rules#BP-RUST-098: Pick failures deterministically]]
 - BP-TS-053: Same as [[best-practices/rust-async.rules#BP-RUST-101: Keep mutable state out of globals]] (no mutable `let` or object at module scope)
 - BP-TS-054: Same as [[best-practices/rust-async.rules#BP-RUST-102: Tie subscriptions to their owner]]
+- BP-TS-086: Same as [[best-practices/rust-ownership.rules#BP-RUST-121: Model a non-trivial state transition as a pure function]] (a reducer `(state, action) => nextState`, exhaustive over the action union, effects at the calling boundary)
 
 ## Tooling
 
@@ -136,6 +138,12 @@ Use `type` for shapes; use `interface` only for declaration merging or extending
 Why: one form for one purpose.
 Check: lint
 
+### BP-TS-087: Compose contracts with intersections
+
+When a value must honour several contracts, name the composition once (`type Controller = Behaviour & Disposable`) and check the implementation with `satisfies` against it.
+Why: each contract stays defined once, and the implementation keeps its full inferred type.
+Check: review
+
 ### BP-TS-066: Use literal unions, never enum
 
 Model closed sets as a literal union or an `as const` object; write no `enum` (rejected by `erasableSyntaxOnly`).
@@ -188,6 +196,12 @@ Export by name and import types inline and sorted (`import { type Catalog } from
 Why: imports stay explicit and type-only imports erase cleanly.
 Check: lint
 
+### BP-TS-088: Run nothing at import time
+
+Module scope holds declarations and constants only: no I/O, timers, listeners, registrations or instance creation when the module is imported; work starts when a caller calls a function or factory.
+Why: importing a module then has no effect, so unused code tree-shakes and tests import it safely.
+Check: review
+
 ### BP-TS-073: Default with ??, not ||
 
 Use `??` and `??=` for defaults; use `||` only for boolean logic (`typescript/prefer-nullish-coalescing`).
@@ -204,7 +218,7 @@ Check: review
 
 ### BP-TS-075: Narrow results by presence of ok
 
-Check `if (!('ok' in result)) return result;` and propagate the error unchanged.
+Check `if (!('ok' in result)) return result;` and propagate the error unchanged; use `instanceof` only after this check to tell failure variants apart, or in a `catch` after narrowing `unknown`.
 Why: the check is correct by construction because only success has the key.
 Check: review
 
@@ -218,7 +232,7 @@ Check: review
 
 ### BP-TS-077: Return values and promises directly
 
-Return synchronous values and existing promises directly; do not mark a function `async` when it only forwards a promise (`typescript/require-await`).
+Return synchronous values and existing promises directly: no `Promise.resolve` or `Promise.reject` to make a contract asynchronous, and no `async` on a function that only forwards a promise (`typescript/require-await`).
 Why: extra wrapping hides whether work is asynchronous.
 Check: lint
 
@@ -230,7 +244,7 @@ Check: lint
 
 ### BP-TS-079: Keep the Promise global narrow
 
-Use `Promise.all`, `allSettled`, `any` and `race` to coordinate, and `new Promise` only to adapt one callback or event API.
+Use `Promise.all`, `allSettled`, `any` and `race` to coordinate, and `new Promise` only in a small adapter for one callback or event API that settles on every path; any other runtime use of `Promise` carries a comment with its interop reason.
 Why: other uses usually reimplement `async` badly.
 Check: review
 

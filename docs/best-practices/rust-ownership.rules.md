@@ -91,6 +91,12 @@ Use `BTreeMap`/`BTreeSet` or sort before iterating when the order reaches output
 Why: identical input then gives byte-identical output.
 Check: review
 
+### BP-RUST-121: Model a non-trivial state transition as a pure function
+
+Write a state machine with more than a couple of transitions as one function `fn next(state: &State, event: Event) -> State` (or a `Result`), matching every event variant and performing no I/O; the caller performs the effects.
+Why: every transition is tested with plain values, and a new event is a compile error until it is handled.
+Check: review
+
 ## Hot paths
 
 ### BP-RUST-077: Name the hot paths

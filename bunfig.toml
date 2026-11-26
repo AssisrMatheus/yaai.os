@@ -1,0 +1,3 @@
+# Bun test root for the agent hooks. spec: docs/repo/hooks.md
+[test]
+root = "./.agents/hooks"

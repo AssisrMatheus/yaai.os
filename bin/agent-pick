@@ -1,0 +1,21 @@
+#!/bin/sh
+# spec: docs/repo/delegation.md
+usage() {
+  echo 'Usage: bin/agent-pick <codex|antigravity|claude> ...' >&2
+  exit 2
+}
+[ "$#" -gt 0 ] || usage
+eligible=''
+for family do
+  case $family in codex|antigravity|claude) ;; *) usage ;; esac
+  case " $eligible " in *" $family "*) ;; *) eligible="$eligible $family" ;; esac
+done
+set -- $eligible
+limit=$((256 - 256 % $#))
+while :; do
+  byte=$(od -An -N1 -tu1 /dev/urandom) || exit 1
+  [ "$byte" -lt "$limit" ] && break
+done
+shift "$((byte % $#))"
+printf '%s\n' "$1"
+echo 'Assess the task and prefer low/medium effort. Explain higher effort in the brief for highly complex work.' >&2

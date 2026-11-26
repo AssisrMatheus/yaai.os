@@ -95,6 +95,14 @@ output live in [[tooling/doc-links.tool]].
 | `graph`             | Replaces its previous edges (`"_origin": "doc-links"`) in `graphify-out/graph.json` with `cites`, `validates`, `covers` and `references` edges, all `EXTRACTED` at confidence 1.0 |
 | `commit <msg-file>` | The commit gate (below)                                                                                                                                                           |
 
+`graph` connects the nodes graphify made. When a link ends at a tracked file graphify made no node for (a workspace
+manifest, a `clippy.toml`, a git hook with no extension), `graph` adds a file node for it, marked
+`"_origin": "doc-links"` like its edges and replaced on every run, so no checked link is dropped. Its summary row is
+`added=<edges> removed=<edges> nodes=<file nodes added> unplaced=<links still without a node>`.
+
+The scan skips what git ignores (it reads the `.gitignore` files; no git process runs) and `.gitkeep` placeholders, so a
+directory under `## Covers` links only the files that are part of the repository.
+
 `refs` reads the working tree and needs no graph.
 
 ## What `check` verifies

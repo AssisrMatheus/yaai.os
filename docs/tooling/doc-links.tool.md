@@ -21,14 +21,14 @@ changed, or prints one notice to stderr and exits 0 when `cargo` is absent.
 
 ## Commands
 
-| Command                 | Does                                                                                                                                                               |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `check [paths...]`      | Validate vault frontmatter, wikilinks, indexes, citations, `Covers`, doc kinds and tool registration; filter reported findings to repo-relative `paths` when given |
-| `refs <query>`          | List outgoing and incoming `cites`, `validates` and `covers` edges for a repo path, doc anchor, invariant ID or quoted `ADR NNNN`                                  |
-| `matrix`                | List invariant IDs and governing docs with `Covers` that have no test citation                                                                                     |
-| `graph`                 | Replace `doc-links` edges in `graphify-out/graph.json` atomically; prints a skip row when the graph is absent                                                      |
-| `kinds`                 | Print every doc kind from `tooling/doc-links/kinds.toml` with its file pattern, folders and requirements                                                           |
-| `commit <message-file>` | Check staged files in the Git index and block covered code changes whose governing doc is unstaged unless waived by a non-empty `Spec-unchanged:` trailer          |
+| Command                 | Does                                                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `check [paths...]`      | Validate vault frontmatter, wikilinks, indexes, citations, `Covers`, doc kinds and tool registration; filter reported findings to repo-relative `paths` when given        |
+| `refs <query>`          | List outgoing and incoming `cites`, `validates` and `covers` edges for a repo path, doc anchor, invariant ID or quoted `ADR NNNN`                                         |
+| `matrix`                | List invariant IDs and governing docs with `Covers` that have no test citation                                                                                            |
+| `graph`                 | Replace `doc-links` edges in `graphify-out/graph.json` atomically, adding a file node for a linked file graphify has none for; prints a skip row when the graph is absent |
+| `kinds`                 | Print every doc kind from `tooling/doc-links/kinds.toml` with its file pattern, folders and requirements                                                                  |
+| `commit <message-file>` | Check staged files in the Git index and block covered code changes whose governing doc is unstaged unless waived by a non-empty `Spec-unchanged:` trailer                 |
 
 ## Options
 

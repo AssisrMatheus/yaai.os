@@ -20,6 +20,7 @@ tooling is wired. Product behaviour lives in the other scopes.
 | Replace a rule or page and keep the old text (`.old/`) | [[repo/history]] |
 | Write a README (humans) or an AGENTS.md, skill or doc (agents) | [[repo/writing]] |
 | Cite a doc from code, list covered code, run `doc-links` | [[repo/doc-links]] |
+| Find an existing tool, its commands and options, or register a new tool | [[tooling/SKILL]] |
 | Know what lives in `apps`, `packages`, `tooling`, `bin`, `vendor`; add a workspace | [[repo/structure]] |
 | Check supported systems and prerequisites | [[repo/platforms]] |
 | See how each agent runtime finds skills, hooks and roles; add one | [[repo/agent-runtimes]] |

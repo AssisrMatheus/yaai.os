@@ -19,6 +19,7 @@ and says what to add, naming the kind and its heading on this page ([[repo/doc-l
 | invariants | `<domain>.invariants.md` | `docs/invariants/` | Every H2 is `INV-<DOMAIN>-NNN: <rule>`, with a status line and a body |
 | old | `<name>.<YYYY-MM-DD>[-N].old.md` | any `.old/` | `superseded_by` and `commit` |
 | spec | `<name>.spec.md` | `docs/specs/` | H2s `Rules` then `Covers`; `References` optional |
+| tool | `<name>.tool.md` | `docs/tooling/` | H2s `Synopsis`, `Commands`, `Options`, `Exit codes`, `Output`, `Covers` in order |
 | rules | `<topic>.rules.md` | `docs/best-practices/` | Every H3 is `<PREFIX>-NNN: <rule>` with `Why:` and `Check:` lines |
 | index | `SKILL.md` | any scope folder | `name`; a `Which file to read` table, a wikilink in every row |
 | glossary | `glossary.md` | `docs/` | Every paragraph under an H2 is a `**Term**:` entry; terms unique |
@@ -56,6 +57,12 @@ git, and only when some entry says `pending` ([[repo/history]]).
 H2 `Rules` (each rule a bullet or an H3 code can cite), then `Covers` with the paths it governs, then `References`
 when the owner gave references. Other H2s may sit between them ([[specs/SKILL]]).
 
+### tool
+
+One page per repository tool (`tooling/<name>/` workspace or executable `bin/<name>`). H2s in this order, none other:
+`Synopsis`, `Commands`, `Options`, `Exit codes`, `Output`, `Covers`. The file name is kebab-case matching the tool's
+directory or `bin/` name, and `Covers` lists the tool's path ([[tooling/SKILL]], INV-TOOLING-006).
+
 ### rules
 
 A best-practice page. Every H3 is `<PREFIX>-NNN: <rule>`, one prefix family per page (`BP-RUST`), each id unique
@@ -80,9 +87,9 @@ frontmatter `description` and `tags` and no other key, wikilinks, index membersh
 
 ## Folders
 
-Every page directly in `docs/screens/`, `docs/adr/`, `docs/invariants/`, `docs/specs/` and `docs/best-practices/`
-other than `SKILL.md` is of that folder's kind, and every page in a `.old/` folder is an old entry. A kind's ending
-is allowed only in the folders its row names.
+Every page directly in `docs/screens/`, `docs/adr/`, `docs/invariants/`, `docs/specs/`, `docs/tooling/` and
+`docs/best-practices/` other than `SKILL.md` is of that folder's kind, and every page in a `.old/` folder is an old
+entry. A kind's ending is allowed only in the folders its row names.
 
 ## Templates
 

@@ -55,6 +55,10 @@ above the item.
 
 **Covers**: The section of a doc that lists the code paths it governs; the reverse of a citation.
 
+**Best-practice rule**: One checkable coding rule in `docs/best-practices/`, identified as `BP-<AREA>-NNN`, with a
+reason and the way it is checked (lint, test or review).
+_Avoid_: guideline, convention
+
 ## Repository
 
 **Workspace**: One unit of the monorepo with its own manifest, of one kind: app, package or tool.
@@ -66,7 +70,13 @@ above the item.
 **Tool**: A workspace under `tooling/` that runs as a CLI for development and is never shipped.
 _Avoid_: script, utility
 
+**Entry point**: An executable POSIX `sh` file under `bin/` that invokes a tool or runs a small standalone command.
+
 **Vendor**: External source code copied into `vendor/` to read, never edited and never committed.
+
+**Data store**: Anything that keeps the product's data across runs, such as a database or an embedded store. None
+is chosen yet; its shape will be a data-model spec.
+_Avoid_: DB, persistence layer
 
 ## Agents
 
@@ -79,6 +89,9 @@ holds a procedure; a docs index is also a skill file but only routes.
 
 **Hook**: A command an agent runtime or git runs on an event (before a tool call, at commit), which can block the
 action by exiting 2.
+
+**Self-review**: The adversarial review an agent runs on its own diff against the best-practice rules before
+reporting a code change done. Its findings block until each is fixed or justified.
 
 **Code mode**: Running many tool calls as one script instead of one call per turn. psychoscript is the code mode of
 this repository.

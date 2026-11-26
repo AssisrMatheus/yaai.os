@@ -83,7 +83,8 @@ A page that governs code lists it ([[repo/documentation#The Covers section]]):
 ## Commands
 
 Run through `bin/doc-links`. Output is compact and agent-first; exit codes follow [[best-practices/tooling-cli.rules]]: 0 the
-links hold, 2 findings the caller must fix, 1 the tool itself failed.
+links hold, 2 findings the caller must fix, 1 the tool itself failed. Full command reference, options and sample
+output live in [[tooling/doc-links.tool]].
 
 | Command | Does |
 | --- | --- |
@@ -111,6 +112,10 @@ links hold, 2 findings the caller must fix, 1 the tool itself failed.
 7. Every doc has the structure of its kind, named by its file ending: required headings in order, item headings and
    lines, file name, folder ([[repo/doc-kinds]]). Findings `E_PLACE`, `E_NAME`, `E_META`, `E_KIND`, `E_ITEM`,
    `E_PENDING` name the kind and its heading on that page.
+8. Every workspace under `tooling/<name>/` (holding `Cargo.toml` or `package.json`) and every executable in `bin/` has
+   `docs/tooling/<name>.tool.md` listing its path under `Covers` (`E_TOOL_DOC`, `E_TOOL_COVERS`), every `tooling/`
+   workspace has a non-empty `README.md` (`E_TOOL_README`), and every `.tool.md` names an existing tool
+   (`E_TOOL_ORPHAN`; INV-TOOLING-006, INV-TOOLING-007).
 
 ## The commit gate
 

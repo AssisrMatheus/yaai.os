@@ -523,6 +523,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "test-shard"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "thread_local"
 version = "1.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"

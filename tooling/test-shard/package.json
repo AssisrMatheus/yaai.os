@@ -1,0 +1,11 @@
+{
+  "name": "@yaai/test-shard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "cargo build --release --locked -p test-shard",
+    "test": "cargo test --locked -p test-shard",
+    "lint": "../../bin/lint tooling/test-shard",
+    "start": "cargo run --locked --quiet -p test-shard --"
+  }
+}

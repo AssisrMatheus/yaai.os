@@ -1,5 +1,5 @@
 [workspace]
-members = ["packages/lints", "tooling/doc-links", "tooling/lint"]
+members = ["packages/lints", "tooling/doc-links", "tooling/lint", "tooling/test-shard"]
 resolver = "3"
 
 [workspace.package]

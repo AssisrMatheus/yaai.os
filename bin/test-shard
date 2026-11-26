@@ -1,0 +1,6 @@
+#!/bin/sh
+# spec: docs/tooling/test-shard.tool.md#synopsis
+set -eu
+root=$(CDPATH='' cd -P -- "$(dirname -- "$0")/.." && pwd)
+cargo build --manifest-path "$root/Cargo.toml" --locked --quiet -p test-shard --target-dir "$root/target" || exit 1
+exec "$root/target/debug/test-shard" "$@"

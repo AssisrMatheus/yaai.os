@@ -1,0 +1,15 @@
+# spec: docs/tooling/test-shard.tool.md
+[package]
+name = "test-shard"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[lints]
+workspace = true

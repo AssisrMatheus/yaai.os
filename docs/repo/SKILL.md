@@ -31,3 +31,4 @@ tooling is wired. Product behaviour lives in the other scopes.
 | Write a commit message, or fix a rejected commit                                   | [[repo/commits]]         |
 | Change Turborepo tasks, caching or `turbo.json`                                    | [[repo/turborepo/SKILL]] |
 | Bind a best-practice rule to a lint                                                | [[repo/lint-rules]]      |
+| Run a CI job, change test selection or configure the merge gate                    | [[repo/ci]]              |

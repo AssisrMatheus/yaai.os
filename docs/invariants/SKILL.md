@@ -21,3 +21,4 @@ Each invariant carries an immutable ID of the form `INV-<DOMAIN>-NNN` cited by c
 | Check CLI output, exit codes, and tooling performance rules                             | [[invariants/tooling.invariants]]   |
 | Check structured logging rules across apps, packages, and tooling                       | [[invariants/logging.invariants]]   |
 | Check `.agents/` single source, audience split, index routing, and code mode rules      | [[invariants/agents.invariants]]    |
+| Check CI latency, affected tests and job independence                                   | [[invariants/ci.invariants]]        |

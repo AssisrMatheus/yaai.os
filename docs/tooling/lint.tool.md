@@ -13,7 +13,7 @@ tags: [tooling, lint]
 
 Run from the checkout root. With no paths, check the workspace. Pass a workspace directory or individual source files for post-edit checks.
 
-Full runs require cargo-machete and cargo-deny on PATH. Install the JS dependencies with `pnpm install`.
+CI invokes this same command. The workspace manifest mirrors the Cargo dependency on the shared Rust lint package for affected filtering ([[repo/ci]]). Full runs require cargo-machete and cargo-deny on PATH. Install the JS dependencies with `pnpm install`.
 
 ## Options
 

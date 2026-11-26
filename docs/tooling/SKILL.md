@@ -14,8 +14,9 @@ in its `.tool.md` page in the same commit (INV-TOOLING-006), and give every `too
 
 ## Which file to read
 
-| Tool         | Package           | Language | Does                                                                                                                                   | Read                        |
-| ------------ | ----------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| `doc-links`  | `@yaai/doc-links` | Rust     | Checks code-to-doc links, doc kinds, tool registration and commit-msg drift; lists refs and coverage gaps; injects edges into graphify | [[tooling/doc-links.tool]]  |
-| `agent-pick` | none              | POSIX sh | Picks one eligible agent family (`codex`, `antigravity`, `claude`) uniformly at random for delegation                                  | [[tooling/agent-pick.tool]] |
-| `lint`       | `@yaai/lint`      | Rust     | Check code and print the governing best-practice rule                                                                                  | [[tooling/lint.tool]]       |
+| Tool         | Package            | Language | Does                                                                                                                                   | Read                        |
+| ------------ | ------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `doc-links`  | `@yaai/doc-links`  | Rust     | Checks code-to-doc links, doc kinds, tool registration and commit-msg drift; lists refs and coverage gaps; injects edges into graphify | [[tooling/doc-links.tool]]  |
+| `agent-pick` | none               | POSIX sh | Picks one eligible agent family (`codex`, `antigravity`, `claude`) uniformly at random for delegation                                  | [[tooling/agent-pick.tool]] |
+| `lint`       | `@yaai/lint`       | Rust     | Check code and print the governing best-practice rule                                                                                  | [[tooling/lint.tool]]       |
+| `test-shard` | `@yaai/test-shard` | Rust     | Select timed test files for one CI shard                                                                                               | [[tooling/test-shard.tool]] |

@@ -75,6 +75,7 @@ Check: review
 ### BP-CI-011: Keep CI fast
 
 Run suites as parallel jobs, cancel a superseded run, restore the task cache keyed per job and commit, and run tasks with `--continue` so one failure does not hide others.
+Measure the slowest warm job against the initial budget in [[invariants/ci.invariants]].
 Why: slow CI is skipped or batched.
 Check: review
 
@@ -142,7 +143,34 @@ Making a check required, changing branch rules or adding a remote-cache credenti
 Why: these are account and policy settings.
 Check: review
 
+## CI jobs
+
+### BP-CI-022: Use Clippy first and oxlint for its supported inputs
+
+Run the shared lint entry point with Clippy for Rust and oxlint for the remaining inputs it supports. Extend their default rule sets through the repository configs.
+Why: local and hosted diagnostics use the same rules.
+Check: review
+
+### BP-CI-023: Balance test shards by recorded duration
+
+Assign the longest recorded test units first to the lightest shard. Give new units the median recorded time.
+Why: a few slow tests can determine the duration of the entire check.
+Check: review
+
+### BP-CI-024: Test the affected graph on pull requests
+
+Run tests for changed workspaces and their transitive dependents. Include root checks their inputs reach and test every workspace when shared configuration changes. Run the full suite on main.
+Why: a pull request pays only for tests its changes can affect.
+Check: review
+
+### BP-CI-025: Start the four check jobs independently
+
+Lint, typecheck, build and test declare no prerequisite jobs. Only the aggregate waits for their results.
+Why: serial dependencies add the durations of independent checks.
+Check: review
+
 ## Covers
 
+- `.github/workflows/check.yml`
 - `.husky/`
 - `lint-staged.config.mjs`

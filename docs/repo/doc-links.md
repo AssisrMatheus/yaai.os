@@ -100,7 +100,7 @@ output live in [[tooling/doc-links.tool]].
 ## What `check` verifies
 
 1. Every citation in code and tests resolves: the doc exists, the heading slug exists, the id exists.
-2. Every `## Covers` path exists.
+2. Every `## Covers` path exists. The source scan includes workflows, actions and scripts under `.github/`.
 3. Every file under `docs/` has the frontmatter with `description` and `tags` (a list), and only the keys its kind
    allows: `name` in a `SKILL.md`, `status` in an ADR, `superseded_by` and `commit` in a `.old/` entry (INV-DOCS-002).
 4. Every wikilink target page exists, and every `#heading` in a wikilink exists on that page. Wikilinks inside code

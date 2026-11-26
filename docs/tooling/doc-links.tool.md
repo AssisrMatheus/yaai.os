@@ -6,7 +6,7 @@ tags: [tooling, docs, rust]
 # doc-links
 
 Checks links between code, tests and `docs/`, verifies doc kinds and tool registration, gates commits on coverage
-drift, and injects checked edges into graphify. Design and citation forms live in [[repo/doc-links]]; doc kinds live
+drift, and injects checked edges into graphify. The source scan includes GitHub workflows and their local actions under `.github/`. Design and citation forms live in [[repo/doc-links]]; doc kinds live
 in [[repo/doc-kinds]]; CLI output rules live in [[best-practices/tooling-cli.rules]].
 
 ## Synopsis

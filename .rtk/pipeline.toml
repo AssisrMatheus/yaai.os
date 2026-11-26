@@ -1,0 +1,16 @@
+# spec: docs/repo/rtk.md
+schema_version = 1
+
+[pipeline]
+name = "yaai-os"
+extends = "rtk:posthook"
+
+[[hook.before_tool.shell]]
+name = "workspace-lint"
+when = { command_matches = '(^|[;&|]\s*)pnpm\s+(-w\s+)?(run\s+)?lint\b' }
+action = "passthrough"
+
+[[hook.before_tool.shell]]
+name = "whole-diffs"
+when = { command_matches = '\bgit\s+([^;&|]*\s)?(diff|show)\b' }
+action = "passthrough"

@@ -4,10 +4,10 @@ tags: [fixture]
 ---
 # Links
 ## Commands
-[[#Commands]] [[invariants/docs#INV-DOCS-007: Links|rule]]
+[[#Commands]] [[invariants/docs.invariants#INV-DOCS-007: Links|rule]]
 | Route | Destination |
 | --- | --- |
-| Open | [[screens/home\|Home]] |
+| Open | [[screens/home.screen\|Home]] |
 
 `[[missing-inline]]` and ``a ` [[missing-long-span]]``
 ~~~~

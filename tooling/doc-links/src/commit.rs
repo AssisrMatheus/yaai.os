@@ -91,7 +91,7 @@ pub(crate) fn check(root: &Path, msg: &Path) -> io::Result<Vec<Finding>> {
         &["checkout-index".as_ref(), "--all".as_ref(), prefix.as_ref()],
     )?;
     overlay(root, snapshot.path(), &paths)?;
-    let repo = Repo::load(snapshot.path())?;
+    let repo = Repo::load(snapshot.path(), root)?;
     let mut findings: Vec<_> = repo
         .findings
         .into_iter()

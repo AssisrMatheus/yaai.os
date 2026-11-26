@@ -3,6 +3,7 @@
 use crate::{
     Finding, archived,
     graph::{Link, Place},
+    kinds::{self, Config},
     markdown::{self, Page},
     regex,
     source::{self, Citation},
@@ -46,6 +47,13 @@ pub(crate) struct Repo {
     pub(crate) findings: Vec<Finding>,
     /// Checked relationships shared between queries and graph output.
     pub(crate) links: Vec<Link>,
+    /// The doc kinds, when the repository declares them.
+    pub(crate) kinds: Option<Config>,
+}
+
+/// A template of its kind: a file name starting with `_`.
+pub(crate) fn template(file: &str) -> bool {
+    file.rsplit('/').next().is_some_and(|b| b.starts_with('_'))
 }
 
 /// Existing coverage for a file, or a directory written with a trailing slash.
@@ -73,14 +81,17 @@ fn included(entry: &walkdir::DirEntry) -> bool {
 }
 
 impl Repo {
-    /// Read the complete repository without invoking git.
-    pub(crate) fn load(root: &Path) -> io::Result<Self> {
+    /// Read the complete repository; git runs in `git_root` only to confirm a pending placeholder.
+    pub(crate) fn load(root: &Path, git_root: &Path) -> io::Result<Self> {
         if !root.join("docs").is_dir() {
             return Err(io::Error::other(
                 "missing docs directory; run from the repository root",
             ));
         }
-        let mut repo = Self::default();
+        let mut repo = Self {
+            kinds: Config::load(root)?,
+            ..Self::default()
+        };
         for entry in WalkDir::new(root).into_iter().filter_entry(included) {
             let entry = entry?;
             if !entry.file_type().is_file() {
@@ -130,6 +141,7 @@ impl Repo {
             }
         }
         repo.validate(root);
+        repo.validate_kinds(git_root);
         repo.findings.sort();
         repo.findings.dedup();
         Ok(repo)
@@ -147,7 +159,7 @@ impl Repo {
                     .insert(id.clone(), (file.to_owned(), Some(slug.clone())));
             }
         }
-        if let Some(cap) = regex!(r"^docs/adr/(\d{4})-[^/]+\.md$").captures(file)
+        if let Some(cap) = regex!(r"^docs/adr/(\d{4})-[^/]+\.adr\.md$").captures(file)
             && let Some(n) = cap.get(1)
         {
             let _ = self
@@ -205,6 +217,9 @@ impl Repo {
                 continue;
             }
             if let Some(entries) = &page.covers {
+                if template(file) {
+                    continue;
+                }
                 if entries.is_empty() {
                     self.findings.push(Finding::new(
                         file,
@@ -255,6 +270,58 @@ impl Repo {
         }
         self.validate_indexes(&nav);
         self.validate_citations();
+    }
+
+    /// Check every page against its kind, ids across pages, the kinds page, and stale placeholders.
+    fn validate_kinds(&mut self, git_root: &Path) {
+        let Some(config) = &self.kinds else { return };
+        let mut seen = Vec::new();
+        let mut pending = Vec::new();
+        for (file, page) in &self.pages {
+            config.check(file, page, &mut seen, &mut self.findings);
+            if let Some(p) = config.kind_of(file).and_then(|k| k.pending.as_ref())
+                && page
+                    .meta
+                    .iter()
+                    .any(|(_, k, v)| *k == p.key && v.as_deref() == Some(p.value.as_str()))
+            {
+                pending.push(file.clone());
+            }
+        }
+        config.unique(seen, &mut self.findings);
+        for file in kinds::stale(git_root, &pending) {
+            self.findings.push(Finding::new(
+                &file,
+                1,
+                "E_PENDING",
+                format!(
+                    "replace commit: pending with the hash from git log --diff-filter=A -1 --format=%h -- {file} (kind old, {}#old)",
+                    config.doc
+                ),
+            ));
+        }
+        let headings = self.pages.get(&config.doc).map(|p| {
+            p.headings
+                .iter()
+                .map(|(h, _)| h.as_str())
+                .collect::<BTreeSet<_>>()
+        });
+        for kind in &config.kinds {
+            if !headings
+                .as_ref()
+                .is_some_and(|h| h.contains(kind.name.as_str()))
+            {
+                self.findings.push(Finding::new(
+                    kinds::FILE,
+                    1,
+                    "E_KINDS",
+                    format!(
+                        "add a heading \"{}\" to {} that explains the kind",
+                        kind.name, config.doc
+                    ),
+                ));
+            }
+        }
     }
 
     /// Check child-to-parent index reachability for every active page.
@@ -341,7 +408,7 @@ impl Repo {
         let mut missing: BTreeSet<String> = self
             .pages
             .iter()
-            .filter(|(p, d)| !archived(p) && d.covers.is_some())
+            .filter(|(p, d)| !archived(p) && !template(p) && d.covers.is_some())
             .map(|(p, _)| p.clone())
             .chain(self.rules.keys().filter(|k| k.starts_with("INV-")).cloned())
             .collect();

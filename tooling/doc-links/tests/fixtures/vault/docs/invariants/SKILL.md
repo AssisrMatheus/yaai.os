@@ -1,7 +1,13 @@
 ---
-name: index
-description: Fixture page.
+name: invariants
+description: Fixture index.
 tags: [fixture]
 ---
-# Index
-[[invariants/docs]]
+
+# Invariants
+
+## Which file to read
+
+| You want to | Read |
+| --- | --- |
+| Open it | [[invariants/docs.invariants]] |

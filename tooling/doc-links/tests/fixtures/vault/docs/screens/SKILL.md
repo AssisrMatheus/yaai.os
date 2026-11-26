@@ -1,7 +1,13 @@
 ---
-name: index
-description: Fixture page.
+name: screens
+description: Fixture index.
 tags: [fixture]
 ---
-# Index
-[[screens/home]]
+
+# Screens
+
+## Which file to read
+
+| You want to | Read |
+| --- | --- |
+| Open it | [[screens/home.screen]] |

@@ -1,7 +1,7 @@
 //! Probe for code-to-doc graph relationships.
 //! spec: docs/repo/doc-links.md#commands
 /// Load the initial view.
-/// screen: docs/screens/home.md
+/// screen: docs/screens/home.screen.md
 /// ADR-0013
 fn main() {}
 

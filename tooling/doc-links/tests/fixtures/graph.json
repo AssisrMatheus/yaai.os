@@ -3,9 +3,9 @@
     {
       "file_type": "document",
       "id": "docs_adr_0013_links",
-      "label": "0013-links.md",
+      "label": "0013-links.adr.md",
       "node_kind": "page",
-      "source_file": "docs/adr/0013-links.md",
+      "source_file": "docs/adr/0013-links.adr.md",
       "source_location": "L1"
     },
     {
@@ -13,15 +13,23 @@
       "id": "docs_invariants_docs_inv_docs_007_links",
       "label": "INV-DOCS-007: Links",
       "node_kind": "heading",
-      "source_file": "docs/invariants/docs.md",
+      "source_file": "docs/invariants/docs.invariants.md",
       "source_location": "L6"
     },
     {
       "file_type": "document",
       "id": "docs_screens_home",
-      "label": "home.md",
+      "label": "home.screen.md",
       "node_kind": "page",
-      "source_file": "docs/screens/home.md",
+      "source_file": "docs/screens/home.screen.md",
+      "source_location": "L1"
+    },
+    {
+      "file_type": "document",
+      "id": "docs_specs_sample_spec",
+      "label": "sample.spec.md",
+      "node_kind": "page",
+      "source_file": "docs/specs/sample.spec.md",
       "source_location": "L1"
     },
     {

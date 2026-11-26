@@ -1,7 +1,19 @@
 ---
 name: index
-description: Fixture page.
+description: Fixture index.
 tags: [fixture]
 ---
+
 # Vault
-[[repo/SKILL]] [[adr/SKILL]] [[invariants/SKILL]] [[screens/SKILL]]
+
+## Which file to read
+
+| You want to | Read |
+| --- | --- |
+| Open it | [[repo/SKILL]] |
+| Open it | [[adr/SKILL]] |
+| Open it | [[invariants/SKILL]] |
+| Open it | [[screens/SKILL]] |
+| Open it | [[specs/SKILL]] |
+| Open it | [[best-practices/SKILL]] |
+| Open it | [[glossary]] |

@@ -1,5 +1,5 @@
 ---
 superseded_by: "[[repo/doc-links#Commands]]"
-commit: abc123
+commit: abc1234
 ---
 # Earlier

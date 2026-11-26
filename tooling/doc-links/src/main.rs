@@ -40,6 +40,7 @@ fn extension(file: &str, ext: &str) -> bool {
 
 mod commit;
 mod graph;
+mod kinds;
 mod markdown;
 mod repo;
 mod source;
@@ -94,7 +95,7 @@ struct Args {
     command: Operation,
 }
 
-/// The five repository operations.
+/// The repository operations.
 #[derive(Subcommand)]
 enum Operation {
     /// Validate links and encyclopedia shape; optionally filter by repo-relative paths.
@@ -119,6 +120,9 @@ enum Operation {
     /// Replace extracted relationships in graphify-out/graph.json if present.
     #[command(after_help = "Example: doc-links graph\nExit 0 completed or skipped, 1 failure.")]
     Graph,
+    /// Print each doc kind: its file pattern, folders and what it requires.
+    #[command(after_help = "Example: doc-links kinds --json\nExit 0 completed, 1 failure.")]
+    Kinds,
     /// Check staged files and require documentation for covered code changes.
     #[command(
         after_help = "Example: doc-links commit .git/COMMIT_EDITMSG\nExit 0 clean, 2 findings, 1 failure."
@@ -137,6 +141,7 @@ impl Operation {
             Self::Refs { .. } => "refs",
             Self::Matrix => "matrix",
             Self::Graph => "graph",
+            Self::Kinds => "kinds",
             Self::Commit { .. } => "commit",
         }
     }
@@ -181,6 +186,20 @@ struct Report {
     rows: Vec<String>,
 }
 
+/// Keep a record on one line: escape control characters only, so quotes stay readable.
+fn oneline(text: &str) -> String {
+    text.chars()
+        .flat_map(|c| {
+            let escaped: Vec<char> = if c.is_control() {
+                c.escape_default().collect()
+            } else {
+                vec![c]
+            };
+            escaped
+        })
+        .collect()
+}
+
 /// Write the result streams independently; never truncate the verdict.
 fn render(args: &Args, report: &Report) -> io::Result<ExitCode> {
     let mut stdout = io::stdout().lock();
@@ -198,10 +217,10 @@ fn render(args: &Args, report: &Report) -> io::Result<ExitCode> {
         writeln!(
             stderr,
             "{}:{}: {} {}",
-            f.file.escape_debug(),
+            oneline(&f.file),
             f.line,
             f.code,
-            f.message.escape_debug()
+            oneline(&f.message)
         )?;
     }
     if args.json {
@@ -212,7 +231,7 @@ fn render(args: &Args, report: &Report) -> io::Result<ExitCode> {
         )?;
     } else if failures == 0 {
         for row in report.rows.iter().take(args.limit) {
-            writeln!(stdout, "{}", row.escape_debug())?;
+            writeln!(stdout, "{}", oneline(row))?;
         }
         writeln!(stdout, "{summary}")?;
     }
@@ -276,6 +295,18 @@ fn run(args: &Args, start: Instant) -> io::Result<ExitCode> {
     let mut report = Report::default();
     if let Operation::Commit { message_file } = &args.command {
         report.findings = commit::check(&root, message_file)?;
+    } else if matches!(args.command, Operation::Kinds) {
+        let config = kinds::Config::load(&root)?
+            .ok_or_else(|| io::Error::other(format!("missing {}", kinds::FILE)))?;
+        for kind in &config.kinds {
+            report.rows.push(format!(
+                "{} {} in={} {}",
+                kind.name,
+                kind.pattern(),
+                kind.folders_list(),
+                kind.summary()
+            ));
+        }
     } else if matches!(args.command, Operation::Graph)
         && !root.join("graphify-out/graph.json").try_exists()?
     {
@@ -283,7 +314,7 @@ fn run(args: &Args, start: Instant) -> io::Result<ExitCode> {
             .rows
             .push("Graph absent. Run graphify update . to create it.".into());
     } else {
-        let repo = repo::Repo::load(&root)?;
+        let repo = repo::Repo::load(&root, &root)?;
         log(
             args,
             "doc-links.scan",
@@ -329,7 +360,7 @@ fn run(args: &Args, start: Instant) -> io::Result<ExitCode> {
                     stats.added, stats.removed, stats.unplaced
                 ));
             }
-            Operation::Commit { .. } => {}
+            Operation::Commit { .. } | Operation::Kinds => {}
         }
     }
     log(
@@ -367,7 +398,7 @@ fn main() -> ExitCode {
         let _ = writeln!(
             io::stderr(),
             "E_RUN {}. Verify inputs and repository access, then retry.",
-            e.to_string().escape_debug()
+            oneline(&e.to_string())
         );
         ExitCode::FAILURE
     })

@@ -1,0 +1,166 @@
+# The doc kinds: what each kind of file under docs/ must contain. doc-links reads this file at run time.
+# Adding a kind or a section is an edit here plus a row in the docs page; the Rust engine stays unchanged.
+# spec: docs/repo/doc-kinds.md#the-kinds-file
+
+# The page that explains every kind; each kind has a heading there named after it.
+doc = "docs/repo/doc-kinds.md"
+
+# Frontmatter keys a plain *.md page may carry.
+generic_keys = ["description", "tags"]
+
+# TEMPORARY ALLOWANCE: these folders skip every kind check until their pages carry their ending.
+# Remove the entry once docs/best-practices/*.md are renamed to *.rules.md.
+pending_migration = ["docs/best-practices"]
+
+# Folders whose every page (SKILL.md aside) must be of one kind. `*` is one path segment, `**` any number.
+[[folder]]
+path = "docs/screens"
+kind = "screen"
+
+[[folder]]
+path = "docs/adr"
+kind = "adr"
+
+[[folder]]
+path = "docs/invariants"
+kind = "invariants"
+
+[[folder]]
+path = "docs/specs"
+kind = "spec"
+
+[[folder]]
+path = "docs/best-practices"
+kind = "rules"
+
+[[folder]]
+path = "docs/**/.old"
+kind = "old"
+
+[[kind]]
+name = "screen"
+ending = ".screen.md"
+folders = ["docs/screens"]
+stem = '^[a-z0-9]+(-[a-z0-9]+)*$'
+stem_hint = "kebab-case, like home or title-details"
+keys = ["description", "tags"]
+# Required H2s in order; a trailing `?` marks an optional one.
+h2 = [
+  "Name",
+  "Description",
+  "View",
+  "Data",
+  "States",
+  "Lifecycle",
+  "Props",
+  "Events",
+  "Hooks and callbacks",
+  "Behaviours",
+  "Navigation",
+  "Input and accessibility",
+  "Covers?"
+]
+ordered = true
+closed = true
+
+[[kind]]
+name = "adr"
+ending = ".adr.md"
+folders = ["docs/adr"]
+stem = '^\d{4}-[a-z0-9]+(-[a-z0-9]+)*$'
+stem_hint = "NNNN-<slug>, the next free 4-digit number then kebab-case"
+keys = ["description", "tags", "status"]
+required_keys = ["status"]
+enums = { status = ["proposed", "accepted", "superseded"] }
+require = ["one-h1", "paragraph-after-h1"]
+h2 = ["Considered options?", "Consequences?"]
+ordered = true
+closed = true
+
+[[kind]]
+name = "invariants"
+ending = ".invariants.md"
+folders = ["docs/invariants"]
+stem = '^[a-z]+$'
+stem_hint = "the domain in lower case, like docs or tooling"
+keys = ["description", "tags"]
+
+[kind.items]
+level = 2
+# {STEM} is the file's domain in upper case.
+heading = '^(?P<id>INV-{STEM}-\d{3}): \S'
+example = "INV-{STEM}-NNN: <rule>"
+unique = true
+body = true
+lines = [
+  { pattern = '^(Active|Retired) · Decided: \d{4}-\d{2}-\d{2}, \S', add = "Active · Decided: YYYY-MM-DD, <who>" }
+]
+
+[[kind]]
+name = "old"
+ending = ".old.md"
+folders = ["docs/**/.old"]
+stem = '^[^/]+\.\d{4}-\d{2}-\d{2}(-[2-9]|-[1-9]\d+)?$'
+stem_hint = "<replaced file name without .md>.<YYYY-MM-DD>, plus -2, -3 for a second replacement that day"
+keys = ["description", "tags", "superseded_by", "commit"]
+required_keys = ["superseded_by", "commit"]
+patterns = { commit = '^([0-9a-f]{7,40}|pending)$' }
+# `commit: pending` holds only while the file is uncommitted or added by HEAD; checked with git.
+pending = { key = "commit", value = "pending" }
+
+[[kind]]
+name = "spec"
+ending = ".spec.md"
+folders = ["docs/specs"]
+stem = '^[a-z0-9]+(-[a-z0-9]+)*$'
+stem_hint = "kebab-case"
+keys = ["description", "tags"]
+h2 = ["Rules", "Covers", "References?"]
+ordered = true
+
+[[kind]]
+name = "rules"
+ending = ".rules.md"
+folders = ["docs/best-practices"]
+stem = '^[a-z0-9]+(-[a-z0-9]+)*$'
+stem_hint = "kebab-case, like rust or tooling-cli"
+keys = ["description", "tags"]
+h2 = ["Covers?", "References?"]
+ordered = true
+require = ["references-when-urls"]
+
+[kind.items]
+level = 3
+heading = '^(?P<id>(?P<family>[A-Z][A-Z0-9]*(-[A-Z][A-Z0-9]*)*)-\d{3}): \S'
+example = "BP-<AREA>-NNN: <rule>"
+unique = true
+one_family = true
+body = true
+lines = [
+  { pattern = '^Why: \S', add = "Why: <the reason>" },
+  { pattern = '^Check: (lint|test|review)$', add = "Check: lint|test|review" }
+]
+
+[[kind]]
+name = "index"
+file = "SKILL.md"
+folders = ["docs/**"]
+keys = ["name", "description", "tags"]
+required_keys = ["name"]
+h2 = ["Which file to read"]
+
+[kind.table]
+section = "Which file to read"
+row = '\[\[[^\]]+\]\]'
+add = "a wikilink in the Read column"
+
+[[kind]]
+name = "glossary"
+file = "glossary.md"
+folders = ["docs"]
+keys = ["description", "tags"]
+
+[kind.entries]
+pattern = '^\*\*(?P<id>[^*]+)\*\*: \S'
+also = ['^_Avoid_: \S']
+example = "**Term**: what it is, in one or two sentences."

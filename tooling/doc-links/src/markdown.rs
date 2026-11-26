@@ -2,7 +2,7 @@
 //! spec: docs/repo/doc-links.md#what-check-verifies
 
 use crate::{Finding, archived, regex};
-use pulldown_cmark::{Event, Parser, Tag, TagEnd};
+use pulldown_cmark::{Event, HeadingLevel, Parser, Tag, TagEnd};
 use serde_yaml_ng::Value;
 use std::collections::BTreeSet;
 
@@ -19,6 +19,26 @@ pub(crate) struct Page {
     pub(crate) wiki: Vec<Located>,
     /// Paths in the governing section, including directory prefixes.
     pub(crate) covers: Option<Vec<Located>>,
+    /// Every heading in order, with its level and line.
+    pub(crate) outline: Vec<Heading>,
+    /// Body lines with their line number; lines inside fenced or indented code are left out.
+    pub(crate) lines: Vec<Located>,
+    /// First line of each top-level paragraph, and whether an H2 precedes it.
+    pub(crate) paragraphs: Vec<(usize, String, bool)>,
+    /// Whether the first block after the H1 is a paragraph, once an H1 was seen.
+    pub(crate) opens_with_paragraph: Option<bool>,
+    /// Frontmatter keys with their line and their value when it is a string.
+    pub(crate) meta: Vec<(usize, String, Option<String>)>,
+}
+
+/// A heading as written in the page.
+pub(crate) struct Heading {
+    /// 1 for an H1, 2 for an H2, and so on.
+    pub(crate) level: u8,
+    /// Rendered text.
+    pub(crate) text: String,
+    /// One-based line.
+    pub(crate) line: usize,
 }
 
 /// GitHub heading anchor before duplicate disambiguation.
@@ -80,7 +100,10 @@ fn frontmatter(file: &str, text: &str, page: &mut Page, out: &mut Vec<Finding>) 
                 ));
             }
             match serde_yaml_ng::from_str::<Value>(yaml) {
-                Ok(value) => validate_meta(file, &value, yaml, page, out),
+                Ok(value) => {
+                    record_meta(&value, yaml, page);
+                    validate_meta(file, &value, yaml, page, out);
+                }
                 Err(e) => out.push(Finding::new(
                     file,
                     e.location().map_or(1, |l| l.line() + 1),
@@ -101,6 +124,24 @@ fn frontmatter(file: &str, text: &str, page: &mut Page, out: &mut Vec<Finding>) 
     0
 }
 
+/// Keep each top-level key with its line for the kind checks.
+fn record_meta(v: &Value, yaml: &str, page: &mut Page) {
+    let Some(map) = v.as_mapping() else { return };
+    for (key, value) in map {
+        let Some(key) = key.as_str() else { continue };
+        let line = yaml
+            .lines()
+            .position(|l| l.strip_prefix(key).is_some_and(|r| r.starts_with(':')))
+            .map_or(1, |i| i + 2);
+        let text = match value {
+            Value::String(s) => Some(s.trim().to_owned()),
+            Value::Number(n) => Some(n.to_string()),
+            _ => None,
+        };
+        page.meta.push((line, key.to_owned(), text));
+    }
+}
+
 /// Validate metadata and treat the quoted archive successor as a real wiki edge.
 fn validate_meta(file: &str, v: &Value, yaml: &str, page: &mut Page, out: &mut Vec<Finding>) {
     let field = |key: &str| {
@@ -111,9 +152,7 @@ fn validate_meta(file: &str, v: &Value, yaml: &str, page: &mut Page, out: &mut V
     };
     let mut issue = |msg: &str| out.push(Finding::new(file, 1, "E_META", msg));
     if archived(file) {
-        if field("commit").is_empty() && !v.get("commit").is_some_and(Value::is_number) {
-            issue("Set commit to the revision that superseded this page.");
-        }
+        // WHY: whether `commit` is present and well formed is the old kind's rule, in kinds.toml.
         let replacement = field("superseded_by");
         let quoted = yaml.lines().enumerate().find(|(_, l)| {
             l.strip_prefix("superseded_by:")
@@ -159,6 +198,108 @@ fn unique_slug(title: &str, seen: &mut BTreeSet<String>) -> String {
     slug
 }
 
+impl Page {
+    /// Record a finished heading; true when it opens the Covers section.
+    fn add_heading(
+        &mut self,
+        h: String,
+        level: u8,
+        line: usize,
+        seen: &mut BTreeSet<String>,
+    ) -> bool {
+        let slug = unique_slug(&h, seen);
+        self.outline.push(Heading {
+            level,
+            text: h.clone(),
+            line,
+        });
+        let mut covers = false;
+        if level == 2 {
+            if h == "Covers" {
+                covers = true;
+                let _ = self.covers.get_or_insert_with(Vec::new);
+            }
+            if let Some((id, _)) = h.split_once(':')
+                && regex!(r"^INV-[A-Z][A-Z0-9]*-\d{3}$").is_match(id)
+            {
+                self.rules.push((id.to_owned(), slug.clone()));
+            }
+        }
+        self.headings.push((h, slug));
+        covers
+    }
+}
+
+/// Block-level facts the kind checks read: code lines, top-level paragraphs, the block after the H1.
+#[derive(Default)]
+struct Blocks {
+    /// Per body line: inside a code block.
+    code: Vec<bool>,
+    /// Open lists, quotes and tables.
+    depth: usize,
+    /// The H1 just ended and no block followed yet.
+    after_h1: bool,
+}
+
+impl Blocks {
+    /// Update the block facts with one parser event.
+    fn observe(
+        &mut self,
+        ev: &Event<'_>,
+        range: &std::ops::Range<usize>,
+        line: usize,
+        body: &str,
+        newlines: &[usize],
+        page: &mut Page,
+    ) {
+        if let Event::Start(tag) = ev
+            && self.after_h1
+            && self.depth == 0
+            && !matches!(
+                tag,
+                Tag::Heading {
+                    level: HeadingLevel::H1,
+                    ..
+                }
+            )
+        {
+            self.after_h1 = false;
+            page.opens_with_paragraph = Some(matches!(tag, Tag::Paragraph));
+        }
+        match ev {
+            Event::Start(
+                Tag::List(_) | Tag::BlockQuote(_) | Tag::Table(_) | Tag::FootnoteDefinition(_),
+            ) => {
+                self.depth += 1;
+            }
+            Event::End(
+                TagEnd::List(_)
+                | TagEnd::BlockQuote(_)
+                | TagEnd::Table
+                | TagEnd::FootnoteDefinition,
+            ) => {
+                self.depth = self.depth.saturating_sub(1);
+            }
+            Event::Start(Tag::CodeBlock(_)) => {
+                let first = newlines.partition_point(|p| *p < range.start);
+                let last = newlines.partition_point(|p| *p < range.end.saturating_sub(1));
+                for flag in self.code.iter_mut().take(last + 1).skip(first) {
+                    *flag = true;
+                }
+            }
+            Event::Start(Tag::Paragraph) if self.depth == 0 => {
+                let first = body
+                    .get(range.clone())
+                    .and_then(|p| p.lines().next())
+                    .unwrap_or_default();
+                let under_h2 = page.outline.iter().any(|h| h.level == 2);
+                page.paragraphs.push((line, first.to_owned(), under_h2));
+            }
+            _ => {}
+        }
+    }
+}
+
 /// Parse Markdown, masking code spans and blocks before scanning literal wikilinks.
 pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -> Page {
     let mut page = Page::default();
@@ -176,8 +317,13 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
     let mut in_covers = false;
     let mut compact = false;
     let mut seen = BTreeSet::new();
+    let mut blocks = Blocks {
+        code: vec![false; newlines.len() + 1],
+        ..Blocks::default()
+    };
     for (ev, range) in Parser::new(body).into_offset_iter() {
         let line = base + newlines.partition_point(|p| *p < range.start);
+        blocks.observe(&ev, &range, line, body, &newlines, &mut page);
         match &ev {
             Event::Start(Tag::Paragraph) => {
                 compact = body.get(range.clone()).is_some_and(|p| p.starts_with('`'));
@@ -199,19 +345,10 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
             }
             Event::End(TagEnd::Heading(_)) => {
                 if let Some(h) = heading.take() {
-                    let slug = unique_slug(&h, &mut seen);
-                    if level == 2 {
-                        if h == "Covers" {
-                            in_covers = true;
-                            let _ = page.covers.get_or_insert_with(Vec::new);
-                        }
-                        if let Some((id, _)) = h.split_once(':')
-                            && regex!(r"^INV-[A-Z][A-Z0-9]*-\d{3}$").is_match(id)
-                        {
-                            page.rules.push((id.to_owned(), slug.clone()));
-                        }
+                    if level == 1 {
+                        blocks.after_h1 = page.opens_with_paragraph.is_none();
                     }
-                    page.headings.push((h, slug));
+                    in_covers |= page.add_heading(h, level, line, &mut seen);
                 }
             }
             Event::Code(t) if in_covers => {
@@ -249,6 +386,11 @@ pub(crate) fn parse(file: &str, text: &str, doc: bool, out: &mut Vec<Finding>) -
                     *b = b' ';
                 }
             }
+        }
+    }
+    for (i, text) in body.lines().enumerate() {
+        if !blocks.code.get(i).copied().unwrap_or_default() {
+            page.lines.push((base + i, text.to_owned()));
         }
     }
     for (i, line) in String::from_utf8_lossy(&mask).lines().enumerate() {

@@ -7,22 +7,26 @@
     "dev": "turbo run dev",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "lint": "turbo run lint && pnpm lint:root && pnpm lint:docs",
+    "lint": "turbo run lint --filter=@yaai/lint && pnpm lint:docs",
     "lint:docs": "bin/doc-links check",
-    "lint:fix": "turbo run lint:fix && pnpm lint:root --fix",
-    "lint:root": "oxlint --deny-warnings",
+    "lint:fix": "turbo run lint:fix && oxlint --fix --deny-warnings",
+    "lint:root": "bin/lint",
     "prepare": "husky",
     "test": "turbo run test && bun test .agents/hooks",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck && tsc --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
+    "@types/bun": "^1.4.5",
     "husky": "^9.1.7",
+    "knip": "^6.48.0",
     "lint-staged": "^17.6.2",
     "oxfmt": "^0.80.0",
     "oxlint": "^1.95.0",
-    "turbo": "^2.11.13"
+    "oxlint-tsgolint": "^7.0.2008",
+    "turbo": "^2.11.13",
+    "typescript": "~6.0.3"
   },
   "engines": {
     "node": ">=24.0.0"

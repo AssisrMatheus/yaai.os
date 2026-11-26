@@ -1,0 +1,11 @@
+{
+  "name": "@yaai/lint",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "cargo build --release --locked -p yaai-lint",
+    "test": "cargo test --locked -p yaai-lint",
+    "lint": "../../bin/lint",
+    "start": "cargo run --locked --quiet -p yaai-lint --"
+  }
+}

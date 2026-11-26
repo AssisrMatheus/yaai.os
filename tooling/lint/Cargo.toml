@@ -1,0 +1,22 @@
+[package]
+name = "yaai-lint"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+tracing = { version = "0.1", default-features = false, features = ["std"] }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "json", "std"] }
+jiff = { version = "0.2", default-features = false, features = ["std"] }
+yaai-lints = { version = "0.1", path = "../../packages/lints" }
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = { version = "1", default-features = false, features = ["parse", "serde"] }
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+tempfile = "3"

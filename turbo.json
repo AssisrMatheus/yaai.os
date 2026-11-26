@@ -1,7 +1,17 @@
 {
   "$schema": "https://turborepo.com/schema.json",
-  "globalDependencies": ["**/.env.*local"],
-  "globalPassThroughEnv": ["CARGO_HOME", "RUSTUP_HOME", "RUSTUP_TOOLCHAIN"],
+  "globalDependencies": [
+    "**/.env.*local",
+    "Cargo.toml",
+    "Cargo.lock",
+    "clippy.toml",
+    "rust-toolchain.toml",
+    ".oxlintrc.json",
+    "tsconfig.json",
+    "packages/lints/bindings.json",
+    "packages/oxlint-config/config.json"
+  ],
+  "globalPassThroughEnv": ["CARGO_HOME", "RUSTUP_HOME", "RUSTUP_TOOLCHAIN", "DOC_LINKS_LOG"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -28,6 +38,10 @@
     },
     "typecheck": {
       "dependsOn": ["transit"],
+      "outputs": []
+    },
+    "@yaai/lint#lint": {
+      "cache": false,
       "outputs": []
     }
   },
